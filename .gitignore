@@ -1,0 +1,20 @@
+.env
+node_modules/
+.DS_Store
+*.log
+tools/_raw/
+# grader screenshots are large; the reports (round-N.md) are kept
+docs/grader-reports/*/
+# full-size originals that the game never loads (the _md/_sm variants are what the manifests reference);
+# node tools/gen-images.mjs regenerates them from the manifest if ever needed
+public/assets/images/icons/*.png
+!public/assets/images/icons/*_md.png
+public/assets/images/words/*.png
+!public/assets/images/words/*_md.png
+public/assets/images/textures/*.png
+!public/assets/images/textures/*_md.png
+public/assets/images/mini/*.png
+!public/assets/images/mini/*_md.png
+public/assets/images/fly/*.png
+!public/assets/images/fly/*_md.png
+public/assets/images/heroes/*_face.png

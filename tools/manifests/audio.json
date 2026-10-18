@@ -1,0 +1,1111 @@
+{
+  "_note": "Source of truth for audio generation. voice/sfx/music keys mirror docs/game-design.md section 8 (+ docs/game-design-v2.md: Grabble NPC, mini-games). phase: 1 narrator, 2 characters, 3 catcher sfx, 4 priority music, 5 other sfx, 6 other music. v2 adds 26 narrator lines, 5 character lines, 21 sfx. The puppy hero is named Charli in spoken text; keys keep 'pup'. v3 adds Benny (baker hero, 11 lines, voice Chris) and Miss Suds (1 reply, voice Matilda), phase 2.",
+  "tts": {
+    "model_id": "eleven_multilingual_v2",
+    "output_format": "mp3_44100_128"
+  },
+  "voices": {
+    "narrator": {
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+      "name": "George",
+      "settings": {
+        "stability": 0.55,
+        "similarity_boost": 0.75,
+        "style": 0.25,
+        "use_speaker_boost": true
+      }
+    },
+    "kyah": {
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "name": "Sarah",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0.3,
+        "use_speaker_boost": true
+      }
+    },
+    "ayva": {
+      "voice_id": "cgSgspJ2msm6clMCkdW9",
+      "name": "Jessica",
+      "settings": {
+        "stability": 0.4,
+        "similarity_boost": 0.75,
+        "style": 0.45,
+        "use_speaker_boost": true
+      }
+    },
+    "grabble": {
+      "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+      "name": "Callum",
+      "settings": {
+        "stability": 0.4,
+        "similarity_boost": 0.75,
+        "style": 0.5,
+        "use_speaker_boost": true
+      }
+    },
+    "benny": {
+      "voice_id": "iP95p4xoKVk53GoZ742B",
+      "name": "Chris",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.4,
+        "use_speaker_boost": true
+      }
+    },
+    "misssuds": {
+      "voice_id": "XrExE9yKIg1WjnnlVkGX",
+      "name": "Matilda",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.4,
+        "use_speaker_boost": true
+      }
+    }
+  },
+  "voice": [
+    {
+      "key": "intro_lobby",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Welcome to the village! Scan the code with your phone to join the adventure."
+    },
+    {
+      "key": "player_joined",
+      "role": "narrator",
+      "phase": 1,
+      "text": "A new friend has arrived!"
+    },
+    {
+      "key": "game_start",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Grabble has scattered the Starlight Gem into shards all over the village! Collect enough shards to make it whole again, before Grabble fills his bag. Ready... go!"
+    },
+    {
+      "key": "turn_roll",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Your turn! Roll the dice!"
+    },
+    {
+      "key": "turn_nudge",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Hello? It's your turn! Give the dice a roll."
+    },
+    {
+      "key": "dice_1",
+      "role": "narrator",
+      "phase": 1,
+      "text": "One!"
+    },
+    {
+      "key": "dice_2",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Two!"
+    },
+    {
+      "key": "dice_3",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Three!"
+    },
+    {
+      "key": "dice_4",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Four!"
+    },
+    {
+      "key": "dice_5",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Five!"
+    },
+    {
+      "key": "dice_6",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Six!"
+    },
+    {
+      "key": "space_shard",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Ting! A starlight shard, glowing under the flowers!"
+    },
+    {
+      "key": "space_shard_alt",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Look under the flowers! A shard!"
+    },
+    {
+      "key": "space_swish",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Swish! Grabble snatched a shard! Hey, that isn't yours!"
+    },
+    {
+      "key": "space_swish_empty",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Swish! Grabble's net came up empty. Nothing to snatch!"
+    },
+    {
+      "key": "space_fetch_choose",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Charli wants to fetch! Pick a friend."
+    },
+    {
+      "key": "space_fetch",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Woof! Charli fetched a shard from a friend!"
+    },
+    {
+      "key": "space_fetch_sky",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Woof! Nobody had a shard, so Charli found one in the sky!"
+    },
+    {
+      "key": "space_cake",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Teatime! Cake for everyone! Everybody gets a shard."
+    },
+    {
+      "key": "space_cobble",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Flying takes practice. So does landing!"
+    },
+    {
+      "key": "space_cobble_alt",
+      "role": "narrator",
+      "phase": 1,
+      "text": "A quiet cobblestone. Nothing here but flowers."
+    },
+    {
+      "key": "space_cobble_alt2",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Small kindness, brighter days."
+    },
+    {
+      "key": "space_flight_offer",
+      "role": "narrator",
+      "phase": 1,
+      "text": "A fairy flight! Would you like to fly across the village?"
+    },
+    {
+      "key": "space_flight_go",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Whoosh! Up and over the rooftops!"
+    },
+    {
+      "key": "space_flight_stay",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Staying put. Maybe next time!"
+    },
+    {
+      "key": "space_bridge_land",
+      "role": "narrator",
+      "phase": 1,
+      "text": "You landed on the bridge. Careful, the Catcher is right above you!"
+    },
+    {
+      "key": "launch_choose",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Time to launch the Catcher! Who will you send to the bridge?"
+    },
+    {
+      "key": "launch_sent",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Off to the bridge they go!"
+    },
+    {
+      "key": "launch_ready",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Ring the bell when the star glows brightest!"
+    },
+    {
+      "key": "launch_go",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Ready... sing!"
+    },
+    {
+      "key": "launch_caught",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Caught in the flower basket! I'm stuck! Hand over a shard!"
+    },
+    {
+      "key": "launch_caught_many",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Everyone on the bridge is caught! A shard from each of them!"
+    },
+    {
+      "key": "launch_caught_empty",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Caught! But their pockets are empty. No shards to give."
+    },
+    {
+      "key": "launch_perfect",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Perfect ring! The whole village heard that bell!"
+    },
+    {
+      "key": "launch_missed",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Hop! Missed me! The basket swung wide."
+    },
+    {
+      "key": "lap_bonus",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Home to the castle! Two bonus shards for making it all the way around!"
+    },
+    {
+      "key": "almost_win",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Five shards! Just one more to make the Starlight Gem whole!"
+    },
+    {
+      "key": "win",
+      "role": "narrator",
+      "phase": 1,
+      "text": "The Starlight Gem is whole again! A flower lock, with a musical key. We did it... together!"
+    },
+    {
+      "key": "win_cake",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Teamwork... and then cake!"
+    },
+    {
+      "key": "rejoin",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Welcome back!"
+    },
+    {
+      "key": "kind_1",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Kind hearts, brighter tomorrows!"
+    },
+    {
+      "key": "kind_2",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Dream brighter together!"
+    },
+    {
+      "key": "kyah_bloom",
+      "role": "kyah",
+      "phase": 2,
+      "text": "Bloom!!"
+    },
+    {
+      "key": "kyah_catch",
+      "role": "kyah",
+      "phase": 2,
+      "text": "Flowers, catch him!"
+    },
+    {
+      "key": "kyah_gotit",
+      "role": "kyah",
+      "phase": 2,
+      "text": "Got it!"
+    },
+    {
+      "key": "kyah_together",
+      "role": "kyah",
+      "phase": 2,
+      "text": "We'll protect it. Together!"
+    },
+    {
+      "key": "ayva_lala",
+      "role": "ayva",
+      "phase": 2,
+      "text": "La-la-la!"
+    },
+    {
+      "key": "ayva_ding",
+      "role": "ayva",
+      "phase": 2,
+      "text": "Ding!"
+    },
+    {
+      "key": "ayva_lift",
+      "role": "ayva",
+      "phase": 2,
+      "text": "Music, lift the gem!"
+    },
+    {
+      "key": "ayva_wedidit",
+      "role": "ayva",
+      "phase": 2,
+      "text": "We did it!!"
+    },
+    {
+      "key": "grabble_mine",
+      "role": "grabble",
+      "phase": 2,
+      "text": "That gem will be... mine!"
+    },
+    {
+      "key": "grabble_shiny",
+      "role": "grabble",
+      "phase": 2,
+      "text": "Especially... shiny things!"
+    },
+    {
+      "key": "grabble_missed",
+      "role": "grabble",
+      "phase": 2,
+      "text": "Missed me!"
+    },
+    {
+      "key": "grabble_stuck",
+      "role": "grabble",
+      "phase": 2,
+      "text": "I'm... stuck!"
+    },
+    {
+      "key": "grabble_pride",
+      "role": "grabble",
+      "phase": 2,
+      "text": "Only my pride is a bit squashed."
+    },
+    {
+      "key": "almost_win_generic",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Just one more shard to make the Starlight Gem whole!"
+    },
+    {
+      "key": "grabble_intro",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Watch out! Grabble is sneaking around the village, snatching shards for himself. Don't let him fill his bag!"
+    },
+    {
+      "key": "grabble_moves",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Grabble scurries ahead…"
+    },
+    {
+      "key": "grabble_snatch",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Swish! Grabble snatched a shard!"
+    },
+    {
+      "key": "grabble_pocket",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Grabble pocketed a shard. Especially shiny things!"
+    },
+    {
+      "key": "grabble_bridge",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Grabble stopped on the bridge. Quick, someone launch the Catcher!"
+    },
+    {
+      "key": "grabble_win",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Oh no! Grabble filled his bag and ran off with the starlight. Play again to stop him!"
+    },
+    {
+      "key": "chase_start",
+      "role": "narrator",
+      "phase": 1,
+      "text": "You caught up with Grabble! Flowers, catch him!"
+    },
+    {
+      "key": "chase_win",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Got it! You took shards back from Grabble!"
+    },
+    {
+      "key": "chase_win_empty",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Got him! But his bag was empty."
+    },
+    {
+      "key": "chase_miss",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Hop! Missed me! Grabble skipped away."
+    },
+    {
+      "key": "catcher_target_grabble",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Grabble is on the bridge. Ring the bell!"
+    },
+    {
+      "key": "catcher_caught_grabble",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Grabble is stuck in the basket! His shiny loot spills everywhere!"
+    },
+    {
+      "key": "mini_flight",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Tap to flap through the flower rings!"
+    },
+    {
+      "key": "mini_shard",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Tap the flower that twinkles!"
+    },
+    {
+      "key": "mini_fetch",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Slide Charli to catch the falling shards!"
+    },
+    {
+      "key": "mini_swish",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Hop when Grabble's net glows!"
+    },
+    {
+      "key": "mini_cake",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Tap the strawberries onto the cake!"
+    },
+    {
+      "key": "mini_chase",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Hold to grow the vine, let go when it reaches Grabble!"
+    },
+    {
+      "key": "mini_great",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Wonderful!"
+    },
+    {
+      "key": "mini_okay",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Nice try!"
+    },
+    {
+      "key": "mini_fly_bonus",
+      "role": "narrator",
+      "phase": 1,
+      "text": "What a flight! A bonus shard!"
+    },
+    {
+      "key": "mini_shard_two",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Two shards under the flowers!"
+    },
+    {
+      "key": "mini_fetch_grabble",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Charli took a shard back from Grabble!"
+    },
+    {
+      "key": "mini_swish_safe",
+      "role": "narrator",
+      "phase": 1,
+      "text": "You hopped away! Grabble tripped over his net!"
+    },
+    {
+      "key": "mini_cake_bonus",
+      "role": "narrator",
+      "phase": 1,
+      "text": "Perfect cake! An extra slice for you!"
+    },
+    {
+      "key": "grabble_bag",
+      "role": "grabble",
+      "phase": 2,
+      "text": "All mine, mine, mine!"
+    },
+    {
+      "key": "grabble_tripped",
+      "role": "grabble",
+      "phase": 2,
+      "text": "Whoa! My net!"
+    },
+    {
+      "key": "grabble_hop",
+      "role": "grabble",
+      "phase": 2,
+      "text": "Hop! Too slow!"
+    },
+    {
+      "key": "kyah_vine",
+      "role": "kyah",
+      "phase": 2,
+      "text": "Grow, little vine!"
+    },
+    {
+      "key": "ayva_fly",
+      "role": "ayva",
+      "phase": 2,
+      "text": "Flying takes practice!"
+    },
+    {
+      "key": "benny_hello",
+      "role": "benny",
+      "phase": 2,
+      "text": "Good morning, Miss Suds! You look as bright as a sunbeam today!"
+    },
+    {
+      "key": "benny_c1",
+      "role": "benny",
+      "phase": 2,
+      "text": "Miss Suds, your bubbles are the sparkliest in the whole village!"
+    },
+    {
+      "key": "benny_c2",
+      "role": "benny",
+      "phase": 2,
+      "text": "A fresh bun for the loveliest pet washer in town!"
+    },
+    {
+      "key": "benny_c3",
+      "role": "benny",
+      "phase": 2,
+      "text": "After you, Miss Suds! Kindness first!"
+    },
+    {
+      "key": "benny_c4",
+      "role": "benny",
+      "phase": 2,
+      "text": "Miss Suds, you make every puppy smile. And me too!"
+    },
+    {
+      "key": "benny_c5",
+      "role": "benny",
+      "phase": 2,
+      "text": "Is it warm in here, or is it just your smile, Miss Suds?"
+    },
+    {
+      "key": "benny_shy",
+      "role": "benny",
+      "phase": 2,
+      "text": "Oh! Hi, Miss Suds… I mean, um, hello!"
+    },
+    {
+      "key": "benny_cake",
+      "role": "benny",
+      "phase": 2,
+      "text": "The biggest slice of cake for Miss Suds!"
+    },
+    {
+      "key": "benny_sorry",
+      "role": "benny",
+      "phase": 2,
+      "text": "Sorry, Miss Suds, nothing personal! You look lovely even in a flower basket!"
+    },
+    {
+      "key": "benny_gift",
+      "role": "benny",
+      "phase": 2,
+      "text": "That one's for you, Miss Suds!"
+    },
+    {
+      "key": "benny_cheer",
+      "role": "benny",
+      "phase": 2,
+      "text": "Go, Miss Suds! You've got this!"
+    },
+    {
+      "key": "misssuds_thanks",
+      "role": "misssuds",
+      "phase": 2,
+      "text": "Why, thank you, Benny!"
+    }
+  ],
+  "sfx": [
+    {
+      "key": "bell_ding",
+      "phase": 3,
+      "seconds": 1.2,
+      "prompt": "small golden bell ding, bright, single chime, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "net_swing",
+      "phase": 3,
+      "seconds": 1,
+      "prompt": "cartoon butterfly net swinging down like a pendulum, soft swish whoosh",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "bucket_bump",
+      "phase": 3,
+      "seconds": 1,
+      "prompt": "wooden bucket tipping over with a bump, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "apple_roll_stairs",
+      "phase": 3,
+      "seconds": 2.5,
+      "prompt": "apple bouncing and rolling down wooden stairs, light thumps, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "vine_bloom",
+      "phase": 3,
+      "seconds": 1.8,
+      "prompt": "magical flower vine blooming and growing, sparkly rising shimmer with soft leafy creak, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "tub_splash_bubbles",
+      "phase": 3,
+      "seconds": 2,
+      "prompt": "apple dropping into a washtub with a splash and bubbles popping, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "pipe_rattle",
+      "phase": 3,
+      "seconds": 2,
+      "prompt": "small object rattling down a metal drain pipe, tinny clanking, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "seesaw_boing",
+      "phase": 3,
+      "seconds": 1.2,
+      "prompt": "wooden seesaw flipping with a springy boing, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "dog_splash",
+      "phase": 3,
+      "seconds": 1.8,
+      "prompt": "wet dog cannonball splash into a washtub with bubbles, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "music_rise",
+      "phase": 3,
+      "seconds": 3,
+      "prompt": "magical music notes swirling upward, glittering rising xylophone and chime arpeggio, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "basket_whoosh_drop",
+      "phase": 3,
+      "seconds": 2.5,
+      "prompt": "big hanging flower basket swinging down with a whoosh then a soft leafy thump, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "caught_stuck",
+      "phase": 3,
+      "seconds": 1.5,
+      "prompt": "cartoon vines wrapping tight with a squeaky creak and a comic boing, sad little wah-wah",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "missed_hop",
+      "phase": 3,
+      "seconds": 1.2,
+      "prompt": "quick cartoon hop with a springy boing and a cheeky whoosh",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "ui_tap",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "soft friendly button tap, gentle wooden pop with a tiny bell ring tail, cartoon user interface click",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "ui_join",
+      "phase": 5,
+      "seconds": 1,
+      "prompt": "cheerful two-note chime, friendly welcome ding-ding, bright, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "dice_roll",
+      "phase": 5,
+      "seconds": 1.5,
+      "prompt": "wooden dice rattling and tumbling in a hand, then rolling on a table",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "dice_land",
+      "phase": 5,
+      "seconds": 0.6,
+      "prompt": "single wooden die landing on a table with a soft clack",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "pawn_hop",
+      "phase": 5,
+      "seconds": 0.5,
+      "prompt": "tiny cute hop, soft springy boing, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "shard_ting",
+      "phase": 5,
+      "seconds": 1,
+      "prompt": "tiny crystal shard sparkle, bright glassy ting with a shimmer tail",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "swish_net",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "fast cartoon net swoosh snatching something, swish",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "pup_woof",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "small puppy bark, one happy woof, cute",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "cake_party",
+      "phase": 5,
+      "seconds": 2.5,
+      "prompt": "happy party jingle with party blower and glockenspiel, cheerful celebration, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "flight_whoosh",
+      "phase": 5,
+      "seconds": 1.5,
+      "prompt": "magical fairy flight whoosh rising up with sparkles, airy shimmer",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "bridge_land",
+      "phase": 5,
+      "seconds": 1,
+      "prompt": "soft footsteps landing on an old stone bridge, gentle thud, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "lap_fanfare",
+      "phase": 5,
+      "seconds": 2.5,
+      "prompt": "short cheerful fanfare, bright trumpets and glockenspiel, kids game bonus",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "almost_win_sparkle",
+      "phase": 5,
+      "seconds": 2,
+      "prompt": "rising magical sparkle shimmer, tension building, twinkling chimes, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "win_fanfare",
+      "phase": 5,
+      "seconds": 3.5,
+      "prompt": "big joyful victory fanfare, trumpets and bells, cheering, kids game win",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "gem_assemble",
+      "phase": 5,
+      "seconds": 3,
+      "prompt": "magical crystal gem assembling, glassy chimes coming together with a warm swell and sparkle",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "timer_tick",
+      "phase": 5,
+      "seconds": 0.5,
+      "prompt": "single wooden clock tick, short, dry, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "confetti",
+      "phase": 5,
+      "seconds": 2,
+      "prompt": "confetti popper pop followed by sparkly crackling falling confetti, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "shard_fly",
+      "phase": 5,
+      "seconds": 1.2,
+      "prompt": "glittering sparkle zooming through the air, fast magical whoosh with twinkles",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "camera_whoosh",
+      "phase": 5,
+      "seconds": 1,
+      "prompt": "smooth soft airy whoosh, gentle swoop transition",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "flap_wing",
+      "phase": 5,
+      "seconds": 0.6,
+      "prompt": "soft cartoon fairy wing flap, quick airy flutter, light whoomp, single flap",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "ring_pass",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "magical sparkle chime as something flies through a glowing ring, short rising twinkle, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "tumble",
+      "phase": 5,
+      "seconds": 1.0,
+      "prompt": "cartoon tumbling crash, comedic bonks and a slide whistle drop, goofy",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "twinkle",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "tiny magical twinkle, high bell glint, single shimmer, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "flower_tap",
+      "phase": 5,
+      "seconds": 0.5,
+      "prompt": "soft cute pop with a little marimba blip, tapping a flower, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "pup_catch",
+      "phase": 5,
+      "seconds": 0.6,
+      "prompt": "happy puppy snap catch with a tiny chime, short playful yip, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "bucket_clank",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "cartoon metal bucket clank, dull tin clang and bonk, short",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "net_swoop",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "fast cartoon net swoop, short sharp whoosh swipe through the air",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "hop_dodge",
+      "phase": 5,
+      "seconds": 0.6,
+      "prompt": "quick springy cartoon boing hop, light bouncy dodge",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "strawberry_plop",
+      "phase": 5,
+      "seconds": 0.5,
+      "prompt": "soft squishy plop of a strawberry landing on cake, cute cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "vine_grow",
+      "phase": 5,
+      "seconds": 1.2,
+      "prompt": "magic vine growing, creaky rustling stretch with rising sparkly tones, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "vine_grab",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "quick cartoon vine whip grab, snappy rustle and snap, short",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "grabble_scurry",
+      "phase": 5,
+      "seconds": 1.0,
+      "prompt": "quick tiny scurrying footsteps, fast sneaky tip-toe patter, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "grabble_snatch",
+      "phase": 5,
+      "seconds": 0.8,
+      "prompt": "sneaky cartoon snatch, quick swish grab with a tiny plink, comedic",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "loot_spill",
+      "phase": 5,
+      "seconds": 1.5,
+      "prompt": "coins and gems scattering and clinking on the ground, shiny loot spilling, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "countdown_beep",
+      "phase": 5,
+      "seconds": 0.5,
+      "prompt": "single short clean countdown beep, game style, bright",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "mini_win_jingle",
+      "phase": 5,
+      "seconds": 1.5,
+      "prompt": "short cheerful victory jingle, glockenspiel and bells, happy ascending, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "mini_lose_jingle",
+      "phase": 5,
+      "seconds": 1.0,
+      "prompt": "short gentle try-again jingle, soft descending notes on music box, playful not harsh",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "marble_roll",
+      "phase": 3,
+      "seconds": 2.0,
+      "prompt": "glass marble rolling along a wooden track, soft rumbling roll with small clicks, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "bucket_tip",
+      "phase": 3,
+      "seconds": 1.0,
+      "prompt": "wooden bucket tipping over, creak then thud with marbles pouring out, cartoon",
+      "prompt_influence": 0.4
+    },
+    {
+      "key": "rope_tug",
+      "phase": 3,
+      "seconds": 0.8,
+      "prompt": "rope pulled taut, creaky strain and a small twang, cartoon",
+      "prompt_influence": 0.4
+    }
+  ],
+  "music": [
+    {
+      "key": "music_catcher",
+      "phase": 4,
+      "order": 1,
+      "seconds": 20,
+      "loop": false,
+      "prompt": "playful rising tension, ticking, builds to a big sparkly magical hit at the end, cartoon"
+    },
+    {
+      "key": "music_play",
+      "phase": 4,
+      "order": 2,
+      "seconds": 68,
+      "loop": true,
+      "prompt": "bright whimsical village theme, pizzicato strings, flute, glockenspiel, light percussion, playful, children's game, loopable"
+    },
+    {
+      "key": "music_lobby",
+      "phase": 6,
+      "order": 3,
+      "seconds": 50,
+      "loop": true,
+      "prompt": "gentle music box and soft strings, dreamy storybook lullaby, loopable"
+    },
+    {
+      "key": "music_victory",
+      "phase": 6,
+      "order": 4,
+      "seconds": 20,
+      "loop": false,
+      "prompt": "joyful celebration, bells, children's choir ahh, party, cake"
+    },
+    {
+      "key": "music_sting_grabble",
+      "phase": 6,
+      "order": 5,
+      "seconds": 3,
+      "loop": false,
+      "prompt": "3 second mischievous sneaky sting, bassoon and pizzicato"
+    },
+    {
+      "key": "music_catcher_long",
+      "phase": 4,
+      "order": 6,
+      "seconds": 32,
+      "loop": false,
+      "derive": {
+        "from": "music_catcher",
+        "crossfade": 0.5,
+        "bar": 2.0,
+        "plan": [
+          [
+            0,
+            6
+          ],
+          [
+            4,
+            12
+          ],
+          [
+            8,
+            14
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            8,
+            null
+          ]
+        ],
+        "note": "music_catcher is 120 BPM 4/4 (bar 2.0 s): 7 s ticking intro, bass-driven build 7-16 s, riser then the big hit at 16.0 s, tail to ~18.7 s. This cue re-cuts it as raw 0-6, 4-12, 8-14, 10-12, 8-end (joins 6->4, 12->8, 14->10, 12->8, each a whole number of bars, equal-power crossfade 0.5 s), so intro + build are extended by 14 s and the original riser + hit + tail still end the cue. Built from the cached music_catcher raw: no API spend.",
+        "snap": 0.5
+      },
+      "prompt": "playful rising tension, ticking, builds to a big sparkly magical hit at the end, cartoon, 32 seconds"
+    }
+  ]
+}

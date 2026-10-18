@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starlight Catcher test</title>
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/","gsap":"/vendor/gsap/index.js","socket.io-client":"/socket.io/socket.io.esm.min.js"}}</script>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #BFE3F5; font-family: system-ui, sans-serif; }
+  canvas { display: block; }
+  #ui { position: fixed; top: 8px; left: 8px; display: flex; flex-wrap: wrap; gap: 5px; max-width: 640px; z-index: 2; align-items: center; }
+  #ui button, #ui label, #ui select { font: 600 12px system-ui; border: 2px solid #2B2440; border-radius: 10px; padding: 5px 9px; background: #FFF6E0; color: #2B2440; cursor: pointer; }
+  #ui button.c { background: #A8E0B8; } #ui button.m { background: #F29BC8; } #ui button.p { background: #F2C14E; }
+  #scrub { width: 300px; vertical-align: middle; }
+  #log { position: fixed; top: 8px; right: 8px; width: 210px; max-height: 64vh; overflow: auto; background: rgba(255,246,224,.92); border: 2px solid #2B2440; border-radius: 12px; padding: 6px 9px; font: 11px ui-monospace, monospace; color: #2B2440; z-index: 2; }
+  #log b { color: #5E3A8C; }
+  #stats { position: fixed; bottom: 8px; left: 8px; font: 11px ui-monospace, monospace; background: rgba(255,255,255,.85); border-radius: 8px; padding: 4px 8px; color: #2B2440; }
+</style>
+</head>
+<body>
+<div id="ui">
+  <button class="c" id="bCaught">Play caught</button>
+  <button class="m" id="bMissed">Play missed</button>
+  <button class="p" id="bPerfect">Play perfect</button>
+  <button id="bReset">Reset</button>
+  <label><input type="checkbox" id="auto" checked> auto camera</label>
+  <select id="camMode"><option value="smooth">smooth (sample)</option><option value="host">host-style keys</option></select>
+  <select id="view"><option value="">jump to…</option><option value="overview">overview</option><option value="catcher">bridge</option></select>
+  <label><input type="checkbox" id="showPath"> cam path</label>
+  <label>t <input type="range" id="scrub" min="0" max="34" step="0.05" value="0"> <span id="tval">0.00</span></label>
+</div>
+<div id="log"><b>Stage log</b><br></div>
+<div id="stats"></div>
+<script type="module">
+import * as THREE from 'three';
+import gsap from 'gsap';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as layout from './layout.js';
+import { createCatcher } from './contraption.js';
+
+const { SPACES, BRIDGE_POS, BRIDGE_INDEX, CAMERA, CATCHER_STAGES, LANDMARKS, heightAt, pointAt, LOOP_LENGTH, SCALE } = layout;
+const params = new URLSearchParams(location.search);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xBFE3F5);
+scene.fog = new THREE.Fog(0xBFE3F5, 60, 120);
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 300);
+const controls = new OrbitControls(camera, renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xFFF6E0, 0xA8C49A, 1.6));
+const sun = new THREE.DirectionalLight(0xFFF0D8, 2.4);
+sun.position.set(-14, 34, 22); sun.target.position.set(0, 0, -2);
+sun.castShadow = true; sun.shadow.mapSize.set(4096, 4096);
+Object.assign(sun.shadow.camera, { left: -34, right: 34, top: 34, bottom: -34, near: 1, far: 90 });
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
+scene.add(sun, sun.target);
+
+// ---------- terrain stand-in: heightAt-displaced plane, river ribbon, path ribbon from pointAt, tiles, bridge deck
+const standIn = new THREE.Group(); scene.add(standIn);
+const toonG = (c, o = {}) => new THREE.MeshToonMaterial({ color: c, ...o });
+{
+  const g = new THREE.PlaneGeometry(84, 70, 210, 175); g.rotateX(-Math.PI / 2); g.translate(0, 0, -2);
+  const p = g.attributes.position; for (let i = 0; i < p.count; i++) p.setY(i, heightAt(p.getX(i), p.getZ(i)) - 0.02); g.computeVertexNormals();
+  const ground = new THREE.Mesh(g, toonG(0x9FD39A)); ground.receiveShadow = true; standIn.add(ground);
+}
+function ribbon(points, half, y, color, closed = false) {
+  const pos = [], idx = [];
+  for (let i = 0; i < points.length; i++) {
+    const a = points[Math.max(0, i - 1)], b = points[Math.min(points.length - 1, i + 1)];
+    const tx = b[0] - a[0], tz = b[1] - a[1], l = Math.hypot(tx, tz) || 1, nx = -tz / l, nz = tx / l;
+    for (const s of [-1, 1]) { const x = points[i][0] + nx * half * s, z = points[i][1] + nz * half * s; pos.push(x, (typeof y === 'function' ? y(x, z) : y), z); }
+    if (i < points.length - 1) { const k = i * 2; idx.push(k, k + 2, k + 1, k + 1, k + 2, k + 3); }
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+  const m = new THREE.Mesh(g, toonG(color, { side: THREE.DoubleSide })); m.receiveShadow = true; return m;
+}
+{
+  const rv = []; const R = LANDMARKS.river;
+  for (let i = 0; i < R.length - 1; i++) for (let k = 0; k < 20; k++) { const u = k / 20; rv.push([R[i][0] + (R[i + 1][0] - R[i][0]) * u, R[i][1] + (R[i + 1][1] - R[i][1]) * u]); }
+  rv.push(R[R.length - 1]);
+  standIn.add(ribbon(rv, 1.3, 0.015, 0x7CC6EE));
+  const pp = []; for (let d = 0; d <= LOOP_LENGTH + 0.3; d += 0.3) { const q = pointAt(d); pp.push([q.x, q.z]); }
+  standIn.add(ribbon(pp, 1.6, (x, z) => heightAt(x, z) + 0.03, 0xE8DCC6));
+  for (const s of SPACES) {
+    const t = new THREE.Mesh(new THREE.CylinderGeometry(SCALE.spaceRadius * 0.9, SCALE.spaceRadius * 0.9, 0.06, 28), toonG(s.color, { transparent: s.index === BRIDGE_INDEX, opacity: s.index === BRIDGE_INDEX ? 0.35 : 1 }));
+    t.position.set(s.pos[0], s.pos[1] + 0.06, s.pos[2]); t.receiveShadow = true; standIn.add(t);
+  }
+  // bridge deck + parapets (approximate village bridge)
+  const b = SPACES[BRIDGE_INDEX], yaw = Math.atan2(-b.dir[1], b.dir[0]);
+  const br = new THREE.Group(); br.position.set(...BRIDGE_POS); br.rotation.y = yaw; standIn.add(br);
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(5.5, 0.2, 3.5), toonG(0xD3C9B8)); deck.position.y = 0.0; deck.receiveShadow = true; br.add(deck);
+  for (const z of [-1.61, 1.61]) { const pa = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.5, 0.26), toonG(0xCDBFA8)); pa.position.set(0, 0.28, z); pa.castShadow = true; br.add(pa); }
+  // landmark markers (ghosts) to check clearance
+  const ghost = (geo, pos, color) => { const m = new THREE.Mesh(geo, toonG(color, { transparent: true, opacity: 0.55 })); m.position.set(...pos); standIn.add(m); return m; };
+  ghost(new THREE.BoxGeometry(8, 6, 5), [LANDMARKS.castle.pos[0], LANDMARKS.castle.pos[1] + 3, LANDMARKS.castle.pos[2]], 0xC7B8E8);
+  ghost(new THREE.BoxGeometry(5, 4, 4), [LANDMARKS.bakery.pos[0], LANDMARKS.bakery.pos[1] + 2, LANDMARKS.bakery.pos[2]], 0xFFD2A8);
+  ghost(new THREE.BoxGeometry(5, 4, 4), [LANDMARKS.petwash.pos[0], 2, LANDMARKS.petwash.pos[2]], 0xA8D8F0);
+  ghost(new THREE.CylinderGeometry(1.8, 2, 0.8, 24), [LANDMARKS.fountain.pos[0], 0.4, LANDMARKS.fountain.pos[2]], 0xBFE3F5);
+  for (const lp of LANDMARKS.lampposts) ghost(new THREE.CylinderGeometry(0.1, 0.1, 4, 6), [lp.pos[0], lp.pos[1] + 2, lp.pos[2]], 0xff3366);
+}
+for (const s of CATCHER_STAGES) { const m = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 6), new THREE.MeshBasicMaterial({ color: 0xff0066 })); m.position.set(...s.anchor); scene.add(m); }
+
+let village = null;
+if (params.get('village')) {
+  try { const mod = await import('./village.js'); village = await mod.createVillage({ scene, layout, textures: {}, images: {} }); if (village?.group && !village.group.parent) scene.add(village.group); standIn.visible = false; console.log('[test] real village loaded'); }
+  catch (e) { console.warn('[test] village.js failed, using the stand-in', e); }
+}
+
+const t0c = performance.now();
+const catcher = await createCatcher({ scene, anchor: new THREE.Vector3(...BRIDGE_POS), stages: CATCHER_STAGES, layout, textures: {}, images: {}, deckHeight: 0.1 });
+console.log('[test] catcher built in', (performance.now() - t0c).toFixed(0), 'ms');
+if (!catcher.group.parent) scene.add(catcher.group);
+window.catcher = catcher;
+document.getElementById('scrub').max = catcher.duration.toFixed(2);
+
+// mock pawns like pawns.js v2: a base disc + a 4.0-tall hero billboard (top at 4.2 above the deck); ?tall=4.2 sets the height
+const PAWN_H = +(params.get('tall') || 4.0);
+function pawnTex(col) {
+  const c = document.createElement('canvas'); c.width = 128; c.height = 192; const g = c.getContext('2d');
+  g.fillStyle = col; g.strokeStyle = '#2B2440'; g.lineWidth = 6;
+  g.beginPath(); g.roundRect(22, 70, 84, 118, 30); g.fill(); g.stroke();
+  g.fillStyle = '#FFE0C8'; g.beginPath(); g.arc(64, 46, 36, 0, Math.PI * 2); g.fill(); g.stroke();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const pawnCols = ['#5B8DEF', '#F29BC8', '#A8E0B8', '#F2C14E', '#B48BE0', '#E8923A'];
+window.mockPawns = [];
+catcher.bridgeSlots.forEach((p, i) => {
+  if (i > 2) return;
+  const pawn = new THREE.Group();
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.8, 0.24, 24), toonG(pawnCols[i])); base.position.y = 0.12; pawn.add(base);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: pawnTex(pawnCols[i]), transparent: true, alphaTest: 0.05 })); sp.scale.set(PAWN_H * 2 / 3, PAWN_H, 1); sp.position.y = 0.2 + PAWN_H / 2; pawn.add(sp);
+  pawn.position.copy(p); scene.add(pawn); window.mockPawns.push(pawn);
+});
+
+// triangle count of the catcher
+function countTris(root) { let tris = 0, meshes = 0; root.traverse((o) => { if (o.isMesh) { meshes++; const g = o.geometry; let n = g.index ? g.index.count : g.attributes.position.count; if (g.drawRange && g.drawRange.count !== Infinity) n = Math.min(n, g.drawRange.count); tris += (n / 3) * (o.isInstancedMesh ? o.count : 1); } }); return { tris: Math.round(tris), meshes }; }
+function countTrisFull(root) { let tris = 0; root.traverse((o) => { if (o.isMesh) { const g = o.geometry; const n = g.index ? g.index.count : g.attributes.position.count; tris += (n / 3) * (o.isInstancedMesh ? o.count : 1); } }); return Math.round(tris); }
+let lights = 0; catcher.group.traverse((o) => { if (o.isLight) lights++; });
+const full = countTrisFull(catcher.group);
+
+const views = { catcher: CAMERA.catcher, overview: CAMERA.overview };
+function setView(v) { const c = views[v]; if (!c) return; camera.position.set(...c.pos); controls.target.set(...c.target); controls.update(); }
+setView('overview');
+document.getElementById('view').onchange = (e) => { document.getElementById('auto').checked = false; setView(e.target.value); e.target.value = ''; };
+
+// camera path debug lines
+const pathLines = new THREE.Group(); pathLines.visible = false; scene.add(pathLines);
+{
+  const cp = catcher.cameraPath, pts = [], tps = []; for (let t = 0; t <= cp.duration; t += 0.1) { const s = cp.sample(t); pts.push(s.pos.clone()); tps.push(s.target.clone()); }
+  pathLines.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0xff0066 })));
+  pathLines.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(tps), new THREE.LineBasicMaterial({ color: 0x0044ff })));
+  cp.pos.forEach((p, i) => { const m = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 6), new THREE.MeshBasicMaterial({ color: 0xff0066 })); m.position.copy(p); pathLines.add(m); const n = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 6), new THREE.MeshBasicMaterial({ color: 0x0044ff })); n.position.copy(cp.target[i]); pathLines.add(n); });
+}
+document.getElementById('showPath').onchange = (e) => { pathLines.visible = e.target.checked; };
+
+const logEl = document.getElementById('log'), tval = document.getElementById('tval'), scrub = document.getElementById('scrub');
+function log(s) { logEl.insertAdjacentHTML('beforeend', s + '<br>'); logEl.scrollTop = 1e6; }
+let playing = false, startedAt = 0, hostTl = null, mode = { caught: true, perfect: false };
+const camState = { pos: new THREE.Vector3(), target: new THREE.Vector3() };
+window.stageLog = [];
+async function run(caught, perfect = false) {
+  mode = { caught, perfect };
+  logEl.innerHTML = `<b>Stage log</b> — ${caught ? 'caught' : 'missed'}${perfect ? ' (perfect)' : ''}<br>`;
+  window.stageLog = [];
+  startedAt = performance.now(); playing = true;
+  if (hostTl) { hostTl.kill(); hostTl = null; }
+  if (document.getElementById('camMode').value === 'host') { // mimic main.js camFollowPath (power1.inOut per key)
+    const cp = catcher.cameraPath; camState.pos.copy(camera.position); camState.target.copy(controls.target);
+    hostTl = gsap.timeline();
+    cp.pos.forEach((p, i) => { const prev = i ? cp.times[i - 1] : 0; const d = Math.max(0.05, cp.times[i] - prev); const t = cp.target[i]; hostTl.to(camState.pos, { x: p.x, y: p.y, z: p.z, duration: d, ease: 'power1.inOut' }, prev); hostTl.to(camState.target, { x: t.x, y: t.y, z: t.z, duration: d, ease: 'power1.inOut' }, prev); });
+  }
+  await catcher.play({ caught, perfect, onStage: (id) => { const s = (performance.now() - startedAt) / 1000; window.stageLog.push([id, +s.toFixed(2)]); log(`+${s.toFixed(2)}s  <b>${id}</b>`); } });
+  playing = false;
+  log(`done in ${((performance.now() - startedAt) / 1000).toFixed(2)}s`);
+}
+document.getElementById('bCaught').onclick = () => run(true);
+document.getElementById('bMissed').onclick = () => run(false);
+document.getElementById('bPerfect').onclick = () => run(true, true);
+document.getElementById('bReset').onclick = () => { if (hostTl) hostTl.kill(); playing = false; catcher.reset(); log('reset'); };
+scrub.oninput = (e) => { playing = false; const t = +e.target.value; catcher.seek(t, mode); if (document.getElementById('auto').checked) applyCam(t); };
+function applyCam(t) { const s = catcher.cameraPath.sample(t); camera.position.copy(s.pos); controls.target.copy(s.target); camera.lookAt(s.target); }
+// test helper: pose the machine at show time t and put the camera where the auto camera would be
+window.shot = (t, caught = true) => { playing = false; if (hostTl) hostTl.kill(); mode = { caught, perfect: false }; catcher.seek(t, mode); applyCam(t); scrub.value = t; tval.textContent = t.toFixed(2); return t; };
+window.lookFrom = (p, t) => { document.getElementById('auto').checked = false; camera.position.set(...p); controls.target.set(...t); controls.update(); };
+window.__t = { THREE, scene, camera, controls, catcher, layout, countTris, renderer };
+
+const statsEl = document.getElementById('stats');
+let lastNow = performance.now(), elapsed = 0; let acc = 0, frames = 0, fps = 0, worst = 0;
+function frame() {
+  const now = performance.now(); const dt = Math.min(0.1, (now - lastNow) / 1000); lastNow = now; elapsed += dt; const t = elapsed;
+  catcher.update(dt, t); village?.update?.(dt, t);
+  const auto = document.getElementById('auto').checked;
+  const mt = catcher.time;
+  if (playing || catcher.timeline) { scrub.value = mt; tval.textContent = mt.toFixed(2); }
+  if (auto && (playing || catcher.timeline)) {
+    if (hostTl) { camera.position.copy(camState.pos); controls.target.copy(camState.target); camera.lookAt(camState.target); }
+    else applyCam(mt);
+  } else controls.update();
+  renderer.render(scene, camera);
+  acc += dt; frames++; worst = Math.max(worst, dt); if (acc > 0.5) { fps = frames / acc; acc = 0; frames = 0; window.__worstFrame = worst; worst = 0; }
+  const c = countTris(catcher.group);
+  statsEl.textContent = `catcher tris ${c.tris} (full ${full}) · meshes ${c.meshes} · lights ${lights} · frame tris ${renderer.info.render.triangles} · calls ${renderer.info.render.calls} · ${fps.toFixed(0)} fps${timerMode ? ' (timer)' : ''} · t ${mt.toFixed(2)}/${catcher.duration.toFixed(2)}`;
+}
+// rAF stalls when this tab is in the background of a shared browser: fall back to timer-driven frames
+let lastRaf = 0, timerMode = false;
+renderer.setAnimationLoop(() => { lastRaf = performance.now(); timerMode = false; frame(); });
+let lastG = -1, lastGChange = 0;
+setInterval(() => {
+  const now = performance.now();
+  if (gsap.ticker.time !== lastG) { lastG = gsap.ticker.time; lastGChange = now; }
+  else if (now - lastGChange > 150) gsap.ticker.tick(); // gsap's own rAF loop can die in a backgrounded shared-browser tab
+  if (now - lastRaf > 250) { if (!timerMode) { timerMode = true; console.log('[test] rAF stalled (background tab): timer-driven frames'); } frame(); }
+}, 16);
+window.renderNow = () => frame();
+// contact sheet: render the auto camera at several show times into one overlay (click it to close)
+window.sheet = (times, { cols = 3, caught = true, w = 1280 / 3, h = 720 / 3 } = {}) => {
+  let cv = document.getElementById('sheet'); if (!cv) { cv = document.createElement('canvas'); cv.id = 'sheet'; cv.style.cssText = 'position:fixed;inset:0;z-index:5;background:#222;width:100vw;height:100vh'; cv.onclick = () => cv.remove(); document.body.appendChild(cv); }
+  const rows = Math.ceil(times.length / cols); cv.width = cols * w; cv.height = rows * h; const g = cv.getContext('2d'); g.fillStyle = '#222'; g.fillRect(0, 0, cv.width, cv.height);
+  const st = catcher.stageTimes, ids = Object.keys(st).filter((k) => k !== 'missed' && k !== 'caught').sort((a, b) => st[a] - st[b]);
+  times.forEach((t, i) => {
+    window.shot(t, caught); catcher.update(0.016, t); renderer.render(scene, camera);
+    const x = (i % cols) * w, y = Math.floor(i / cols) * h; g.drawImage(renderer.domElement, x, y, w, h);
+    let stage = ids[0]; for (const id of ids) if (t >= st[id]) stage = id;
+    g.fillStyle = 'rgba(0,0,0,.6)'; g.fillRect(x, y, 150, 22); g.fillStyle = '#fff'; g.font = '600 15px system-ui'; g.fillText(`t ${t.toFixed(2)} ${stage}`, x + 6, y + 16);
+    g.strokeStyle = '#fff'; g.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+  });
+  return times.length;
+};
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+</script>
+</body>
+</html>

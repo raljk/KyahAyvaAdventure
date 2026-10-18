@@ -1,0 +1,1953 @@
+{
+  "voice/intro_lobby": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "th": "91eb003661",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.588663,
+      "limiter_db": 3.3
+    }
+  },
+  "voice/player_joined": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 25,
+    "th": "7794f9b943",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.875997
+    }
+  },
+  "voice/game_start": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 162,
+    "th": "12830cc146",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.761933,
+      "limiter_db": 1.2
+    }
+  },
+  "voice/turn_roll": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 25,
+    "th": "6516c17965",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.896418
+    }
+  },
+  "voice/turn_nudge": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 44,
+    "th": "bf00a384cc",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.807836,
+      "limiter_db": 1
+    }
+  },
+  "voice/dice_1": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 4,
+    "th": "27141a590f",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.838573,
+      "limiter_db": 1.1
+    }
+  },
+  "voice/dice_2": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 4,
+    "th": "4a908e1cd3",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -3
+    }
+  },
+  "voice/dice_3": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 6,
+    "th": "0c111972e9",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -2.516553
+    }
+  },
+  "voice/dice_4": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 5,
+    "th": "bed03137a7",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -2.242548
+    }
+  },
+  "voice/dice_5": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 5,
+    "th": "b495566271",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.861534,
+      "limiter_db": 2.2
+    }
+  },
+  "voice/dice_6": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 4,
+    "th": "b8df22469c",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.81306,
+      "limiter_db": 0.9
+    }
+  },
+  "voice/space_shard": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 51,
+    "th": "c47f296571",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.888508
+    }
+  },
+  "voice/space_shard_alt": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 32,
+    "th": "7a2e326e3a",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.919202,
+      "limiter_db": 0.9
+    }
+  },
+  "voice/space_swish": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 55,
+    "th": "0c84212895",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.839229,
+      "limiter_db": 1.1
+    }
+  },
+  "voice/space_swish_empty": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 54,
+    "th": "bb7fa878c9",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.819922,
+      "limiter_db": 1.8
+    }
+  },
+  "voice/space_fetch_choose": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 37,
+    "th": "700749be13",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.770054,
+      "limiter_db": 3.4
+    }
+  },
+  "voice/space_fetch": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 43,
+    "th": "2f27d2aaf0",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.833006,
+      "limiter_db": 2.2
+    }
+  },
+  "voice/space_fetch_sky": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 57,
+    "th": "6df28a27d5",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.816981,
+      "limiter_db": 1.9
+    }
+  },
+  "voice/space_cake": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 51,
+    "th": "4bc12378e6",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -2.128002,
+      "limiter_db": 2.2
+    }
+  },
+  "voice/space_cobble": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 39,
+    "th": "ccd34a8c82",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.796093,
+      "limiter_db": 2.5
+    }
+  },
+  "voice/space_cobble_alt": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 46,
+    "th": "d4bb1839e8",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -16,
+      "tp": -1.861205,
+      "limiter_db": 2.7
+    }
+  },
+  "voice/space_cobble_alt2": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 30,
+    "th": "5e4450673c",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.851686,
+      "limiter_db": 0.8
+    }
+  },
+  "voice/space_flight_offer": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 57,
+    "th": "c6d2b08952",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.803594,
+      "limiter_db": 1.5
+    }
+  },
+  "voice/space_flight_go": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 33,
+    "th": "22e3f2a39f",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.853983,
+      "limiter_db": 1.1
+    }
+  },
+  "voice/space_flight_stay": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 29,
+    "th": "ed4e7d7a13",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.831043,
+      "limiter_db": 3.1
+    }
+  },
+  "voice/space_bridge_land": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 66,
+    "th": "9d5f620f8c",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.796745,
+      "limiter_db": 2.4
+    }
+  },
+  "voice/launch_choose": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 60,
+    "th": "69595d7a3e",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.845127,
+      "limiter_db": 2.1
+    }
+  },
+  "voice/launch_sent": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 26,
+    "th": "774ba7ae21",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.914574
+    }
+  },
+  "voice/launch_ready": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 44,
+    "th": "11ceb700bf",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.820903,
+      "limiter_db": 0.6
+    }
+  },
+  "voice/launch_go": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 14,
+    "th": "e022c0f49e",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.857922,
+      "limiter_db": 2.5
+    }
+  },
+  "voice/launch_caught": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 58,
+    "th": "f406e32faf",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.840867,
+      "limiter_db": 1.7
+    }
+  },
+  "voice/launch_caught_many": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 60,
+    "th": "bcf41f8314",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.876655,
+      "limiter_db": 1.2
+    }
+  },
+  "voice/launch_caught_empty": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 55,
+    "th": "f0733f191a",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.776231,
+      "limiter_db": 2.2
+    }
+  },
+  "voice/launch_perfect": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 48,
+    "th": "dcf0174237",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.803594,
+      "limiter_db": 0.7
+    }
+  },
+  "voice/launch_missed": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 38,
+    "th": "a6b04ffa42",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.850046,
+      "limiter_db": 1.9
+    }
+  },
+  "voice/lap_bonus": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 70,
+    "th": "5194013af0",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.612248,
+      "limiter_db": 0.8
+    }
+  },
+  "voice/almost_win": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 59,
+    "th": "ac45e6022a",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.88686,
+      "limiter_db": 0.6
+    }
+  },
+  "voice/win": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 91,
+    "th": "50a891e2c2",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.733083,
+      "limiter_db": 2.8
+    }
+  },
+  "voice/win_cake": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 26,
+    "th": "0b13542248",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.625023,
+      "limiter_db": 2.4
+    }
+  },
+  "voice/rejoin": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 13,
+    "th": "1c5b34d687",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.874023
+    }
+  },
+  "voice/kind_1": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 32,
+    "th": "e0d5bd4319",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.845455,
+      "limiter_db": 1.9
+    }
+  },
+  "voice/kind_2": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 24,
+    "th": "cc59815f6e",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.879617
+    }
+  },
+  "voice/kyah_bloom": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 7,
+    "th": "048716a9fd",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -4.5
+    }
+  },
+  "voice/kyah_catch": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 19,
+    "th": "d4b77293df",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -3.2
+    }
+  },
+  "voice/kyah_gotit": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 7,
+    "th": "8297bb17c6",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -3.2
+    }
+  },
+  "voice/kyah_together": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 27,
+    "th": "9d56fc289c",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.809468
+    }
+  },
+  "voice/ayva_lala": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 9,
+    "th": "156a84eb9b",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.837918,
+      "limiter_db": 1.2
+    }
+  },
+  "voice/ayva_ding": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 5,
+    "th": "109b8e44ef",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -2.54138
+    }
+  },
+  "voice/ayva_lift": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 20,
+    "th": "c1e217cb15",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.792508,
+      "limiter_db": 2.2
+    }
+  },
+  "voice/ayva_wedidit": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 11,
+    "th": "cb22f284bf",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.954651,
+      "limiter_db": 1.6
+    }
+  },
+  "voice/grabble_mine": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 25,
+    "th": "ae6662693b",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.723057,
+      "limiter_db": 1.7
+    }
+  },
+  "voice/grabble_shiny": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 27,
+    "th": "1b8a3ae654",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp4",
+      "lufs": -16,
+      "tp": -1.706587,
+      "limiter_db": 4.9
+    }
+  },
+  "voice/grabble_missed": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 10,
+    "th": "827e1940a0",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.663783
+    }
+  },
+  "voice/grabble_stuck": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 13,
+    "th": "4d54508d40",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -16.1,
+      "tp": -1.603316,
+      "limiter_db": 3.5
+    }
+  },
+  "voice/grabble_pride": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 32,
+    "th": "6400f992a4",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.772655,
+      "limiter_db": 3.2
+    }
+  },
+  "sfx/bell_ding": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 12,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18.1,
+      "tp": -2.565922
+    }
+  },
+  "sfx/net_swing": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -6.3
+    }
+  },
+  "sfx/bucket_bump": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -1.834643,
+      "limiter_db": 1.8
+    }
+  },
+  "sfx/apple_roll_stairs": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 25,
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -18,
+      "tp": -1.777858,
+      "limiter_db": 2.9
+    }
+  },
+  "sfx/vine_bloom": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 18,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -6.9
+    }
+  },
+  "sfx/tub_splash_bubbles": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 20,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -1.717887,
+      "limiter_db": 0.8
+    }
+  },
+  "sfx/pipe_rattle": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 20,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -5.4
+    }
+  },
+  "sfx/seesaw_boing": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 12,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -1.880604,
+      "limiter_db": 0.9
+    }
+  },
+  "sfx/dog_splash": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 18,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -3.6
+    }
+  },
+  "sfx/music_rise": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 30,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -9.2
+    }
+  },
+  "sfx/basket_whoosh_drop": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 25,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -1.817634,
+      "limiter_db": 0.9
+    }
+  },
+  "sfx/caught_stuck": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 15,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -7.3
+    }
+  },
+  "sfx/missed_hop": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 12,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -1.797723,
+      "limiter_db": 1.9
+    }
+  },
+  "music/music_sting_grabble": {
+    "kind": "music",
+    "source": "elevenlabs",
+    "chars": 90,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -20,
+      "tp": -6.4
+    }
+  },
+  "music/music_catcher": {
+    "kind": "music",
+    "source": "elevenlabs",
+    "chars": 600,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -20,
+      "tp": -4.5
+    }
+  },
+  "music/music_play": {
+    "kind": "music",
+    "source": "elevenlabs",
+    "chars": 2040,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -20,
+      "tp": -4.4,
+      "loop": {
+        "seconds": 66,
+        "bars": 33,
+        "start_offset": 0.226
+      }
+    }
+  },
+  "sfx/ui_tap": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -6.5
+    }
+  },
+  "sfx/ui_join": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -4.4
+    }
+  },
+  "sfx/dice_roll": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 15,
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -18,
+      "tp": -1.836936,
+      "limiter_db": 2
+    }
+  },
+  "sfx/dice_land": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 6,
+    "note": "cached raw",
+    "master": {
+      "recipe": "limit8",
+      "lufs": -18.7,
+      "tp": -1.69917,
+      "limiter_db": 8.8
+    }
+  },
+  "sfx/pawn_hop": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 5,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -7.5
+    }
+  },
+  "sfx/shard_ting": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -7.7
+    }
+  },
+  "sfx/swish_net": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -5.2
+    }
+  },
+  "sfx/pup_woof": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -9
+    }
+  },
+  "sfx/cake_party": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 25,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -8.2
+    }
+  },
+  "sfx/flight_whoosh": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 15,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -9.9
+    }
+  },
+  "sfx/bridge_land": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -18,
+      "tp": -1.865147,
+      "limiter_db": 2.7
+    }
+  },
+  "sfx/lap_fanfare": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 25,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -4.4
+    }
+  },
+  "sfx/almost_win_sparkle": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 20,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -8.9
+    }
+  },
+  "sfx/win_fanfare": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 35,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -9.9
+    }
+  },
+  "sfx/gem_assemble": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 30,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -8.5
+    }
+  },
+  "sfx/confetti": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 20,
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -18,
+      "tp": -1.625662,
+      "limiter_db": 1.7
+    }
+  },
+  "sfx/shard_fly": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 12,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18.1,
+      "tp": -4.5
+    }
+  },
+  "sfx/camera_whoosh": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -3.8
+    }
+  },
+  "music/music_lobby": {
+    "kind": "music",
+    "source": "elevenlabs",
+    "chars": 1500,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -20,
+      "tp": -3.9,
+      "loop": {
+        "seconds": 48,
+        "bars": 24,
+        "start_offset": 0.4
+      }
+    }
+  },
+  "music/music_victory": {
+    "kind": "music",
+    "source": "elevenlabs",
+    "chars": 600,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -20,
+      "tp": -8
+    }
+  },
+  "sfx/timer_tick": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 5,
+    "note": "cached raw",
+    "master": {
+      "recipe": "limit8",
+      "lufs": -20.8,
+      "tp": -1.631418,
+      "limiter_db": 8.7
+    }
+  },
+  "voice/almost_win_generic": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 52,
+    "th": "7b73b4c3ca",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.831043,
+      "limiter_db": 1.6
+    }
+  },
+  "voice/grabble_intro": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 108,
+    "th": "b8743fe798",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.690471,
+      "limiter_db": 2.2
+    }
+  },
+  "voice/grabble_moves": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 23,
+    "th": "1c823213c8",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.830388
+    }
+  },
+  "voice/grabble_snatch": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 32,
+    "th": "1be81e012c",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.8448,
+      "limiter_db": 1.3
+    }
+  },
+  "voice/grabble_pocket": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 50,
+    "th": "58df5c9c7a",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.821229,
+      "limiter_db": 1.7
+    }
+  },
+  "voice/grabble_bridge": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 65,
+    "th": "f68a0c3f08",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.843816,
+      "limiter_db": 3
+    }
+  },
+  "voice/grabble_win": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 85,
+    "th": "7d855e492f",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.769404,
+      "limiter_db": 1.3
+    }
+  },
+  "voice/chase_start": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 47,
+    "th": "5299463417",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.853655,
+      "limiter_db": 2.5
+    }
+  },
+  "voice/chase_win": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 42,
+    "th": "1726e04d4a",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.836281,
+      "limiter_db": 2
+    }
+  },
+  "voice/chase_win_empty": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 31,
+    "th": "a5b2c25dad",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.843488,
+      "limiter_db": 1.3
+    }
+  },
+  "voice/chase_miss": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 37,
+    "th": "03c61f04e7",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.821229,
+      "limiter_db": 2.1
+    }
+  },
+  "voice/catcher_target_grabble": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 40,
+    "th": "dd07306d8c",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.858578,
+      "limiter_db": 0.5
+    }
+  },
+  "voice/catcher_caught_grabble": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 65,
+    "th": "724b2761f6",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.857593
+    }
+  },
+  "voice/mini_flight": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 37,
+    "th": "9f29a14cb8",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.850046,
+      "limiter_db": 0.8
+    }
+  },
+  "voice/mini_shard": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 29,
+    "th": "280d09c637",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.837263,
+      "limiter_db": 3.3
+    }
+  },
+  "voice/mini_fetch": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 41,
+    "th": "7a4e1312bd",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.836608,
+      "limiter_db": 2.1
+    }
+  },
+  "voice/mini_swish": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 29,
+    "th": "6b4dae2276",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.876326,
+      "limiter_db": 2.3
+    }
+  },
+  "voice/mini_cake": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 35,
+    "th": "31c4d10e95",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.828425,
+      "limiter_db": 0.8
+    }
+  },
+  "voice/mini_chase": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 54,
+    "th": "2b6c403a74",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.78925,
+      "limiter_db": 2.5
+    }
+  },
+  "voice/mini_great": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 10,
+    "th": "e65e8c7504",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.88719,
+      "limiter_db": 2.1
+    }
+  },
+  "voice/mini_okay": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 9,
+    "th": "344e1f2bc7",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.837263,
+      "limiter_db": 2.3
+    }
+  },
+  "voice/mini_fly_bonus": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 29,
+    "th": "0f39bea9a7",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.770379,
+      "limiter_db": 2.3
+    }
+  },
+  "voice/mini_shard_two": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 29,
+    "th": "a23ff91884",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -2.097913
+    }
+  },
+  "voice/mini_fetch_grabble": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 38,
+    "th": "fe5dd99624",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.876326,
+      "limiter_db": 0.7
+    }
+  },
+  "voice/mini_swish_safe": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 46,
+    "th": "60b7f8db08",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.858907
+    }
+  },
+  "voice/mini_cake_bonus": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 37,
+    "th": "f0021a171c",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.914574,
+      "limiter_db": 1.5
+    }
+  },
+  "voice/grabble_bag": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 21,
+    "th": "fd93fb220f",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -1.867119,
+      "limiter_db": 1.5
+    }
+  },
+  "voice/grabble_tripped": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 13,
+    "th": "65f2c62df0",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.696914,
+      "limiter_db": 0.7
+    }
+  },
+  "voice/grabble_hop": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 14,
+    "th": "3dd2eb7e49",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.75674,
+      "limiter_db": 1.6
+    }
+  },
+  "voice/kyah_vine": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 18,
+    "th": "5deaef43a1",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -16,
+      "tp": -3.3
+    }
+  },
+  "voice/ayva_fly": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 22,
+    "th": "597b19dee2",
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.733407,
+      "limiter_db": 2.2
+    }
+  },
+  "sfx/marble_roll": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 20,
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -18,
+      "tp": -1.634937,
+      "limiter_db": 3.1
+    }
+  },
+  "sfx/bucket_tip": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "limit8",
+      "lufs": -18,
+      "tp": -2.195661,
+      "limiter_db": 5.2
+    }
+  },
+  "sfx/rope_tug": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18.1,
+      "tp": -3.1
+    }
+  },
+  "sfx/flap_wing": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 6,
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -18,
+      "tp": -1.800658,
+      "limiter_db": 1.5
+    }
+  },
+  "sfx/ring_pass": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -4.8
+    }
+  },
+  "sfx/tumble": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -12.5
+    }
+  },
+  "sfx/twinkle": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -7.3
+    }
+  },
+  "sfx/flower_tap": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 5,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -1.850046
+    }
+  },
+  "sfx/pup_catch": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 6,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -17.9,
+      "tp": -5.9
+    }
+  },
+  "sfx/bucket_clank": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18.1,
+      "tp": -1.666994,
+      "limiter_db": 2.4
+    }
+  },
+  "sfx/net_swoop": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18.1,
+      "tp": -7.4
+    }
+  },
+  "sfx/hop_dodge": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 6,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -6
+    }
+  },
+  "sfx/strawberry_plop": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 5,
+    "note": "cached raw",
+    "master": {
+      "recipe": "limit8",
+      "lufs": -20.7,
+      "tp": -1.793812,
+      "limiter_db": 9
+    }
+  },
+  "sfx/vine_grow": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 12,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -1.722411,
+      "limiter_db": 2.3
+    }
+  },
+  "sfx/vine_grab": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "limit8",
+      "lufs": -18.9,
+      "tp": -1.754144,
+      "limiter_db": 8.9
+    }
+  },
+  "sfx/grabble_scurry": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -21.3,
+      "tp": -1.648066,
+      "limiter_db": 4.3
+    }
+  },
+  "sfx/grabble_snatch": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 8,
+    "note": "cached raw",
+    "master": {
+      "recipe": "limit8",
+      "lufs": -18.1,
+      "tp": -1.698525,
+      "limiter_db": 8.9
+    }
+  },
+  "sfx/loot_spill": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 15,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -2.259379
+    }
+  },
+  "sfx/countdown_beep": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 5,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -8.9
+    }
+  },
+  "sfx/mini_win_jingle": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 15,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -7.7
+    }
+  },
+  "sfx/mini_lose_jingle": {
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "chars": 10,
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -18,
+      "tp": -6.7
+    }
+  },
+  "voice/benny_hello": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 63,
+    "th": "d48ad4d76e",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.795441,
+      "limiter_db": 1.6
+    }
+  },
+  "voice/benny_c1": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 64,
+    "th": "be6cbf524c",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.852014,
+      "limiter_db": 3
+    }
+  },
+  "voice/benny_c2": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 49,
+    "th": "3a9f5d4258",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -16,
+      "tp": -1.76648,
+      "limiter_db": 3.3
+    }
+  },
+  "voice/benny_c3": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 37,
+    "th": "99d655dcf8",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -16,
+      "tp": -1.871393,
+      "limiter_db": 3.2
+    }
+  },
+  "voice/benny_c4": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 50,
+    "th": "2ac2f2d19f",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.725643,
+      "limiter_db": 2.7
+    }
+  },
+  "voice/benny_c5": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 56,
+    "th": "6350ecc4d9",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.769729,
+      "limiter_db": 2
+    }
+  },
+  "voice/benny_shy": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 37,
+    "th": "c09bf59ab2",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.852014,
+      "limiter_db": 1.5
+    }
+  },
+  "voice/benny_cake": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 40,
+    "th": "06d2a8f31e",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.805552,
+      "limiter_db": 1.8
+    }
+  },
+  "voice/benny_sorry": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 76,
+    "th": "83fe7a6096",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -16,
+      "tp": -1.804246,
+      "limiter_db": 2.8
+    }
+  },
+  "voice/benny_gift": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 30,
+    "th": "cfc724a728",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.817634,
+      "limiter_db": 2.6
+    }
+  },
+  "voice/benny_cheer": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 31,
+    "th": "34d8ce76e2",
+    "master": {
+      "recipe": "comp3",
+      "lufs": -16,
+      "tp": -1.826462,
+      "limiter_db": 2.7
+    }
+  },
+  "voice/misssuds_thanks": {
+    "kind": "voice",
+    "source": "elevenlabs",
+    "chars": 22,
+    "th": "adc2f837d2",
+    "master": {
+      "recipe": "comp2",
+      "lufs": -16,
+      "tp": -1.704007,
+      "limiter_db": 2.4
+    }
+  },
+  "music/music_catcher_long": {
+    "kind": "music",
+    "source": "derived",
+    "from": "music_catcher",
+    "note": "cached raw",
+    "master": {
+      "recipe": "gain",
+      "lufs": -20,
+      "tp": -5.5,
+      "derived": {
+        "assembled_seconds": 34.01,
+        "joins": [
+          6.07,
+          14.12,
+          20.12,
+          22.12
+        ],
+        "plan": [
+          [
+            0,
+            6.07
+          ],
+          [
+            4.07,
+            12.12
+          ],
+          [
+            8.12,
+            14.12
+          ],
+          [
+            10.12,
+            12.12
+          ],
+          [
+            8.12,
+            20.01
+          ]
+        ]
+      }
+    }
+  }
+}

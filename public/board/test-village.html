@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Village test bench</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/vendor/fonts/fredoka/index.css">
+<link rel="stylesheet" href="/vendor/fonts/fredoka/700.css">
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/","gsap":"/vendor/gsap/index.js","socket.io-client":"/socket.io/socket.io.esm.min.js"}}</script>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #BFE3F5; font-family: Fredoka, system-ui, sans-serif; }
+  canvas { display: block; }
+  #ui { position: fixed; left: 10px; top: 10px; width: 280px; background: rgba(255,246,224,0.92); border: 2px solid #2B2440; border-radius: 14px; padding: 10px; font-size: 13px; color: #2B2440; }
+  #ui h3 { margin: 0 0 6px; font-size: 15px; }
+  #ui button { font: inherit; font-size: 12px; margin: 2px; padding: 3px 7px; border-radius: 8px; border: 1.5px solid #2B2440; background: #fff; cursor: pointer; }
+  #ui button.on { background: #F29BC8; }
+  #stats { font-family: ui-monospace, Menlo, monospace; font-size: 11px; white-space: pre; margin-top: 6px; }
+  #tiles { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; }
+  #tiles button { margin: 0; padding: 2px 0; }
+  #ui.min > :not(h3) { display: none; }
+</style>
+</head>
+<body>
+<div id="ui">
+  <h3>Village bench <button id="min">_</button></h3>
+  <div>Camera:
+    <button data-cam="overview">overview</button><button data-cam="castle">castle</button><button data-cam="bakery">bakery</button><button data-cam="petwash">pet wash</button><button data-cam="bridge">bridge</button><button data-cam="garden">garden</button><button data-cam="catcher">catcher</button><button data-cam="top">top</button>
+  </div>
+  <div>Toggle highlight:</div>
+  <div id="tiles"></div>
+  <div><button id="clear">clear volumes</button><button id="check">check volumes</button><button id="sky">sky dome</button><button id="pawnsBtn">pawns</button><button id="all">highlight all</button></div>
+  <div id="stats">loading…</div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import * as layout from './layout.js';
+import { HEROES } from '/shared/heroes.js';
+const { SPACES, BRIDGE_INDEX, CAMERA, CATCHER_STAGES, GRABBLE_START, LANDMARKS } = layout;
+
+const params = new URLSearchParams(location.search);
+const $ = (s) => document.querySelector(s);
+
+// same pipeline as main.js
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xBFE3F5);
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 400);
+const hemi = new THREE.HemisphereLight(0xBFE3F5, 0xA8E0B8, 0.85); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xFFF1D6, 1.7); sun.position.set(18, 32, 16); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 1, far: 90 }); sun.shadow.bias = -0.0005; scene.add(sun);
+scene.add(new THREE.AmbientLight(0xffffff, 0.22));
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.42, 0.55, 0.88); composer.addPass(bloom);
+composer.addPass(new OutputPass());
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); });
+const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+
+// optional assets (same loading as main.js) with ?assets=1
+const textures = {}; let images = {};
+if (params.get('assets') === '1') {
+  try { const m = await (await fetch('/assets/images/manifest.json', { cache: 'no-store' })).json(); images = Object.fromEntries(Object.entries(m).map(([k, p]) => [k, p.startsWith('/') ? p : '/assets/' + p])); } catch {}
+  const loader = new THREE.TextureLoader();
+  await Promise.all(Object.keys(images).filter(k => /^(tex_|icon_|gem_|backdrop_|board_)/.test(k)).map(k => new Promise(res => loader.load(images[k], t => { t.colorSpace = THREE.SRGBColorSpace; if (k.startsWith('tex_')) t.wrapS = t.wrapT = THREE.RepeatWrapping; textures[k] = t; res(); }, undefined, () => res()))));
+}
+
+const t0 = performance.now();
+const { createVillage } = await import('./village.js?v=' + Date.now());
+const village = await createVillage({ scene, layout, textures, images, sky: params.get('sky') !== '0' });
+const buildMs = Math.round(performance.now() - t0);
+window.__village = village; window.__scene = scene; window.__camera = camera; window.__renderer = renderer; window.__controls = controls;
+
+// camera presets
+const B = SPACES[BRIDGE_INDEX].pos; const LMK = village.landmarks || {};
+const near = (p, k = 9, up = 5.5) => { const [x, y, z] = p; const dx = -x, dz = 38 - z; const l = Math.hypot(dx, dz) || 1; return { pos: [x + dx / l * k, y + up, z + dz / l * k], target: [x, y + 1.6, z] }; };
+const CAMS = {
+  overview: CAMERA.overview,
+  castle: { pos: [7, 9.5, -9], target: [0, 4.6, -23] },
+  bakery: near(LMK.bakery || LANDMARKS.bakery.pos, 10, 5.5),
+  petwash: near(LMK.petwash || LANDMARKS.petwash.pos, 10, 5.5),
+  bridge: { pos: [B[0] + 6.5, 3.6, B[2] + 7.5], target: [B[0], 0.2, B[2]] },
+  garden: { pos: [-12.5, 8.5, 2.5], target: [-21.5, 0.8, -8.5] },
+  catcher: CAMERA.catcher,
+  top: { pos: [0, 82, 0.01], target: [0, 0, 0] },
+};
+function setCam(name) { const c = CAMS[name] || CAMS.overview; camera.position.set(...c.pos); controls.target.set(...c.target); controls.update(); }
+window.__setCam = setCam; window.__CAMS = CAMS;
+setCam(params.get('cam') || 'overview');
+document.querySelectorAll('[data-cam]').forEach(b => b.onclick = () => setCam(b.dataset.cam));
+$('#min').onclick = () => $('#ui').classList.toggle('min');
+if (params.get('ui') === '0') $('#ui').classList.add('min');
+
+// host-like gem ~2 units above the pedestal
+const ped = LANDMARKS.gemPedestal.pos;
+const gem = new THREE.Group(); gem.position.set(ped[0], ped[1] + 2, ped[2]);
+const core = new THREE.Mesh(new THREE.OctahedronGeometry(0.6, 0), new THREE.MeshStandardMaterial({ color: 0x9ED4FF, emissive: 0x3E6FD6, emissiveIntensity: 0.9, roughness: 0.15, metalness: 0.1, transparent: true, opacity: 0.95 })); core.scale.y = 1.5; gem.add(core);
+gem.add(new THREE.PointLight(0x9ED4FF, 1.2, 8)); scene.add(gem);
+
+// mock pawns (like pawns.js without sprites) on tiles 0, 7, the bridge and Grabble at his start
+const pawns = new THREE.Group(); scene.add(pawns);
+function pawn(color, grabble = false) {
+  const g = new THREE.Group(); color = new THREE.Color(color);
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.7, 0.22, 32), new THREE.MeshStandardMaterial({ color, roughness: 0.6 })); base.position.y = 0.11; base.castShadow = true; g.add(base);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(0.66, 0.07, 10, 40), new THREE.MeshStandardMaterial({ color: 0x2B2440 })); rim.rotation.x = Math.PI / 2; rim.position.y = 0.22; g.add(rim);
+  const body = new THREE.Mesh(new THREE.CapsuleGeometry(grabble ? 0.5 : 0.42, grabble ? 1.4 : 1.2, 6, 16), new THREE.MeshToonMaterial({ color })); body.position.y = grabble ? 1.4 : 1.25; body.castShadow = true; g.add(body);
+  if (!grabble) { const head = new THREE.Mesh(new THREE.SphereGeometry(0.36, 20, 16), new THREE.MeshToonMaterial({ color: 0xFFE7C2 })); head.position.y = 2.35; g.add(head); }
+  else { const hat = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 0.6, 16), new THREE.MeshToonMaterial({ color: 0x4B2A6B })); hat.position.y = 2.75; g.add(hat); }
+  return g;
+}
+[[0, 0], [1, 7], [2, BRIDGE_INDEX]].forEach(([h, idx]) => { const g = pawn(HEROES[h].color); g.position.copy(idx === BRIDGE_INDEX ? village.bridgeAnchor.clone().setY(village.deckHeight) : new THREE.Vector3(...SPACES[idx].pos)); pawns.add(g); });
+{ const g = pawn(0x8A5CC2, true); g.position.set(...SPACES[GRABBLE_START].pos); pawns.add(g); }
+$('#pawnsBtn').onclick = () => { pawns.visible = !pawns.visible; };
+
+// catcher stage anchors (spheres) + 3.5-unit clear volumes (toggle)
+const markers = new THREE.Group(); scene.add(markers);
+const clear = new THREE.Group(); clear.visible = params.get('clear') === '1'; scene.add(clear);
+for (const s of CATCHER_STAGES) {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 12), new THREE.MeshBasicMaterial({ color: 0xff2266 })); m.position.set(...s.anchor); m.position.y += 0.3; markers.add(m);
+  const c = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.5, 6, 40, 1, true), new THREE.MeshBasicMaterial({ color: 0xff3366, transparent: true, opacity: 0.12, side: THREE.DoubleSide, depthWrite: false })); c.position.set(s.anchor[0], s.anchor[1] + 3, s.anchor[2]); clear.add(c);
+  const e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(3.5, 3.5, 6, 24, 1, true)), new THREE.LineBasicMaterial({ color: 0xff3366 })); e.position.copy(c.position); clear.add(e);
+}
+$('#clear').onclick = () => { clear.visible = !clear.visible; };
+$('#sky').onclick = () => { village.sky.visible = !village.sky.visible; };
+
+// clear-volume check: anything of the village higher than 0.25 above the ground inside a 3.5 radius of an anchor
+function checkVolumes() {
+  const hits = {}; const v = new THREE.Vector3(); const m = new THREE.Matrix4();
+  const ignore = /ground|rim|plate|trim|path|curb|stepNosings|borderStones|tile|halos|river|pool|flowers|flowerHearts|tufts|sparkles|smoke|bubbles|petals|butterflies|foam|skyDome|bridgeDeck|squarePaving|bunting/;
+  village.group.updateMatrixWorld(true);
+  village.group.traverseVisible(o => {
+    if (!o.isMesh || ignore.test(o.name) || o.parent?.name === 'village:sky' || o.name.startsWith('tile:')) return;
+    const pos = o.geometry.attributes.position; const n = o.isInstancedMesh ? o.count : 1;
+    for (let k = 0; k < n; k++) {
+      if (o.isInstancedMesh) { o.getMatrixAt(k, m); m.premultiply(o.matrixWorld); } else m.copy(o.matrixWorld);
+      const step = Math.max(1, Math.floor(pos.count / 4000));
+      for (let i = 0; i < pos.count; i += step) { v.fromBufferAttribute(pos, i).applyMatrix4(m);
+        for (const s of CATCHER_STAGES) { if (s.id === 'basket') continue; const d = Math.hypot(v.x - s.anchor[0], v.z - s.anchor[2]); if (d < 3.5 && v.y > village.groundAt(v.x, v.z) + 0.25) { const key = s.id + ' <- ' + (o.name || o.type); if (!hits[key] || d < hits[key][0]) hits[key] = [+d.toFixed(2), +v.x.toFixed(2), +v.y.toFixed(2), +v.z.toFixed(2)]; } } }
+    }
+  });
+  console.log('[village] clear-volume intrusions (stage <- mesh: min distance):', JSON.stringify(hits));
+  return hits;
+}
+window.__checkVolumes = checkVolumes; $('#check').onclick = () => { const h = checkVolumes(); alert(Object.keys(h).length ? JSON.stringify(h, null, 1) : 'all clear volumes are free'); };
+
+// highlight buttons
+const on = new Set();
+for (const s of SPACES) { const b = document.createElement('button'); b.textContent = s.index; b.title = s.type; b.style.borderColor = s.color; b.style.borderWidth = '3px'; b.onclick = () => { const v = !on.has(s.index); v ? on.add(s.index) : on.delete(s.index); b.classList.toggle('on', v); village.setTileHighlight(s.index, v); }; $('#tiles').appendChild(b); }
+$('#all').onclick = () => { const v = on.size === 0; document.querySelectorAll('#tiles button').forEach((b, i) => { v ? on.add(i) : on.delete(i); b.classList.toggle('on', v); village.setTileHighlight(i, v); }); };
+for (const i of (params.get('hl') || '').split(',').filter(Boolean).map(Number)) { on.add(i); village.setTileHighlight(i, true); }
+
+// stats: triangles + draw calls of one full render (scene + shadow pass), fps
+function measure() {
+  renderer.info.autoReset = false; renderer.info.reset(); renderer.shadowMap.needsUpdate = true; renderer.render(scene, camera);
+  const r = { calls: renderer.info.render.calls, tris: renderer.info.render.triangles }; renderer.info.autoReset = true;
+  let vt = 0, vm = 0; village.group.traverseVisible(o => { if (!o.isMesh) return; const g = o.geometry; const n = g.index ? g.index.count / 3 : g.attributes.position.count / 3; vt += n * (o.isInstancedMesh ? o.count : 1); vm++; });
+  return { ...r, villageTris: Math.round(vt), villageMeshes: vm };
+}
+window.__measure = measure;
+let frames = 0, fpsT = performance.now(), fps = 0, stat = null;
+const clock = new THREE.Clock(); let elapsed = 0;
+function frame() {
+  const dt = Math.min(0.05, clock.getDelta()); elapsed += dt;
+  village.update(dt, elapsed); controls.update();
+  gem.rotation.y += dt * 0.6; gem.position.y = ped[1] + 2 + Math.sin(elapsed * 1.3) * 0.12;
+  composer.render(); frames++;
+  const now = performance.now(); if (now - fpsT > 1000) { fps = Math.round(frames * 1000 / (now - fpsT)); frames = 0; fpsT = now; if (!stat || Math.random() < 0.15) stat = measure(); window.__fps = fps;
+    $('#stats').textContent = `fps ${fps}   build ${buildMs} ms\ncalls ${stat.calls} (scene+shadow)\ntris ${stat.tris} rendered\nvillage tris ${stat.villageTris}\nvillage meshes ${stat.villageMeshes}\ncam ${camera.position.toArray().map(v => v.toFixed(1)).join(',')}`; }
+  requestAnimationFrame(frame);
+}
+frame();
+window.__ready = true;
+</script>
+</body>
+</html>

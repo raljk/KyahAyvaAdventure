@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kyah & Ayva: Starlight Gem Chase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/vendor/fonts/fredoka/index.css">
+<link rel="stylesheet" href="/vendor/fonts/fredoka/600.css">
+<link rel="stylesheet" href="/vendor/fonts/baloo-2/index.css">
+<link rel="stylesheet" href="/vendor/fonts/baloo-2/700.css">
+<link rel="stylesheet" href="/board/style.css">
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/","gsap":"/vendor/gsap/index.js","socket.io-client":"/socket.io/socket.io.esm.min.js"}}</script>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div id="hud">
+  <div id="logo" class="paper"><img id="logoImg" alt="" hidden><div id="logoText">Kyah &amp; Ayva<span>Starlight Gem Chase</span></div></div>
+  <div id="players">
+    <div id="grabbleCard" class="pcard grabble hidden"><div class="avatar">G</div><div class="meta"><div class="name">Grabble</div><div class="hero">Loot bag</div></div><div class="ringWrap"></div></div>
+  </div>
+  <div id="dice" class="hidden"><div class="cube"><div class="face f1">1</div><div class="face f2">2</div><div class="face f3">3</div><div class="face f4">4</div><div class="face f5">5</div><div class="face f6">6</div></div></div>
+  <div id="turnBanner" class="paper hidden"><span id="turnHero"></span><span id="turnText">Waiting…</span></div>
+  <div id="miniPanel" class="paper hidden">
+    <div class="miniHead"><div id="miniFace"></div><div class="miniMeta"><div id="miniTitle"></div><div id="miniHint"></div></div><div id="miniTimer"></div></div>
+    <div id="miniScreen"><img id="miniView" alt="" hidden><div id="miniPlaceholder">Starting…</div></div>
+    <div class="miniBarWrap"><div id="miniBar"></div></div>
+  </div>
+  <div id="word" class="hidden"></div>
+  <div id="subtitle" class="hidden"></div>
+  <div id="lobby" class="paper hidden">
+    <h1>Join the chase!</h1>
+    <p class="hint">Scan with your phone camera, or go to</p>
+    <div id="joinUrl" class="url"></div>
+    <div id="qr"></div>
+    <div id="lobbyPlayers"></div>
+    <p class="hint small">Room <b id="roomCode"></b> · The first phone to join is the host and starts the game.</p>
+  </div>
+  <div id="winOverlay" class="hidden"><div class="paper"><div id="winWord">WE DID IT!</div><div id="winName"></div><div class="hint" id="winSub"></div><div class="hint small">Host: tap Play Again on your phone.</div></div></div>
+  <div id="toast" class="hidden"></div>
+</div>
+<div id="splash">
+  <div class="paper">
+    <h1>Kyah &amp; Ayva</h1>
+    <h2>Starlight Gem Chase</h2>
+    <p>Grab your phones and gather round the big screen. Collect the Starlight Shards, launch the Catcher, and stop Grabble before he fills his bag!</p>
+    <button id="startBtn">Loading…</button>
+    <p class="hint small">Sound on recommended · <span id="splashStatus">connecting…</span></p>
+  </div>
+</div>
+<script type="module" src="/board/main.js"></script>
+</body>
+</html>

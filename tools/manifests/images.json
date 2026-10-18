@@ -1,0 +1,852 @@
+[
+  {
+    "key": "hero_kyah",
+    "file": "heroes/kyah.png",
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body character illustration of Kyah, a young fairy girl with flower magic. Long, straight, glossy black hair with straight bangs falling past her waist; a small blue forget-me-not flower tucked above her ear; big round black dot eyes, rosy cheeks, a happy little smile; a long cream-yellow dress with long sleeves covered in small blue forget-me-not flowers; translucent pale-blue wings with delicate blue flower patterns; small brown shoes; arms relaxed and slightly out to the sides; no bag, no satchel. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Full body, standing, facing the viewer, smiling, centered in the frame with the whole figure visible from head to toe and a small margin around it. Clean transparent background, no scenery, no ground, no cast shadow, no text, no border, no frame. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:kyah",
+      "ref:kyah_walk"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_ayva",
+    "file": "heroes/ayva.png",
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body character illustration of Ayva, a young fairy girl with music magic. Shoulder-length wavy black hair with white and silver-lavender streaks at the front; a white headband with a pink-lavender feather bow on the left side; big round black dot eyes, rosy cheeks, a happy little smile; a cream dress printed with colorful music notes (pink, teal, purple, green) and a dark sash with black music-note marks running diagonally across her chest; translucent pink-lavender wings; small brown shoes; arms relaxed and slightly out to the sides; no bag. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Full body, standing, facing the viewer, smiling, centered in the frame with the whole figure visible from head to toe and a small margin around it. Clean transparent background, no scenery, no ground, no cast shadow, no text, no border, no frame. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:ayva",
+      "ref:ayva_walk"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_pup",
+    "file": "heroes/pup.png",
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body character illustration of Pup, a small, fluffy golden-apricot doodle puppy with big floppy ears, shiny black eyes, a black button nose, a happy open mouth with a little pink tongue, and a blue collar with a blue bone-shaped tag. He sits upright on his haunches with his chest out, brave and bouncy, facing the viewer. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Full body, standing, facing the viewer, smiling, centered in the frame with the whole figure visible from head to toe and a small margin around it. Clean transparent background, no scenery, no ground, no cast shadow, no text, no border, no frame. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:pup"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_poodle",
+    "file": "heroes/poodle.png",
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body character illustration of Poodle, a fluffy white poodle with round cloud-like curly fur puffs on her head, ears, chest and legs, shiny dark eyes, a small black nose, a happy open mouth, and a pink collar with a pink heart-shaped tag. She sits upright and proud on her haunches, facing the viewer. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Full body, standing, facing the viewer, smiling, centered in the frame with the whole figure visible from head to toe and a small margin around it. Clean transparent background, no scenery, no ground, no cast shadow, no text, no border, no frame. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:poodle"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_grabble",
+    "file": "heroes/grabble.png",
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body character illustration of Grabble, a reformed green goblin who now helps people. Green skin, a big round pink-red nose, a long black curly mustache, pointy ears, a kind cheerful grin; a purple top hat with a red band and a red feather; a long purple coat with round brass buttons; a yellow-and-brown striped scarf; brown trousers and brown boots. He holds a wooden mop with a grey string mop head upright in both hands, standing with the mop head resting on the ground beside him. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Full body, standing, facing the viewer, smiling, centered in the frame with the whole figure visible from head to toe and a small margin around it. Clean transparent background, no scenery, no ground, no cast shadow, no text, no border, no frame. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:grabble_mop2",
+      "ref:grabble_net"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_misssuds",
+    "file": "heroes/misssuds.png",
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body character illustration of Miss Suds, the kind owner of the Puddle Paws Pet Wash. A friendly grown-up woman with curly light-brown hair in a loose bun with curls around her face, rosy cheeks and a big warm smile; a white short-sleeved shirt under a teal apron with a white paw print on the front and a white tie around the waist; dark trousers and brown boots; one hand waving hello. Match the apron, hair and face of the reference. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Full body, standing, facing the viewer, smiling, centered in the frame with the whole figure visible from head to toe and a small margin around it. Clean transparent background, no scenery, no ground, no cast shadow, no text, no border, no frame. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:misssuds"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_baker",
+    "file": "heroes/baker.png",
+    "size": "1024x1536",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body character illustration of Benny, the friendly adult baker of the Sunbeam Bakery. A friendly adult man baker in his thirties, with warm chestnut-brown hair (a natural brown, not orange or ginger) and a short tidy chestnut-brown beard, rosy cheeks and a dab of flour on one cheek; a tall white baker's hat; a cream apron with a little sun embroidered on the front, worn over a periwinkle-blue shirt with the sleeves rolled up; dark trousers and brown shoes; he holds a wooden tray of golden fresh buns in both hands in front of him, with a big kind smile. Use the SAME bold, thick, confident dark brown-purple ink outline everywhere on the figure (hat, face, beard, arms, apron, tray, buns, trousers and shoes all get the same heavy felt-tip outline as the references, never thin, never pale blue, never sketchy or faded), with flat-ish cheerful watercolor and colored-pencil fills like the references, not a soft wet-watercolor wash. Match the line weight, brush style, color palette and rounded proportions of the reference image(s) exactly: the first reference shows how grown-up characters are drawn in this book, so draw Benny as a brand-new adult character in that same style; use the references only for the art style and palette, never copy the reference characters' faces, hair or clothes, and never copy their backgrounds, speech bubbles or other characters. Full body, standing, facing the viewer, smiling, centered in the frame with the whole figure visible from head to toe and a small margin around it. Clean transparent background, no scenery, no ground, no floor shadow or soft shadow under the shoes, no cast shadow, no text, no border, no frame. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:misssuds",
+      "ref:kyah"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_kyah_face",
+    "file": "heroes/kyah_face.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Close-up portrait illustration of Kyah the flower fairy: long straight black hair with bangs, a small blue forget-me-not flower above her ear, cream dress with small blue flowers, pale-blue translucent wings peeking behind her shoulders (kept inside the circle). Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Round-portrait composition: head and shoulders only, centered, looking straight at the viewer with a big friendly smile, filling most of the square frame but with a clear margin so the whole head, hair, headband and hat are fully inside the frame and not cut off, so it can be cropped to a circle. Fully transparent background everywhere outside the character (no cream or paper-colored backdrop, no circle behind the head), no frame, no text, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:kyah",
+      "key:hero_kyah"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_ayva_face",
+    "file": "heroes/ayva_face.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Close-up portrait illustration of Ayva the music fairy: black wavy hair with white and silver streaks, white headband with a pink-lavender feather bow, cream dress with colorful music notes and a dark note-print sash, pink-lavender wings peeking behind her shoulders (kept inside the circle). Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Round-portrait composition: head and shoulders only, centered, looking straight at the viewer with a big friendly smile, filling most of the square frame but with a clear margin so the whole head, hair, headband and hat are fully inside the frame and not cut off, so it can be cropped to a circle. Fully transparent background everywhere outside the character (no cream or paper-colored backdrop, no circle behind the head), no frame, no text, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:ayva",
+      "key:hero_ayva"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_pup_face",
+    "file": "heroes/pup_face.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Close-up portrait illustration of Pup the fluffy golden-apricot doodle puppy with big floppy ears, open happy mouth with a pink tongue, and a blue collar with a bone-shaped tag (head and chest). Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Round-portrait composition: head and shoulders only, centered, looking straight at the viewer with a big friendly smile, filling most of the square frame but with a clear margin so the whole head, hair, headband and hat are fully inside the frame and not cut off, so it can be cropped to a circle. Fully transparent background everywhere outside the character (no cream or paper-colored backdrop, no circle behind the head), no frame, no text, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:pup",
+      "key:hero_pup"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_poodle_face",
+    "file": "heroes/poodle_face.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Close-up portrait illustration of Poodle the fluffy white poodle with cloud-like curly fur puffs, open happy mouth, pink collar with a heart-shaped tag (head and chest). Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Round-portrait composition: head and shoulders only, centered, looking straight at the viewer with a big friendly smile, filling most of the square frame but with a clear margin so the whole head, hair, headband and hat are fully inside the frame and not cut off, so it can be cropped to a circle. Fully transparent background everywhere outside the character (no cream or paper-colored backdrop, no circle behind the head), no frame, no text, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:poodle",
+      "key:hero_poodle"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_grabble_face",
+    "file": "heroes/grabble_face.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Close-up portrait illustration of Grabble the reformed green goblin: big round pink-red nose, long curly black mustache, pointy ears, a kind cheerful grin, purple top hat with a red band and red feather, purple coat with brass buttons, yellow-and-brown striped scarf. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Round-portrait composition: head and shoulders only, centered, looking straight at the viewer with a big friendly smile, filling most of the square frame but with a clear margin so the whole head, hair, headband and hat are fully inside the frame and not cut off, so it can be cropped to a circle. Fully transparent background everywhere outside the character (no cream or paper-colored backdrop, no circle behind the head), no frame, no text, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:grabble_mop2",
+      "key:hero_grabble"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_misssuds_face",
+    "file": "heroes/misssuds_face.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Close-up portrait illustration of Miss Suds the kind pet-wash owner: curly light-brown hair in a loose bun with curls, rosy cheeks, a big warm smile, white shirt and a teal apron with a white paw print. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Round-portrait composition: head and shoulders only, centered, looking straight at the viewer with a big friendly smile, filling most of the square frame but with a clear margin so the whole head, hair, headband and hat are fully inside the frame and not cut off, so it can be cropped to a circle. Fully transparent background everywhere outside the character (no cream or paper-colored backdrop, no circle behind the head), no frame, no text, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "ref:misssuds",
+      "key:hero_misssuds"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "hero_baker_face",
+    "file": "heroes/baker_face.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Close-up portrait illustration of Benny the friendly adult baker of the Sunbeam Bakery, the same character as in the full-body reference image: a man in his thirties with warm brown hair, a short tidy beard, rosy cheeks, a dab of flour on one cheek, a big friendly smile, a tall white baker's hat, a periwinkle-blue shirt collar and the top of a cream apron with a little embroidered sun. Use the same bold, thick, confident dark brown-purple ink outline as the references, never thin or pale. Match the character design of the generated full-body reference of Benny exactly (face, beard, hat, apron, shirt) and the line weight, color palette and art style of the book reference exactly, but draw a brand-new portrait; never copy the book reference character's face or hair, nor any backgrounds, speech bubbles or other characters. Round-portrait composition, zoomed OUT: a small, complete avatar of the head and the top of the shoulders only, centered, looking straight at the viewer. The whole head must be small inside the square canvas: the head (hat included) is at most about 60 percent of the canvas height and about 55 percent of its width, with a wide empty transparent margin on all four sides. The tall white baker's hat is COMPLETE, its whole puffy top visible with empty transparent space above it, never touching or cut by the top edge; the ears and beard are fully inside too; the shoulders end in a soft rounded curve with empty transparent space below them, never cut by the bottom edge. A wide happy open smile with teeth visible under the mustache; the small flour dab sits high on his cheek, not on the beard. Fully transparent background everywhere outside the character (no cream or paper-colored backdrop, no circle behind the head), no frame, no text, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": [
+      "key:hero_baker",
+      "ref:misssuds"
+    ],
+    "fidelity": "high"
+  },
+  {
+    "key": "npc_grabble_net",
+    "file": "npc/grabble_net.png",
+    "size": "1024x1536",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body illustration of Grabble the mischievous green goblin caught mid-run, leaping forward with one boot kicked up, grinning slyly, scarf streaming behind him, holding a long butterfly net (round hoop with white mesh on a wooden handle) raised high in one hand ready to swoop. Green skin, big round pink-red nose, long curly black mustache, pointy ears, purple top hat with a red band and red feather, purple coat with brass buttons, yellow-and-brown striped scarf, brown boots. Dynamic action pose seen from the front three-quarter, whole figure and the net visible. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Clean transparent background, no scenery, no ground, no text, no border.",
+    "refs": [
+      "ref:grabble_net",
+      "ref:grabble_run"
+    ]
+  },
+  {
+    "key": "gem_full",
+    "file": "gem/full.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. The Starlight Gem: one large faceted crystal gem shaped like an elongated diamond (pointed top and bottom), glass-like light-cyan and sky-blue facets fading to pink and lavender, a bright white four-pointed star sparkle glowing in the center, soft blue-to-pink glow around it, a few small sparkles. Matches the gem in the reference image. The star sparkle inside is painted solid, opaque pale pink-white with no see-through areas. Centered, filling about 70% of the frame, clean transparent background, no hands, no text, no border.",
+    "refs": [
+      "ref:cover_gem"
+    ]
+  },
+  {
+    "key": "gem_shard",
+    "file": "gem/shard.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. A single small Starlight Gem shard: a jagged triangular fragment broken off the gem crystal, glass-like light-cyan and sky-blue facets fading to pink and lavender, a small white star sparkle glowing inside, soft blue-to-pink glow, a few tiny sparkles. Same crystal look as the gem in the reference image, but only one broken piece. The star sparkle inside is painted solid, opaque pale pink-white with no see-through areas. Centered, filling about 60% of the frame, clean transparent background, no hands, no text, no border.",
+    "refs": [
+      "ref:cover_gem"
+    ]
+  },
+  {
+    "key": "icon_shard",
+    "file": "icons/shard.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a chubby rounded five-pointed golden-yellow star (#F2C14E) with a soft butter-yellow highlight stripe on one arm and a small four-pointed pale sky-blue sparkle in the middle of the star; solid fill everywhere, no holes. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_swish",
+    "file": "icons/swish.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a purple butterfly net: a round hoop with a white-and-lavender mesh bag on a short wooden handle, tilted as if swinging, with two curved motion swoosh lines in lavender (#B48BE0) and purple (#5E3A8C). Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_fetch",
+    "file": "icons/fetch.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a big golden paw print (one large rounded pad and four toe pads) in warm golden (#F2C14E) with a small blue bone-shaped tag in the corner. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_launch",
+    "file": "icons/launch.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a blue bell: a rounded castle-roof-blue (#3E6FD6) bell with a golden clapper and a small pink bow on top, two tiny golden sound-wave ticks beside it. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_bridge",
+    "file": "icons/bridge.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a little arched cobblestone bridge in warm stone color (#C9B9A3) with sparkling blue water flowing under the arch and two tiny blue forget-me-nots growing on it. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_flight_a",
+    "file": "icons/flight_a.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a pair of translucent periwinkle-blue (#6E8FE0) fairy wings with pale-blue veins and tiny blue flower patterns, spread open, with a few tiny sparkles. Mostly blue. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_flight_b",
+    "file": "icons/flight_b.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a pair of translucent blossom-pink (#F29BC8) and lavender fairy wings with pale veins and tiny music-note patterns, spread open, with a few tiny sparkles. Mostly pink. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_cake",
+    "file": "icons/cake.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a slice of strawberry cream cake on a small round plate: cream sponge layers, blossom-pink frosting, one red strawberry on top and a little cherry-blossom pink swirl. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_castle",
+    "file": "icons/castle.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a small white stone castle with several pointed castle-roof-blue (#3E6FD6) conical towers and a tiny pink heart flag, standing on a little green hill. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "icon_cobble",
+    "file": "icons/cobble.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Board-game space icon: a cluster of five rounded warm-stone (#C9B9A3) cobblestones fitted together, with a tiny blue forget-me-not flower and two green leaves sprouting between them. Single flat sticker-style icon, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "logo_title",
+    "file": "ui/logo.png",
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Game title logo lettering in the exact style of the book cover in the reference image: big chunky hand-drawn rounded letters, the top line reads exactly \"Kyah & Ayva\" with \"Kyah\" in sky blue (decorated with tiny blue forget-me-not flowers) and \"Ayva\" in soft lavender, and the ampersand in blossom pink, all with a thick dark-purple ink outline and a soft glow; below it on a golden swoosh ribbon the smaller line reads exactly \"Starlight Gem Chase\" in dark-purple hand-lettered capitals. Around the title: a few golden stars, sparkles, tiny blue flowers with green leaves, and small pastel music notes. The only text is \"Kyah & Ayva\" and \"Starlight Gem Chase\". Do not write \"and the\" or \"a magical graphic novel\". Clean transparent background, no scenery, no characters, no border.",
+    "refs": [
+      "ref:cover_title"
+    ]
+  },
+  {
+    "key": "backdrop_panorama",
+    "file": "scene/backdrop.png",
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Wide scenic backdrop painting for a board-game scene: a white stone castle with many blue conical roofs on top of a green wooded hill in the middle distance, a waterfall tumbling down the hillside into a sparkling river, layered rolling forested hills, soft lavender-blue mountains on the horizon, a pastel periwinkle-to-pink sky with fluffy clouds and a few golden sparkle stars, warm late-afternoon light, drifting petals. The lower third is soft meadow with blue forget-me-not and pink flowers fading gently into mist so it can blend into a diorama. Same watercolor look as the reference image (cover village scenery). No people, no text, no border.",
+    "refs": [
+      "ref:cover_castle"
+    ]
+  },
+  {
+    "key": "board_ground",
+    "file": "scene/ground.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Top-down bird's-eye painted ground map of a storybook village for a board game: lush mint-green grass, a soft ring-shaped cobblestone path hinted around the middle of the square, patches of blue forget-me-not and pink blossom flower beds, a few tiny leaf clusters, a sparkling blue river curving across the lower-right corner with a small arched stone bridge over it. Straight-down orthographic view like a map, flat even lighting, no buildings, no trees, no characters, no text, no border.",
+    "refs": []
+  },
+  {
+    "key": "tex_cobble",
+    "file": "textures/cobble.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Top-down warm cobblestone paving: rounded stones in cream, warm stone-beige, soft rose and grey-lavender with dark ink outlines and thin mortar gaps, hand-painted watercolor. Seamless tileable texture, no visible seams, flat lighting, even detail across the whole square, no vignette, no border, no focal point, no text.",
+    "refs": [],
+    "seamless": false
+  },
+  {
+    "key": "tex_grass",
+    "file": "textures/grass.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Top-down soft pastel mint-green watercolor grass meadow texture with tiny clover leaves, little darker blade strokes and a few very small white and pink flower specks. Seamless tileable texture, no visible seams, flat lighting, even detail across the whole square, no vignette, no border, no focal point, no text.",
+    "refs": [],
+    "seamless": false
+  },
+  {
+    "key": "tex_wood",
+    "file": "textures/wood.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Top-down warm brown wooden planks (#8B5E3C) laid side by side, visible wood grain, a few knots and small dark nail dots, thin dark ink plank gaps, hand-painted watercolor. Seamless tileable texture, no visible seams, flat lighting, even detail across the whole square, no vignette, no border, no focal point, no text.",
+    "refs": [],
+    "seamless": false
+  },
+  {
+    "key": "tex_stone",
+    "file": "textures/stone.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Pale warm-stone castle wall blocks (#C9B9A3) in a brick-bond pattern, slightly uneven rounded blocks in cream and soft grey-beige with thin dark ink outlines and mortar, hand-painted watercolor. Seamless tileable texture, no visible seams, flat lighting, even detail across the whole square, no vignette, no border, no focal point, no text.",
+    "refs": [],
+    "seamless": false
+  },
+  {
+    "key": "tex_roof_blue",
+    "file": "textures/roof_blue.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Castle roof tiles in rows of overlapping scalloped fish-scale shingles in castle-roof blue (#3E6FD6) with lighter periwinkle highlights and dark ink outlines, hand-painted watercolor. Seamless tileable texture, no visible seams, flat lighting, even detail across the whole square, no vignette, no border, no focal point, no text.",
+    "refs": [],
+    "seamless": false
+  },
+  {
+    "key": "tex_vine",
+    "file": "textures/vine.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Dense pattern of curling green vines and leaves with many small blue forget-me-not flowers (#5B8DEF) with yellow centers and a few pink blossoms, evenly scattered, hand-painted watercolor, on a mid-green background. Seamless tileable texture, no visible seams, flat lighting, even detail across the whole square, no vignette, no border, no focal point, no text.",
+    "refs": [],
+    "seamless": false
+  },
+  {
+    "key": "tex_paper",
+    "file": "textures/paper.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Warm cream watercolor paper (#FFF6E0) with subtle visible paper fibers and very faint pale blotches of watercolor wash, very low contrast, nothing drawn on it. Seamless tileable texture, no visible seams, flat lighting, even detail across the whole square, no vignette, no border, no focal point, no text.",
+    "refs": [],
+    "seamless": false
+  },
+  {
+    "key": "ui_paper_panel",
+    "file": "ui/paper_panel.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  A blank watercolor paper UI panel: a wide softly rounded rectangle of warm cream parchment (#FFF6E0) with a gentle pastel watercolor wash at its edges, a hand-drawn dark ink border, and small blue forget-me-not flowers with green leaves tucked in the four corners. The big empty center is plain cream paper ready for text. The panel fills about 90% of the frame. Clean transparent background outside the panel, no text, no characters.",
+    "refs": []
+  },
+  {
+    "key": "ui_button",
+    "file": "ui/button.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  A big friendly rounded pill-shaped game button, wide and horizontally centered, filled with blossom pink (#F29BC8) and lavender watercolor shading with a soft white highlight along the top, a thick dark ink outline, a tiny blue forget-me-not flower and two small sparkles on its left end. The button face is completely empty and plain for a label to be added later. The button fills about 80% of the frame width. Clean transparent background, no text, no letters, no border.",
+    "refs": []
+  },
+  {
+    "key": "phone_bg",
+    "file": "ui/phone_bg.png",
+    "size": "1024x1536",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Soft tall watercolor background for a phone game screen: a dreamy pastel sky blending from pale sky blue (#BFE3F5) at the top through lavender to blossom pink near the bottom, a few soft clouds, small golden stars and sparkles in the upper area, and a gentle border of blue forget-me-not flowers, pink blossoms and green leaves along the bottom edge and lower corners. The large middle area stays calm, low-contrast and uncluttered so buttons and text can sit on it. No characters, no text.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_TING",
+    "file": "words/ting.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"TING!\" (letters T I N G followed by an exclamation mark). Color scheme: blossom pink with golden sparkles. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_BLOOM",
+    "file": "words/bloom.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"BLOOM!\" (letters B L O O M followed by an exclamation mark). Color scheme: periwinkle blue with tiny blue flowers and petals. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_DING",
+    "file": "words/ding.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"DING!\" (letters D I N G followed by an exclamation mark). Color scheme: lavender-pink with little golden music notes. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_SWISH",
+    "file": "words/swish.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"SWISH!\" (letters S W I S H followed by an exclamation mark). Color scheme: rich purple with pink speed swoosh lines. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_BUMP",
+    "file": "words/bump.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"BUMP!\" (letters B U M P followed by an exclamation mark). Color scheme: bright blossom pink with small impact stars. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_WOOF",
+    "file": "words/woof.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"WOOF!\" (letters W O O F followed by an exclamation mark). Color scheme: golden-yellow with tiny paw prints. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_HOP",
+    "file": "words/hop.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"HOP!\" (letters H O P followed by an exclamation mark). Color scheme: magenta-pink and lavender with little motion arcs. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_WHOOSH",
+    "file": "words/whoosh.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"WHOOSH!\" (letters W H O O S H followed by an exclamation mark). Color scheme: lavender-purple with white wind swirls. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_SPLASH",
+    "file": "words/splash.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"SPLASH!\" (letters S P L A S H followed by an exclamation mark). Color scheme: sky blue with water droplets and soap bubbles. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_BOING",
+    "file": "words/boing.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"BOING!\" (letters B O I N G followed by an exclamation mark). Color scheme: mint green with spring-like zigzag motion lines. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_LA-LA",
+    "file": "words/la-la.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"LA-LA!\" (letters L A - L A followed by an exclamation mark). Color scheme: candy pink with small colorful music notes. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_STUCK",
+    "file": "words/stuck.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"STUCK!\" (letters S T U C K followed by an exclamation mark). Color scheme: leafy green with tiny vine curls and blue flowers. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "sfx_word_CAKE",
+    "file": "words/cake.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Sound-effect lettering that spells exactly the text \"CAKE!\" (letters C A K E followed by an exclamation mark). Color scheme: strawberry pink and cream with a tiny sparkle and little strawberries. Chunky rounded comic-book sound-effect lettering like a children's picture book, hand-drawn, bold bubbly letters with a pastel fill and a darker outline, thick dark ink outline, soft drop shadow, slightly tilted, filling most of the width of the frame and centered. Clean transparent background. The image contains only this one word and no other text, no other letters, no speech bubble. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through.",
+    "refs": []
+  },
+  {
+    "key": "mini_bg_flight",
+    "file": "mini/bg_flight.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "refs": [
+      "ref:cover_castle"
+    ],
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Wide side-scrolling backdrop painting for a phone mini-game: a row of cozy storybook village rooftops (blue slate and warm terracotta roofs, chimneys, little dormer windows, strings of tiny lights, flower boxes) along the bottom fifth, a white stone castle with many blue conical roofs on a green wooded hill far away on the horizon at the right, soft lavender-blue distant hills, a pastel periwinkle-to-pink sky filling the upper two thirds with fluffy cream clouds, a few golden sparkle stars and drifting petals, warm late-afternoon light. The big middle band of sky is calm, open and low-contrast so game sprites can be drawn over it later; the left and right edges have the same sky height so the picture could continue sideways. Same watercolor look as the reference image (cover village scenery). Absolutely empty of any characters: no people, no fairies, no wings, no birds, no wreaths, no flower rings, no ribbons or streamers in the sky, no text, no border."
+  },
+  {
+    "key": "mini_ring_flower",
+    "file": "mini/ring_flower.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "holeCenter": true,
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Game-object illustration: a round wreath ring woven from plump blue forget-me-not flowers (#5B8DEF, golden-yellow centres) and blossom-pink cherry blossoms with fresh green leaves and a few tiny curling vine tendrils, forming one perfect circle seen straight on, evenly chunky all the way round, with a wide open empty centre (about half the ring's diameter) that is fully transparent so a flying fairy can pass through it. Nothing inside the hole. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "mini_bg_garden",
+    "file": "mini/bg_garden.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Straight-down bird's-eye view of a lush storybook flower bed filling the whole square: dense clusters of blue forget-me-not flowers (#5B8DEF) with golden-yellow centres, pink cherry blossoms, small white daisies, lavender sprigs, mint-green leaves and ferns, soft brown soil peeking between the plants, a couple of tiny ladybirds and a butterfly, a few golden sparkles. Flat even lighting, cheerful pastel watercolor, even gentle detail across the whole square and nothing large or high-contrast in the middle, so a 3 by 3 grid of flower tiles can sit on top of it. No vignette, no border, no characters, no text."
+  },
+  {
+    "key": "mini_flower_tile",
+    "file": "mini/flower_tile.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. A single chubby blue forget-me-not flower seen straight from the front: five fat rounded periwinkle-blue petals (#5B8DEF) with soft lighter sky-blue highlights on each petal, a round golden-yellow centre with a small orange ring, no stem and no leaves, cute and bouncy. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "mini_bg_petwash",
+    "file": "mini/bg_petwash.png",
+    "size": "1536x1024",
+    "quality": "medium",
+    "background": "opaque",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified.  Wide side-view backdrop of the sunny cobbled yard of the \"Puddle Paws Pet Wash\" for a phone mini-game: a warm honey-wood shopfront with a blank bone-shaped wooden sign carrying only a little blue paw print (no letters at all), shelves of pastel soap and shampoo bottles, big wooden wash tubs heaped with fluffy white bubbles, a blue towel over a wooden stool, a yellow rubber duck, round blue paw-print rugs, window boxes and climbing vines with blue forget-me-nots and pink blossoms, lots of floating soap bubbles with a faint rainbow sheen, warm golden light. The shopfront, shelves, wash tubs and stool all stand against the back wall in the upper 60% of the picture; the whole lower 40% is a wide, calm, empty cobblestone floor with only a few shiny puddles and a couple of tiny bubbles on it, so a puppy can run left and right along it, and the space above the floor stays light so buckets can fall through it. No characters, no animals, no text, no letters, no border."
+  },
+  {
+    "key": "mini_pup_run",
+    "file": "mini/pup_run.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "ref:pup",
+      "key:hero_pup"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body action illustration of Pup, a small, fluffy golden-apricot doodle puppy with big floppy ears, shiny black eyes, a black button nose, a wide open happy mouth with a little pink tongue, and a blue collar with a blue bone-shaped tag, running along sideways in a strict side profile, body horizontal, the whole body and the head seen from the side and turned to face right (only one eye, one ear and the side of the muzzle visible, mouth open and smiling), in a bouncy gallop: front paws stretched forward, back paws pushing off, ears flapping behind, tail up and wagging, joyful eyes. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Whole dog visible with a small margin all round. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "mini_bucket",
+    "file": "mini/bucket.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Game-object illustration: a chunky round pet-wash bucket tipped over and lying on its side with its open mouth facing down-left, painted periwinkle blue with a pale silver rim and a silver handle, a big cream paw print (a pad and four toe beans) painted on the side, a little spill of white soapy bubbles and a few water drops pouring out of the opening. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "mini_grabble_net_swoop",
+    "file": "mini/grabble_net_swoop.png",
+    "size": "1024x1536",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "ref:grabble_net",
+      "ref:grabble_run",
+      "key:npc_grabble_net"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body action illustration, head to boots, of Grabble the mischievous green goblin lunging in from above: seen from the front three-quarter, bent forward at the waist with his head and top hat at the TOP of the picture and his torso tipping forward and down toward the viewer, one boot kicked up behind him, his long arm stretched DOWNWARD and forward swinging a long butterfly net (round hoop with white mesh on a long wooden handle) in a big downward chopping swoop: the handle points down and forward and the round net hoop with its mesh hangs LOW at the bottom of the picture, sweeping toward the ground, as if scooping something up from below him; a sly mischievous grin with raised eyebrows and bright eyes, tilted purple top hat with a red band and a red feather streaming back, yellow-and-brown striped scarf flying behind him. Green skin, big round pink-red nose, long curly black mustache, pointy ears, purple coat with brass buttons, brown boots. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Composition: draw the WHOLE figure fairly small so it fits entirely inside the frame, boots and hat and net included, with at least 10% of empty transparent space between every part of the drawing and each edge of the picture; nothing touches or is cut by any edge. No motion lines, no swooshes, no speed streaks, no glow, no yellow or cream smudges and no shadow behind or around him. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "mini_strawberry",
+    "file": "mini/strawberry.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. A single plump glossy red strawberry (ripe and juicy) with a bright green leafy calyx on top and tiny pale-yellow seeds, a soft cream-white highlight streak on one side for shine, cute and chunky, seen from the front, no stem. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "mini_cake_base",
+    "file": "mini/cake_base.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. A tall three-layer round cream cake seen from the front and slightly above: three fluffy golden sponge layers separated by thick white whipped-cream filling, smooth cream frosting around the sides, a perfectly flat wide smooth cream top with nothing on it, standing on a plain round cream-coloured plate. No strawberries, no cherries, no candles, no sprinkles, no flowers, no decorations or toppings of any kind on the cake. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "mini_vine_tip",
+    "file": "mini/vine_tip.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Game-object illustration: the growing tip of a magical vine pointing straight up: a slender green vine stem rising from the lower centre, a couple of fresh green leaves along it, ending at the top in a small tight curling spiral tendril with one plump blue forget-me-not flower (#5B8DEF, golden-yellow centre) blooming right at the tip. The stem ends in a clean blunt cut near the bottom centre of the image (inside the frame) so it can be joined onto a longer vine. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "grabble_caught",
+    "file": "mini/grabble_caught.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "ref:grabble_net",
+      "key:npc_grabble_net"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Illustration of Grabble the mischievous green goblin tangled up and caught, squashed sitting inside a round basket-shaped tangle woven from green vines with blue forget-me-not flowers and pink blossoms that wraps around his body; only his head with the crooked purple top hat (red feather bent over), pointy ears, big round pink-red nose, long curly black mustache, wide sheepish worried eyes and a small flustered wobbly frown (the face of \"I'm... stuck!\"), his two green hands gripping the vines at the sides and his brown boots poking out at the bottom are visible. His butterfly net lies bent beside him. Match the character design, proportions and art style of the reference image(s) exactly, but draw a brand-new full illustration in the requested pose; use the references only for the character's look, never copy their backgrounds, speech bubbles or other characters. Composition: the whole tangle, hat, feather tip, boots and net must fit completely inside the central 80% of the frame with clear empty transparent space around every edge; nothing touches or is cut by the edge of the picture. No speech bubble and no text. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, a few tiny sparkles, centered with a generous margin so nothing touches the edge, clean transparent background, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_kyah_up",
+    "file": "fly/kyah_up.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_kyah"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Kyah, a young fairy girl with flower magic: long, straight, glossy black hair with straight bangs streaming back behind her in the wind; a small blue forget-me-not flower tucked above her ear; big round black dot eyes, rosy cheeks, a big happy smile; a long cream-yellow dress with long sleeves covered in small blue forget-me-not flowers (the skirt fluttering back); small brown shoes; one arm reaching forward, the other trailing back. She flies on her translucent pale-blue fairy wings with delicate blue flower patterns, with a trail of small blue forget-me-not petals streaming out behind her to the left. UPSTROKE: her wings stand up tall, almost vertical above her back, with the wing tips pointing straight up and reaching clearly above the top of her head. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_kyah_down",
+    "file": "fly/kyah_down.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_kyah",
+      "key:fly_kyah_up"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Kyah, a young fairy girl with flower magic: long, straight, glossy black hair with straight bangs streaming back behind her in the wind; a small blue forget-me-not flower tucked above her ear; big round black dot eyes, rosy cheeks, a big happy smile; a long cream-yellow dress with long sleeves covered in small blue forget-me-not flowers (the skirt fluttering back); small brown shoes; one arm reaching forward, the other trailing back. She flies on her translucent pale-blue fairy wings with delicate blue flower patterns, with a trail of small blue forget-me-not petals streaming out behind her to the left. DOWNSTROKE: her wings are swept all the way down and back, hanging diagonally behind her back and hips with the wing tips pointing down-left below her waist, and no part of the wings rises above her shoulder line. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. The SECOND reference image is the finished up-stroke frame of this same flying sprite: keep the character, body, head, face, arms, legs, hair, outfit, tilt, size and position in the frame exactly the same as in it, but the flapping part (wings, ears, paws, wand, bubbles or cloud, as described) must be clearly in the OPPOSITE position: do NOT copy that part from the second reference, redraw it fully in the down-stroke position described above so that the two frames flip back and forth as a clear flap animation. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_ayva_up",
+    "file": "fly/ayva_up.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_ayva"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Ayva, a young fairy girl with music magic: shoulder-length wavy black hair with white and silver-lavender streaks at the front, blown back by the wind; a white headband with a pink-lavender feather bow on the left side; big round black dot eyes, rosy cheeks, a big happy smile; a cream dress printed with colorful music notes (pink, teal, purple, green) and a dark sash with black music-note marks running diagonally across her chest; small brown shoes; one arm reaching forward, the other trailing back. She flies on her translucent pink-lavender fairy wings, with a trail of pastel music notes (pink, teal, lavender, mint) floating out behind her to the left. UPSTROKE: her wings stand up tall, almost vertical above her back, with the wing tips pointing straight up and reaching clearly above the top of her head. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_ayva_down",
+    "file": "fly/ayva_down.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_ayva",
+      "key:fly_ayva_up"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Ayva, a young fairy girl with music magic: shoulder-length wavy black hair with white and silver-lavender streaks at the front, blown back by the wind; a white headband with a pink-lavender feather bow on the left side; big round black dot eyes, rosy cheeks, a big happy smile; a cream dress printed with colorful music notes (pink, teal, purple, green) and a dark sash with black music-note marks running diagonally across her chest; small brown shoes; one arm reaching forward, the other trailing back. She flies on her translucent pink-lavender fairy wings, with a trail of pastel music notes (pink, teal, lavender, mint) floating out behind her to the left. DOWNSTROKE: her wings are swept all the way down and back, hanging diagonally behind her back and hips with the wing tips pointing down-left below her waist, and no part of the wings rises above her shoulder line. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. The SECOND reference image is the finished up-stroke frame of this same flying sprite: keep the character, body, head, face, arms, legs, hair, outfit, tilt, size and position in the frame exactly the same as in it, but the flapping part (wings, ears, paws, wand, bubbles or cloud, as described) must be clearly in the OPPOSITE position: do NOT copy that part from the second reference, redraw it fully in the down-stroke position described above so that the two frames flip back and forth as a clear flap animation. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_pup_up",
+    "file": "fly/pup_up.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_pup"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Pup, the small, fluffy golden-apricot doodle puppy (called Charli) with big floppy ears, shiny black eyes, a black button nose, a wide open happy mouth with the little pink tongue sticking out, and a blue collar with a blue bone-shaped tag, in side profile flying through the air with his four paws tucked and stretched, tail up and wagging. He flies on a pair of small sparkling petal wings made of blue forget-me-not flowers (Kyah's flower magic) sprouting from his back, with a few tiny golden sparkles around him, his ears flapping in the wind. UPSTROKE: the flower-petal wings stand up tall and almost vertical above his back, reaching well above his head, and his floppy ears are flipped up and streaming up-and-back above his head. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_pup_down",
+    "file": "fly/pup_down.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_pup",
+      "key:fly_pup_up"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Pup, the small, fluffy golden-apricot doodle puppy (called Charli) with big floppy ears, shiny black eyes, a black button nose, a wide open happy mouth with the little pink tongue sticking out, and a blue collar with a blue bone-shaped tag, in side profile flying through the air with his four paws tucked and stretched, tail up and wagging. He flies on a pair of small sparkling petal wings made of blue forget-me-not flowers (Kyah's flower magic) sprouting from his back, with a few tiny golden sparkles around him, his ears flapping in the wind. DOWNSTROKE: the flower-petal wings are swept all the way down and back, hanging along his flank with the wing tips pointing down below his belly (nothing of the wings above his back line), and his floppy ears are blown down and back along his cheeks. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. The SECOND reference image is the finished up-stroke frame of this same flying sprite: keep the character, body, head, face, arms, legs, hair, outfit, tilt, size and position in the frame exactly the same as in it, but the flapping part (wings, ears, paws, wand, bubbles or cloud, as described) must be clearly in the OPPOSITE position: do NOT copy that part from the second reference, redraw it fully in the down-stroke position described above so that the two frames flip back and forth as a clear flap animation. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_poodle_up",
+    "file": "fly/poodle_up.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_poodle"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Poodle, the fluffy white poodle with round cloud-like curly fur puffs on her head, ears, chest and legs, shiny dark eyes, a small black nose, a happy open smiling mouth, and a pink collar with a pink heart-shaped tag, in side profile in mid-air with her fluffy tail puff up. She is carried through the air by a cluster of big shimmering soap bubbles from the pet wash (pastel pink, sky blue, mint and lavender spheres, each drawn with a thick dark ink outline and painted opaque cream highlights) bunched under and around her body, with a few tiny sparkles, her four paws paddling through the air as if she were swimming. UPSTROKE: her front paws are stretched high up and forward in front of her face and her back paws are kicked up behind her, the bubble cluster bunched high around her chest and belly. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_poodle_down",
+    "file": "fly/poodle_down.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_poodle",
+      "key:fly_poodle_up"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Poodle, the fluffy white poodle with round cloud-like curly fur puffs on her head, ears, chest and legs, shiny dark eyes, a small black nose, a happy open smiling mouth, and a pink collar with a pink heart-shaped tag, in side profile in mid-air with her fluffy tail puff up. She is carried through the air by a cluster of big shimmering soap bubbles from the pet wash (pastel pink, sky blue, mint and lavender spheres, each drawn with a thick dark ink outline and painted opaque cream highlights) bunched under and around her body, with a few tiny sparkles, her four paws paddling through the air as if she were swimming. DOWNSTROKE: all four legs are pushed straight down and back, front paws sweeping down below her chest and back legs stretched down, and the bubble cluster hangs lower, clearly under her belly. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. The SECOND reference image is the finished up-stroke frame of this same flying sprite: keep the character, body, head, face, arms, legs, hair, outfit, tilt, size and position in the frame exactly the same as in it, but the flapping part (wings, ears, paws, wand, bubbles or cloud, as described) must be clearly in the OPPOSITE position: do NOT copy that part from the second reference, redraw it fully in the down-stroke position described above so that the two frames flip back and forth as a clear flap animation. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_misssuds_up",
+    "file": "fly/misssuds_up.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_misssuds"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Miss Suds, the kind owner of the Puddle Paws Pet Wash: a friendly grown-up woman with curly light-brown hair in a loose bun with long curls streaming back behind her in the wind, rosy cheeks and a big warm happy smile; a white short-sleeved shirt under a teal apron with a white paw print on the front and a white tie around the waist; dark trousers and brown boots. She floats through the air holding a big bubble wand in her outstretched forward hand; the wand sprays a stream of shimmering soap bubbles (pastel pink, sky blue, mint and lavender spheres each bubble drawn with a thick dark ink outline and painted opaque cream highlights) that lifts her up and trails behind and under her, her other arm out for balance. UPSTROKE: the wand arm is raised high up and forward so the wand is above head height, and the stream of bubbles bursts upward and back from the wand, her knees bent and her boots kicked up behind her. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_misssuds_down",
+    "file": "fly/misssuds_down.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_misssuds",
+      "key:fly_misssuds_up"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Miss Suds, the kind owner of the Puddle Paws Pet Wash: a friendly grown-up woman with curly light-brown hair in a loose bun with long curls streaming back behind her in the wind, rosy cheeks and a big warm happy smile; a white short-sleeved shirt under a teal apron with a white paw print on the front and a white tie around the waist; dark trousers and brown boots. She floats through the air holding a big bubble wand in her outstretched forward hand; the wand sprays a stream of shimmering soap bubbles (pastel pink, sky blue, mint and lavender spheres each bubble drawn with a thick dark ink outline and painted opaque cream highlights) that lifts her up and trails behind and under her, her other arm out for balance. DOWNSTROKE: the wand arm is swept down and forward so the wand is below her waist, and the stream of bubbles pours downward under her body and back, her legs stretched out straight behind and below her. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. The SECOND reference image is the finished up-stroke frame of this same flying sprite: keep the character, body, head, face, arms, legs, hair, outfit, tilt, size and position in the frame exactly the same as in it, but the flapping part (wings, ears, paws, wand, bubbles or cloud, as described) must be clearly in the OPPOSITE position: do NOT copy that part from the second reference, redraw it fully in the down-stroke position described above so that the two frames flip back and forth as a clear flap animation. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_baker_up",
+    "file": "fly/baker_up.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_baker"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Benny, the friendly adult baker of the Sunbeam Bakery: a man in his thirties with warm chestnut-brown hair (a natural brown, not orange or ginger) and a short tidy chestnut-brown beard (same hair and beard color as the reference), rosy cheeks, a big kind happy smile; a tall white baker's chef hat tilted back by the wind; a cream apron with a little sun embroidered on the front, worn over a periwinkle-blue shirt with the sleeves rolled up; dark trousers and brown shoes; he holds his wooden tray of golden fresh buns in both hands out in front of him. He rides through the air on a little puff of golden flour-and-sparkle cloud under his feet, with a trail of golden flour puffs and tiny sparkles streaming out behind him to the left. UPSTROKE: the golden cloud puff swells and billows upward, its tufts curling up around his feet and legs, and he rides high with the tray lifted up in front of him. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_baker_down",
+    "file": "fly/baker_down.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_baker",
+      "key:fly_baker_up"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Benny, the friendly adult baker of the Sunbeam Bakery: a man in his thirties with warm chestnut-brown hair (a natural brown, not orange or ginger) and a short tidy chestnut-brown beard (same hair and beard color as the reference), rosy cheeks, a big kind happy smile; a tall white baker's chef hat tilted back by the wind; a cream apron with a little sun embroidered on the front, worn over a periwinkle-blue shirt with the sleeves rolled up; dark trousers and brown shoes; he holds his wooden tray of golden fresh buns in both hands out in front of him. He rides through the air on a little puff of golden flour-and-sparkle cloud under his feet, with a trail of golden flour puffs and tiny sparkles streaming out behind him to the left. DOWNSTROKE: the golden cloud puff is squashed flat and pushed downward under his feet, its tufts blowing down and back, and he rides low with the tray lowered in front of his waist. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off. The SECOND reference image is the finished up-stroke frame of this same flying sprite: keep the character, body, head, face, arms, legs, hair, outfit, tilt, size and position in the frame exactly the same as in it, but the flapping part (wings, ears, paws, wand, bubbles or cloud, as described) must be clearly in the OPPOSITE position: do NOT copy that part from the second reference, redraw it fully in the down-stroke position described above so that the two frames flip back and forth as a clear flap animation. Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_test_t5",
+    "file": "fly/test_t5.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:fly_kyah_up"
+    ],
+    "fidelity": "high",
+    "prompt": "Edit this image, a finished flying-pose game sprite of a fairy girl flying to the right. Keep the character, face, hair, dress, shoes, arms, legs, tilt, ink line weight, colors, petal trail, and the same size and position in the frame exactly the same. Change ONLY the wings: they are currently raised up; redraw them as the bottom of the wing flap, as TWO CLEARLY VISIBLE big translucent pale-blue fairy wings (solid opaque pale blue with delicate blue flower patterns and a dark purple ink outline) that droop DOWN and back behind her body, sticking out to the lower left behind her hips with their tips pointing down well below her waist, with the wings fully visible against the transparent background, not hidden behind her hair or dress. No wing remains up above her back."
+  },
+  {
+    "key": "fly_test_t6",
+    "file": "fly/test_t6.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_kyah"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Kyah, a young fairy girl with flower magic: long, straight, glossy black hair with straight bangs streaming back behind her in the wind; a small blue forget-me-not flower tucked above her ear; big round black dot eyes, rosy cheeks, a big happy smile; a long cream-yellow dress with long sleeves covered in small blue forget-me-not flowers (the skirt fluttering back); small brown shoes; one arm reaching forward, the other trailing back. She flies on her translucent pale-blue fairy wings with delicate blue flower patterns, with a trail of small blue forget-me-not petals streaming out behind her to the left. DOWNSTROKE (bottom of the flap): her two big translucent pale-blue wings droop DOWN and back behind her like a closed umbrella, sticking out to the lower left behind her hips with their tips pointing down well below her waist, fully visible against the transparent background and not hidden behind her hair or dress; nothing of the wings stands up above her back. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off.  Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  },
+  {
+    "key": "fly_test_t7",
+    "file": "fly/test_t7.png",
+    "size": "1024x1024",
+    "quality": "medium",
+    "background": "transparent",
+    "refs": [
+      "key:hero_kyah"
+    ],
+    "fidelity": "high",
+    "prompt": "Children's picture-book watercolor illustration with clean dark ink outlines, soft pastel palette (periwinkle blue, lavender, blossom pink, cream, mint), rounded friendly shapes, gentle paper texture, no text unless specified. Bold, thick, confident dark-purple-black ink outlines like a felt-tip pen (as in the book), vivid cheerful watercolor and colored-pencil fills with clean bright colors, never muddy or gray. Full-body flying illustration of Kyah, a young fairy girl with flower magic: long, straight, glossy black hair with straight bangs streaming back behind her in the wind; a small blue forget-me-not flower tucked above her ear; big round black dot eyes, rosy cheeks, a big happy smile; a long cream-yellow dress with long sleeves covered in small blue forget-me-not flowers (the skirt fluttering back); small brown shoes; one arm reaching forward, the other trailing back. She flies on her translucent pale-blue fairy wings with delicate blue flower patterns, with a trail of small blue forget-me-not petals streaming out behind her to the left. DOWNSTROKE (bottom of the flap): her two big translucent pale-blue wings droop DOWN and back behind her like a closed umbrella, sticking out to the lower left behind her hips with their tips pointing down well below her waist, fully visible against the transparent background and not hidden behind her hair or dress; nothing of the wings stands up above her back. Flying-pose game sprite for a side-scrolling flying mini-game. STRICT SIDE VIEW, FACING RIGHT: the character flies horizontally from the left of the picture to the right, like an arrow pointing right, so the face, eyes, nose and the reaching hand are on the RIGHT side of the picture while the hair, tail, feet and trailing magic are on the LEFT side; never facing left, never facing the viewer (the face may be a friendly three-quarter profile turned right so the big smile and the eye show). Body slightly tilted upward (head a little higher than the feet), a big happy joyful expression. Match the character design, proportions, face, outfit, colors and line weight of the reference image(s) exactly (same features, same clothes), but draw a brand-new illustration in this flying pose; use the reference only for the character's look, never copy its standing pose, its background or other characters. Keep the whole drawing SMALL in the canvas: it occupies only the middle 60 percent of the width and of the height (about 600 pixels of the 1024), centered, with a wide empty transparent margin of at least 15 percent on every side, so every hand, foot, tail, wing, tray, wand, bubble and trail piece is completely inside the frame and nothing is cut off.  Single flat sticker-style game sprite, thick dark ink outline, soft pastel fill with gentle watercolor shading, the whole character and everything attached to it (wings, trail, bubbles, cloud) fully inside the frame with a generous margin so nothing touches the edge, clean transparent background, no scenery, no ground, no cast shadow, no text, no letters, no border. Crisp cut-out edges: the outer ink outline meets the transparent background directly, with no glow, no halo, no white or cream aura, no soft shadow and no paper texture outside the outline. Every part of the drawing is fully opaque: white or highlight details are painted opaque pale cream-yellow or pale sky-blue, never white and never see-through."
+  }
+]
