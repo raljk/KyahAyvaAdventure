@@ -20,6 +20,8 @@ The server handles many games at once: every board that opens gets its own 4-let
 **Render (free, one click):** [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/raljk/KyahAyvaAdventure)
 Sign in with GitHub, confirm, and Render builds the `Dockerfile` and gives you `https://<name>.onrender.com`. Open `/board/` on the big screen. The free plan sleeps after about 15 minutes with no visitors, so the first load after a break takes about a minute.
 
+Live now: **https://kyah-ayva-starlight-gem-chase.onrender.com/board/**. A service created from the repo link does not redeploy on push: after pushing to `main`, open the service in Render and choose **Manual Deploy → Deploy latest commit** (or connect the GitHub repo under Settings → Build & Deploy to make it automatic). A redeploy ends games in progress.
+
 **Google Cloud Run (or any Docker host):**
 
 ```bash
