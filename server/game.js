@@ -3,11 +3,13 @@ import { EventEmitter } from 'node:events';
 import crypto from 'node:crypto';
 import { SPACES, SPACE_COUNT, BRIDGE_INDEX, CASTLE_INDEX, FLIGHT_PAIRS, WIN_TARGET_DEFAULT, GRABBLE_TARGET_DEFAULT, GRABBLE_START, nextIndex, pathBetween } from '../public/board/layout.js';
 import { HEROES, HERO_BY_ID } from '../public/shared/heroes.js';
+import { tierFor, MINI as MINI_CFG, maxScore, gatesFor } from '../public/shared/difficulty.js';
+// thrown inside a running flow when the game was ended or the room reset while it waited; the queue swallows it
+class FlowAborted extends Error { constructor() { super('flow aborted'); this.name = 'FlowAborted'; } }
+const cfgOf = (type, params) => params?.cfg || MINI_CFG[type]?.easy || {};
+const inRange = (v, [a, b]) => v >= a && v <= b;
 
-const SWEET = [0.30, 0.75];
-const PERFECT = [0.48, 0.58];
-const CHASE_ZONE = [0.45, 0.80]; const CHASE_PERFECT = [0.60, 0.68];
-const TIMEOUTS = { roll: 90_000, rollNudge: 40_000, choose: 30_000, minigame: 25_000, disconnected: 3_000, bot: 1_200, botMini: 1_600 };
+const TIMEOUTS = { roll: 90_000, rollNudge: 40_000, choose: 30_000, minigame: 25_000, gate: 9_000, disconnected: 3_000, bot: 1_200, botMini: 1_600 };
 const MINI_TYPES = ['flight', 'shard', 'fetch', 'swish', 'cake', 'chase', 'bell'];
 
 const FRIENDLY = {
@@ -28,7 +30,7 @@ const FRIENDLY = {
   launch_choose: (p) => ({ text: `${p.name} is launching the Catcher!`, word: 'DING!' }),
   sent: (p, t) => ({ text: `${p.name} sent ${t} to the bridge!`, word: 'UH-OH!' }),
   caught: (p, names) => ({ text: `Caught! ${names} got stuck in the flower basket!`, word: 'STUCK!' }),
-  caught_grabble: (p, n) => ({ text: `Grabble is stuck! ${p.name} took ${n} of his shards and the rest scattered!`, word: 'STUCK!' }),
+  caught_grabble: (p, n, spilled = 0) => ({ text: n === 0 && spilled === 0 ? 'Grabble is stuck in the basket! His bag was empty, though.' : `Grabble is stuck! ${p.name} took ${n} of his shards${spilled ? ' and the rest scattered' : ''}!`, word: 'STUCK!' }),
   missed: () => ({ text: 'The basket swung wide. Missed!', word: 'HOP!' }),
   win: (p) => ({ text: `${p.name} made the Starlight Gem whole!`, word: 'WE DID IT!' }),
   grabble_win: () => ({ text: 'Grabble filled his bag and ran off with the starlight!', word: 'OH NO!' }),
@@ -61,13 +63,14 @@ const MINI_LABELS = { flight: 'Fairy Flight', shard: 'Look Under the Flowers', f
 export class Game extends EventEmitter {
   constructor({ room, joinUrl, winTarget = WIN_TARGET_DEFAULT, grabbleTarget = GRABBLE_TARGET_DEFAULT, grabbleDice = 4 } = {}) {
     super();
-    this.room = room; this.joinUrl = joinUrl; this.winTarget = winTarget; this.grabbleTarget = grabbleTarget; this.grabbleDice = grabbleDice;
+    this.room = room; this.joinUrl = joinUrl; this.winTarget = winTarget; this.grabbleTarget = grabbleTarget; this.baseGrabbleTarget = grabbleTarget; this.grabbleDice = grabbleDice;
     this.players = []; this.tokens = new Map();
     this.phase = 'lobby'; this.hostId = null; this.turnPlayerId = null; this.turnStep = null; this.turnDeadline = null;
     this.winnerId = null; this.lastEvent = { type: 'lobby', text: 'Waiting for friends to join…', word: '' };
     this.lastDice = null; this.cobbleAlt = 0; this.shardAlt = 0; this.minigame = null; this.pending = {};
     this.grabble = { space: GRABBLE_START, loot: 0, lastMove: null };
     this.boardConnected = false; this.boardReady = false; this.readyWaiters = []; this.pendingAcks = new Map(); this.queue = Promise.resolve();
+    this.gen = 0; this.launch = null; this.closesAt = null;
     this.timers = {}; this.fastMode = false; this.eventSeq = 0; this.stats = { turns: 0, launches: 0, minigames: 0, chases: 0 }; this.hostGraceMs = 15_000; this.grabbleDiceOverride = grabbleDice !== 4 ? grabbleDice : null;
   }
 
@@ -78,7 +81,7 @@ export class Game extends EventEmitter {
       hostId: this.hostId, turnPlayerId: this.turnPlayerId, turnStep: this.turnStep, turnDeadline: this.turnDeadline,
       players: this.players.map(p => ({ id: p.id, name: p.name, heroId: p.heroId, color: p.color, space: p.space, shards: p.shards, connected: p.connected, isBot: p.isBot, lapDone: p.lapDone, order: p.order })),
       grabble: { ...this.grabble }, minigame: this.minigame ? { ...this.minigame } : null,
-      winnerId: this.winnerId, lastEvent: this.lastEvent, lastDice: this.lastDice, boardConnected: this.boardConnected, boardReady: this.boardReady,
+      winnerId: this.winnerId, lastEvent: this.lastEvent, lastDice: this.lastDice, boardConnected: this.boardConnected, boardReady: this.boardReady, closesAt: this.closesAt,
     };
   }
   pushState() { this.emit('state', this.toState()); }
@@ -86,13 +89,23 @@ export class Game extends EventEmitter {
 
   // ---------- events + board acks ----------
   async sendEvent(type, data = {}, { wait = true, timeout = 8000 } = {}) {
-    if (wait && this.boardConnected && !this.boardReady && !this.fastMode) await new Promise(r => { const t = setTimeout(r, 600_000); t.unref?.(); this.readyWaiters.push(() => { clearTimeout(t); r(); }); });
+    const gen = this.gen; const check = () => { if (gen !== this.gen) throw new FlowAborted(); };
+    if (wait && this.boardConnected && !this.boardReady && !this.fastMode) { await new Promise(r => { const t = setTimeout(r, 600_000); t.unref?.(); this.readyWaiters.push(() => { clearTimeout(t); r(); }); }); check(); }
     const id = `${Date.now().toString(36)}-${++this.eventSeq}`;
     const ev = { ...data, id, type };               // id/type always win over payload fields
     this.emit('event', ev);
     if (!wait) return;
-    if (!this.boardConnected || this.fastMode) return new Promise(r => setTimeout(r, this.fastMode ? 5 : 150));
-    return new Promise(resolve => { const t = setTimeout(() => { this.pendingAcks.delete(id); resolve(); }, timeout); t.unref?.(); this.pendingAcks.set(id, () => { clearTimeout(t); resolve(); }); });
+    if (!this.boardConnected || this.fastMode) { await new Promise(r => setTimeout(r, this.fastMode ? 5 : 150)); return check(); }
+    await new Promise(resolve => { const t = setTimeout(() => { this.pendingAcks.delete(id); resolve(); }, timeout); t.unref?.(); this.pendingAcks.set(id, () => { clearTimeout(t); resolve(); }); });
+    check();
+  }
+  // stop every flow that is waiting (on the board, a timer or a gate) so nothing from the old game leaks into the next one
+  abortFlows() {
+    this.gen++; this.clearTimers();
+    const acks = [...this.pendingAcks.values()]; this.pendingAcks.clear(); acks.forEach(r => r());
+    this.releaseReady();
+    const g = this.pending?.gate; if (g) g.resolve({ pass: false, perfect: false, score: 0, aborted: true });
+    this.pending = {}; this.minigame = null; this.launch = null;
   }
   ackEvent(id) { const r = this.pendingAcks.get(id); if (r) { this.pendingAcks.delete(id); r(); } }
   setBoardConnected(v, ready = false) { this.boardConnected = v; if (!v) { this.boardReady = false; for (const r of this.pendingAcks.values()) r(); this.pendingAcks.clear(); this.releaseReady(); } else if (ready) this.setBoardReady(true); this.pushState(); }
@@ -105,11 +118,12 @@ export class Game extends EventEmitter {
   current() { return this.player(this.turnPlayerId); }
   others(p) { return this.players.filter(o => o.id !== p.id); }
   occupied(index, except) { return this.players.some(p => p.space === index && p.id !== except); }
-  enqueue(fn) { this.queue = this.queue.then(fn).catch(err => console.error('[game]', err)); return this.queue; }
+  enqueue(fn) { this.queue = this.queue.then(fn).catch(err => { if (!(err instanceof FlowAborted)) console.error('[game]', err); }); return this.queue; }
   clearTimers() { for (const k of Object.keys(this.timers)) { clearTimeout(this.timers[k]); delete this.timers[k]; } }
   setDeadline(ms) { this.turnDeadline = Date.now() + ms; }
   delayFor(p, humanMs) { if (p.isBot) return this.fastMode ? 5 : TIMEOUTS.bot; if (!p.connected) return this.fastMode ? 5 : TIMEOUTS.disconnected; return humanMs; }
-  armAutoAct(ms) { clearTimeout(this.timers.auto); this.timers.auto = setTimeout(() => this.autoAct(), ms); this.timers.auto.unref?.(); }
+  // a waiting bell gate holds a flow open, so its timer must keep the process alive; other auto-act timers do not
+  armAutoAct(ms) { clearTimeout(this.timers.auto); this.timers.auto = setTimeout(() => { try { this.autoAct(); } catch (e) { console.error('[game] auto-act failed', e); } }, ms); if (!this.pending?.gate) this.timers.auto.unref?.(); }
   d(n) { return 1 + Math.floor(Math.random() * n); }
   // ---------- Benny & Miss Suds ----------
   flirtPair() { const b = this.players.find(p => p.heroId === 'baker'); const m = this.players.find(p => p.heroId === 'misssuds'); return b && m ? { b, m } : null; }
@@ -137,8 +151,9 @@ export class Game extends EventEmitter {
     this.sendEvent('lobby:joined', { playerId: id }, { wait: false }); this.pushState();
     return { ok: true, playerId: id, token, state: this.toState() };
   }
-  addBot(name) {
-    const hero = HEROES.find(h => !this.players.some(p => p.heroId === h.id)); if (!hero || this.players.length >= 6) return null;
+  addBot(name, heroId) {
+    const free = (h) => !this.players.some(p => p.heroId === h.id);
+    const hero = (heroId && HEROES.find(h => h.id === heroId && free(h))) || HEROES.find(free); if (!hero || this.players.length >= 6) return null;
     const id = crypto.randomBytes(4).toString('hex');
     const p = { id, token: null, name: name || hero.name, heroId: hero.id, color: hero.color, space: CASTLE_INDEX, shards: 0, connected: true, isBot: true, lapDone: false, order: this.players.length, socketId: null };
     this.players.push(p); if (!this.hostId) this.hostId = id; this.pushState(); return p;
@@ -148,7 +163,7 @@ export class Game extends EventEmitter {
     p.connected = true; p.socketId = socketId; clearTimeout(this.timers['host:' + p.id]); delete this.timers['host:' + p.id];
     if (!this.player(this.hostId)?.connected) this.hostId = p.id;
     // a reloaded phone takes over again: cancel the disconnect auto-play and give the human the normal time for the current step
-    if (this.phase === 'playing' && this.turnPlayerId === p.id) { clearTimeout(this.timers.auto); const ms = { roll: TIMEOUTS.roll, choose_fetch: TIMEOUTS.choose, choose_launch: TIMEOUTS.choose, minigame: TIMEOUTS.minigame }[this.turnStep]; if (ms) { if (this.turnStep === 'minigame' && this.minigame) { this.minigame.deadline = Date.now() + ms; this.setDeadline(ms); } this.armAutoAct(ms); } }
+    if (this.phase === 'playing' && this.turnPlayerId === p.id) { clearTimeout(this.timers.auto); const ms = { roll: TIMEOUTS.roll, choose_fetch: TIMEOUTS.choose, choose_launch: TIMEOUTS.choose, minigame: this.minigame?.params?.gateIndex >= 1 ? TIMEOUTS.gate : TIMEOUTS.minigame }[this.turnStep]; if (ms) { if (this.turnStep === 'minigame' && this.minigame) { this.minigame.deadline = Date.now() + ms; this.setDeadline(ms); } this.armAutoAct(ms); } }
     this.pushState(); return { ok: true, playerId: p.id, state: this.toState() };
   }
   disconnect(playerId) {
@@ -165,21 +180,27 @@ export class Game extends EventEmitter {
     if (this.phase !== 'lobby') return { ok: false, error: 'already started' };
     if (!force && byPlayerId !== this.hostId) return { ok: false, error: 'Only the host can start.' };
     if (this.players.length < 2) return { ok: false, error: 'Need at least 2 players.' };
+    this.grabbleTarget = this.baseGrabbleTarget + Math.max(0, this.players.length - 4) * 2; // bigger groups give Grabble more to snatch, so his bag is bigger
     this.phase = 'playing'; this.winnerId = null; this.turnPlayerId = this.players[0].id; this.turnStep = 'resolving'; this.stats = { turns: 0, launches: 0, minigames: 0, chases: 0 };
     this.grabble = { space: GRABBLE_START, loot: 0, lastMove: null };
     this.setLast('start', { text: 'The chase begins! Collect shards and stop Grabble!', word: 'GO!' }); this.pushState();
     this.enqueue(async () => { await this.sendEvent('game:start', {}); await this.narrate('game_start'); await this.narrate('grabble_intro'); await this.flirt('benny_hello'); await this.beginTurn(this.players[0].id); });
     return { ok: true };
   }
+  // host: end the current game at any point; everyone stays in the room (back to the lobby)
+  endToLobby(byPlayerId) {
+    if (byPlayerId !== this.hostId && byPlayerId !== 'dev') return { ok: false, error: 'Only the host can end the game.' };
+    const r = this.playAgain(byPlayerId); if (r.ok) this.setLast('lobby', { text: 'The host ended the game. Ready for a new one?', word: '' }); this.pushState(); return r;
+  }
   playAgain(byPlayerId) {
     if (byPlayerId !== this.hostId && byPlayerId !== 'dev') return { ok: false, error: 'host only' };
-    this.clearTimers(); this.phase = 'lobby'; this.winnerId = null; this.turnPlayerId = null; this.turnStep = null; this.turnDeadline = null; this.minigame = null; this.pending = {};
+    this.abortFlows(); this.closesAt = null; this.phase = 'lobby'; this.winnerId = null; this.turnPlayerId = null; this.turnStep = null; this.turnDeadline = null; this.minigame = null; this.pending = {};
     for (const p of this.players) { p.space = CASTLE_INDEX; p.shards = 0; p.lapDone = false; }
     this.grabble = { space: GRABBLE_START, loot: 0, lastMove: null };
     this.setLast('lobby', { text: 'Ready for another chase?', word: '' }); this.sendEvent('game:reset', {}, { wait: false }); this.pushState();
     return { ok: true };
   }
-  resetAll() { this.clearTimers(); this.players = []; this.tokens.clear(); this.hostId = null; this.phase = 'lobby'; this.winnerId = null; this.turnPlayerId = null; this.turnStep = null; this.minigame = null; this.pending = {}; this.grabble = { space: GRABBLE_START, loot: 0, lastMove: null }; this.setLast('lobby', { text: 'Waiting for friends to join…', word: '' }); this.sendEvent('game:reset', {}, { wait: false }); this.pushState(); }
+  resetAll() { this.abortFlows(); this.closesAt = null; this.players = []; this.tokens.clear(); this.hostId = null; this.phase = 'lobby'; this.winnerId = null; this.turnPlayerId = null; this.turnStep = null; this.minigame = null; this.pending = {}; this.grabble = { space: GRABBLE_START, loot: 0, lastMove: null }; this.setLast('lobby', { text: 'Waiting for friends to join…', word: '' }); this.sendEvent('game:reset', {}, { wait: false }); this.pushState(); }
 
   // ---------- turn flow ----------
   async beginTurn(playerId) {
@@ -197,19 +218,19 @@ export class Game extends EventEmitter {
       case 'roll': return this.roll(p.id);
       case 'choose_fetch': { let c = this.fetchCandidates(p); if (p.heroId === 'baker' && c.length > 1) c = c.filter(o => o.heroId !== 'misssuds'); return this.chooseTarget(p.id, richest(c)?.id); }
       case 'choose_launch': { const g = this.grabble.loot >= 2 ? 'grabble' : null; let c = this.others(p); if (p.heroId === 'baker' && c.length > 1) c = c.filter(o => o.heroId !== 'misssuds'); return this.chooseTarget(p.id, g || richest(c)?.id); }
-      case 'minigame': return this.miniResult(p.id, this.minigame?.id, this.botScore(this.minigame?.type));
+      case 'minigame': return this.miniResult(p.id, this.minigame?.id, this.botScore(this.minigame?.type, this.minigame?.params));
     }
   }
-  botScore(type) { // ~70 % success for bots and for timed-out humans
-    const hit = Math.random() < 0.7;
+  botScore(type, params) { // bots and timed-out phones: ~70 % success at easy, a little less as the tier gets harder
+    const tier = params?.tier || 'easy'; const cfg = cfgOf(type, params); const r = Math.random;
+    const hit = r() < (this.botSkill ?? ({ easy: 0.72, medium: 0.64, hard: 0.56 }[tier] ?? 0.7)); /* botSkill: dev/test override 0..1 */ const max = maxScore(type, cfg); const span = (a, b) => a + Math.floor(r() * (b - a + 1));
     switch (type) {
-      case 'bell': return hit ? SWEET[0] + Math.random() * (SWEET[1] - SWEET[0]) : (Math.random() < 0.5 ? Math.random() * 0.28 : 0.77 + Math.random() * 0.23);
-      case 'chase': return hit ? CHASE_ZONE[0] + Math.random() * (CHASE_ZONE[1] - CHASE_ZONE[0]) : Math.random() * 0.4;
-      case 'flight': return hit ? 1 + Math.floor(Math.random() * 7) : 0;
-      case 'shard': return hit ? 1 + Math.floor(Math.random() * 5) : 0;
-      case 'fetch': return hit ? 1 + Math.floor(Math.random() * 3) : 0;
-      case 'swish': return hit ? 3 : Math.floor(Math.random() * 3);
-      case 'cake': return hit ? 3 + Math.floor(Math.random() * 6) : Math.floor(Math.random() * 3);
+      case 'bell': case 'chase': { const [a, b] = cfg.zone || [0.3, 0.75]; return hit ? a + r() * (b - a) : (r() < 0.5 ? r() * a * 0.95 : b + (1 - b) * (0.05 + r() * 0.95)); }
+      case 'flight': return hit ? span(1, max) : 0;
+      case 'shard': return hit ? span(1, max) : 0;
+      case 'fetch': return hit ? span(1, max) : 0;
+      case 'swish': return hit ? max : span(0, max - 1);
+      case 'cake': return hit ? span(Math.ceil(max * 0.4), max) : span(0, Math.ceil(max * 0.3));
       default: return 0;
     }
   }
@@ -275,10 +296,10 @@ export class Game extends EventEmitter {
     this.stats.chases++; this.setLast('chase', FRIENDLY.chase_start(p)); this.pushState();
     await this.sendEvent('chase:start', { playerId: p.id }, { timeout: 3000 });
     await this.narrate('chase_start', { wait: false });
-    return this.startMinigame(p, 'chase', { zone: CHASE_ZONE, perfect: CHASE_PERFECT, loot: this.grabble.loot });
+    return this.startMinigame(p, 'chase', { loot: this.grabble.loot });
   }
-  async resolveChase(p, score) {
-    const inZone = score >= CHASE_ZONE[0] && score <= CHASE_ZONE[1]; const perfect = inZone && score >= CHASE_PERFECT[0] && score <= CHASE_PERFECT[1];
+  async resolveChase(p, score, o = {}) {
+    const inZone = !!o.won; const perfect = !!o.perfect;
     let taken = 0;
     if (inZone) {
       taken = Math.min(this.grabble.loot, perfect ? 3 : 2);
@@ -299,20 +320,24 @@ export class Game extends EventEmitter {
 
   // ---------- mini-games ----------
   async startMinigame(p, type, params = {}) {
-    this.stats.minigames++;
-    const id = `${type}-${++this.eventSeq}`; const ms = TIMEOUTS.minigame;
+    const gate = params.gateIndex >= 1; if (!gate) this.stats.minigames++;
+    const tier = params.tier || tierFor(p.heroId); const cfg = MINI_CFG[type]?.[tier] || MINI_CFG[type]?.easy;
+    params = { ...params, tier, cfg }; if (type === 'chase') { params.zone = cfg.zone; params.perfect = cfg.perfect; }
+    const id = `${type}-${++this.eventSeq}`; const ms = gate ? TIMEOUTS.gate : Math.max(TIMEOUTS.minigame, ((cfg?.duration || 0) + 12) * 1000); // long hard games get the time they need
     this.minigame = { id, type, playerId: p.id, deadline: Date.now() + ms, params }; this.turnStep = 'minigame'; this.setDeadline(ms);
-    this.setLast('minigame', FRIENDLY.mini(p, MINI_LABELS[type])); this.pushState();
-    await this.sendEvent('minigame:start', { playerId: p.id, miniType: type, id }, { timeout: 2500 });
+    this.setLast('minigame', gate ? { text: `${p.name}: ring the bell at the ${params.section?.label || 'next section'}!`, word: 'DING!' } : FRIENDLY.mini(p, MINI_LABELS[type])); this.pushState();
+    if (!gate) await this.sendEvent('minigame:start', { playerId: p.id, miniType: type, id, tier }, { timeout: 2500 });
     if (type !== 'bell') await this.narrate(`mini_${type}`, { wait: false });
     this.armAutoAct(p.isBot ? (this.fastMode ? 5 : TIMEOUTS.botMini) : (!p.connected ? TIMEOUTS.disconnected : ms));
   }
   miniTick(playerId, id, progress) { if (!this.minigame || this.minigame.id !== id || this.minigame.playerId !== playerId) return; this.sendEvent('minigame:progress', { playerId, progress: Math.max(0, Math.min(1, Number(progress) || 0)) }, { wait: false }); }
-  miniResult(playerId, id, score) {
+  miniResult(playerId, id, score, { failed = false } = {}) {
     const p = this.player(playerId); const m = this.minigame;
     if (!p || !m || this.turnStep !== 'minigame' || m.playerId !== playerId || (id && id !== m.id)) return { ok: false, error: 'no mini-game running for you' };
-    score = Number(score); if (!Number.isFinite(score)) score = 0;
+    score = failed ? 0 : Number(score); if (!Number.isFinite(score)) score = 0;
+    const max = m.type === 'bell' || m.type === 'chase' ? 1 : maxScore(m.type, cfgOf(m.type, m.params)); score = Math.max(0, Math.min(max, score));
     this.clearTimers(); this.turnStep = 'resolving'; this.turnDeadline = null; this.minigame = null; this.pushState();
+    if (m.params?.gateIndex >= 1) { const g = this.pending.gate; this.pending.gate = null; const o = this.gradeBell(score, m.params); g?.resolve({ ...o, score }); return { ok: true }; }
     this.enqueue(async () => {
       const outcome = await this.resolveMinigame(p, m.type, score, m.params);
       await this.sendEvent('minigame:end', { playerId: p.id, miniType: m.type, score, outcome }, { timeout: 3000 });
@@ -321,15 +346,17 @@ export class Game extends EventEmitter {
     return { ok: true };
   }
   // decides the outcome (no side effects) so the board can show it as the game ends
+  gradeBell(score, params) { const c = cfgOf('bell', params); const pass = inRange(score, c.zone); return { pass, caught: pass, perfect: pass && inRange(score, c.perfect) }; }
   async resolveMinigame(p, type, score, params) {
+    const cfg = cfgOf(type, params); const max = maxScore(type, cfg); const atLeast = (f) => score >= Math.ceil(f * max);
     switch (type) {
-      case 'shard': return { gain: score >= 5 ? 2 : score >= 1 ? 1 : 0 };
-      case 'flight': return { fly: score >= 1, bonus: score >= 5 };
-      case 'fetch': return { gain: score >= 3 ? 2 : score >= 1 ? 1 : 0, source: params.source, targetId: params.targetId };
-      case 'swish': return { safe: score >= 3 };
-      case 'cake': return { bonus: score >= 5 };
-      case 'chase': { const inZone = score >= CHASE_ZONE[0] && score <= CHASE_ZONE[1]; return { won: inZone, perfect: inZone && score >= CHASE_PERFECT[0] && score <= CHASE_PERFECT[1] }; }
-      case 'bell': { const caught = score >= SWEET[0] && score <= SWEET[1]; return { caught, perfect: caught && score >= PERFECT[0] && score <= PERFECT[1] }; }
+      case 'shard': return { gain: atLeast(0.8) ? 2 : score >= 1 ? 1 : 0, tier: params?.tier };
+      case 'flight': return { fly: score >= 1, bonus: atLeast(0.6), tier: params?.tier };
+      case 'fetch': return { gain: atLeast(0.8) ? 2 : atLeast(0.3) && score >= 1 ? 1 : 0, source: params.source, targetId: params.targetId, tier: params?.tier };
+      case 'swish': return { safe: score >= max, tier: params?.tier };
+      case 'cake': return { bonus: atLeast(0.5), tier: params?.tier };
+      case 'chase': { const inZone = inRange(score, cfg.zone); return { won: inZone, perfect: inZone && inRange(score, cfg.perfect), tier: params?.tier }; }
+      case 'bell': { const o = this.gradeBell(score, params); return { caught: o.caught, perfect: o.perfect, tier: params?.tier }; }
       default: return {};
     }
   }
@@ -358,7 +385,7 @@ export class Game extends EventEmitter {
       case 'cake':
         if (o.bonus) { this.setLast('cake', FRIENDLY.cake_bonus(p)); this.pushState(); await this.addShards(p, 1, 'cake'); await this.narrate('mini_cake_bonus'); } else await this.narrate('mini_great', { wait: false });
         return this.endTurn();
-      case 'chase': return this.resolveChase(p, score);
+      case 'chase': return this.resolveChase(p, score, o);
       case 'bell': return this.resolveLaunch(p, score, o);
     }
   }
@@ -412,29 +439,52 @@ export class Game extends EventEmitter {
       if (isGrabble) { const from = this.grabble.space; const path = pathBetween(from, BRIDGE_INDEX); this.grabble.space = BRIDGE_INDEX; this.grabble.lastMove = { from, to: BRIDGE_INDEX, path }; this.setLast('sent', FRIENDLY.sent(p, 'Grabble')); this.pushState(); await this.sendEvent('sendToBridge', { playerId: p.id, targetId: 'grabble', from, to: BRIDGE_INDEX }, { timeout: 4000 }); await this.narrate('catcher_target_grabble', { wait: false }); }
       else { const from = t.space; t.space = BRIDGE_INDEX; this.setLast('sent', FRIENDLY.sent(p, t.name)); this.pushState(); await this.sendEvent('sendToBridge', { playerId: p.id, targetId: t.id, from, to: BRIDGE_INDEX }, { timeout: 4000 }); if (p.heroId === 'baker' && t.heroId === 'misssuds') await this.flirt('benny_sorry'); else await this.narrate('launch_sent', { wait: false }); }
       await this.narrate('launch_ready', { wait: false });
-      return this.startMinigame(p, 'bell', { sweet: SWEET, perfect: PERFECT });
+      const tier = tierFor(p.heroId); const gates = gatesFor(p.heroId, tier);
+      this.launch = { byId: p.id, tier, gates, results: [], live: false, failed: false };
+      return this.startMinigame(p, 'bell', { tier, gateIndex: 0, gateCount: gates.length, section: gates[0] });
     });
     return { ok: true };
   }
   // legacy name kept for the phone's bell screen
   launchTiming(playerId, score) { return this.miniResult(playerId, this.minigame?.id, score); }
 
+  // one bell for a later section of the machine (the board asks while it plays, or the server runs it with no board)
+  runGate(p, index) {
+    const L = this.launch; if (!L) return Promise.resolve({ pass: false, perfect: false, score: 0 });
+    return new Promise(resolve => { this.pending.gate = { index, resolve }; this.startMinigame(p, 'bell', { tier: L.tier, gateIndex: index, gateCount: L.gates.length, section: L.gates[index] }).catch(() => {}); });
+  }
+  // the board reached gate `index` while playing the machine
+  async onBoardGate(index) {
+    const L = this.launch; if (!L || !L.live || L.failed || index !== L.results.length || L.asking) return;
+    const p = this.player(L.byId); if (!p) return; L.asking = true; const gen = this.gen;
+    const r = await this.runGate(p, index); if (gen !== this.gen || this.launch !== L) return;
+    L.asking = false; L.results.push(r); if (!r.pass) L.failed = true;
+    this.sendEvent('catcher:gateResult', { index, pass: r.pass, perfect: r.perfect, score: r.score }, { wait: false }).catch(() => {});
+  }
   async resolveLaunch(p, score, { caught, perfect }) {
     this.stats.launches++;
     const targets = this.players.filter(o => o.space === BRIDGE_INDEX && o.id !== p.id).map(o => o.id); const grabbleOnBridge = this.grabble.space === BRIDGE_INDEX;
-    await this.sendEvent('launch', { byPlayerId: p.id, targets, grabble: grabbleOnBridge, caught, perfect, score }, { timeout: 45000 });
+    const L = this.launch || { gates: [{ id: 'petwash' }], results: [] }; this.launch = L; L.results = [{ pass: caught, perfect, score }];
+    const gateIds = L.gates.map(g => g.id); const live = caught && L.gates.length > 1 && this.boardConnected && this.boardReady && !this.fastMode;
+    if (caught && L.gates.length > 1 && !live) { // no board to watch: ring the remaining bells one after another
+      for (let i = 1; i < L.gates.length && !L.failed; i++) { const r = await this.runGate(p, i); L.results.push(r); if (!r.pass) L.failed = true; }
+    }
+    L.live = live;
+    await this.sendEvent('launch', { byPlayerId: p.id, targets, grabble: grabbleOnBridge, caught: live ? true : (caught && !L.failed), perfect, score, gates: gateIds, live, failAt: L.failed ? L.results.length - 1 : null }, { timeout: live ? 150000 : 45000 });
+    if (live) { L.live = false; for (let i = L.results.length; i < L.gates.length && !L.failed; i++) { const r = { ...this.gradeBell(this.botScore('bell', { tier: L.tier, cfg: MINI_CFG.bell[L.tier] }), { cfg: MINI_CFG.bell[L.tier] }), auto: true }; L.results.push(r); if (!r.pass) L.failed = true; } }
+    caught = caught && !L.failed; const anyPerfect = L.results.some(r => r.perfect); this.launch = null;
+    if (anyPerfect) { await this.addShards(p, 1, 'perfect'); await this.narrate('launch_perfect', { wait: false }); }
     if (caught) {
       const victims = targets.map(id => ({ playerId: id, gave: this.player(id).shards > 0 ? 1 : 0 }));
       let taken = 0, spilled = 0; if (grabbleOnBridge) { taken = Math.min(3, this.grabble.loot); spilled = this.grabble.loot - taken; }
       const names = victims.map(v => this.player(v.playerId).name).join(' and ');
-      this.setLast('caught', grabbleOnBridge ? FRIENDLY.caught_grabble(p, taken) : FRIENDLY.caught(p, names)); this.pushState();
+      this.setLast('caught', grabbleOnBridge ? FRIENDLY.caught_grabble(p, taken, spilled) : FRIENDLY.caught(p, names)); this.pushState();
       await this.sendEvent('caught', { byPlayerId: p.id, victims, grabble: grabbleOnBridge, taken, spilled }, { timeout: 5000 });
       let gained = 0;
       for (const v of victims) if (v.gave) { await this.addShards(this.player(v.playerId), -1, 'catch', p.id); gained++; }
       if (grabbleOnBridge) { if (this.grabble.loot) await this.addLoot(-this.grabble.loot, 'caught'); this.grabble.space = GRABBLE_START; this.pushState(); await this.sendEvent('grabble:reset', {}, { timeout: 2500 }); gained += taken; }
       if (gained) await this.addShards(p, gained, 'catch');
       if (grabbleOnBridge && taken >= 2 && p.heroId === 'baker' && this.flirtPair()) { const m = this.flirtPair().m; await this.addShards(p, -1, 'gift', m.id); await this.addShards(m, 1, 'gift', p.id); await this.flirt('benny_gift'); }
-      if (perfect) await this.narrate('launch_perfect', { wait: false });
       await this.narrate(grabbleOnBridge ? (taken + spilled > 0 ? 'catcher_caught_grabble' : 'launch_caught_empty') : (gained === 0 ? 'launch_caught_empty' : (victims.length > 1 ? 'launch_caught_many' : 'launch_caught')));
     } else {
       this.setLast('missed', FRIENDLY.missed()); this.pushState();

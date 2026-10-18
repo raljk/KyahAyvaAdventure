@@ -28,7 +28,7 @@ gcloud run deploy kyah-ayva --source . --region australia-southeast1 --allow-una
 
 Keep it at one instance: game state lives in memory. Restarts or redeploys end games in progress.
 
-Settings (environment variables): `WIN_TARGET` (default 12), `GRABBLE_TARGET` (7), `PUBLIC_URL` (only if the site is reached through another domain), `DEV_TOKEN` (enables the `/api/dev/*` test helpers remotely with an `x-dev-token` header; otherwise they only work on the machine itself), `MAX_ROOMS` (300), `ROOM_IDLE_MINUTES` (120).
+Settings (environment variables): `WIN_TARGET` (default 12), `GRABBLE_TARGET` (7, plus 2 per player above four), `AUTO_CLOSE_MINUTES` (3), `PUBLIC_URL` (only if the site is reached through another domain), `DEV_TOKEN` (enables the `/api/dev/*` test helpers remotely with an `x-dev-token` header; otherwise they only work on the machine itself), `MAX_ROOMS` (300), `ROOM_IDLE_MINUTES` (120).
 
 A board reload keeps its room; add `?new=1` to the board address to start a fresh room.
 
@@ -47,7 +47,9 @@ This starts the game and a free Cloudflare quick tunnel (no account needed; inst
 
 ## How to play (short)
 
-Roll and scurry along the winding path through the village, collecting **Starlight Shards**. Special spaces start a quick **mini-game on your phone**: flap through flower rings on a Fairy Flight, find the twinkling flower, slide Charli to catch shards, dodge Grabble's net, catch strawberries for the cake. **Grabble** the gem snatcher scurries around after every turn, snatching shards into his loot bag; catch up with him for a Vine Grab, or land on **Launch the Catcher** to send a friend (or Grabble!) to the Bridge, ring the bell, and watch the Starlight Catcher run its chain reaction around the whole village. **Ten shards** make the Gem whole and win. If Grabble fills his bag first, everyone loses. Full rules: `docs/game-design-v2.md` (v1 base in `docs/game-design.md`).
+Roll and scurry along the winding path through the village, collecting **Starlight Shards**. Special spaces start a quick **mini-game on your phone**: flap through flower rings on a Fairy Flight, find the twinkling flower, slide Charli to catch shards, dodge Grabble's net, catch strawberries for the cake. **Grabble** the gem snatcher scurries around after every turn, snatching shards into his loot bag; catch up with him for a Vine Grab, or land on **Launch the Catcher** to send a friend (or Grabble!) to the Bridge, ring the bell, and watch the Starlight Catcher run its chain reaction around the whole village. **Twelve shards** make the Gem whole and win. If Grabble fills his bag first, everyone loses.
+
+Difficulty follows the hero: Miss Suds and Benny get the hardest mini-games, Kyah the middle, Ayva the gentlest, and Charli or Poodle a surprise each time. Launching the Catcher as a grown-up means ringing the bell at every section of the machine as it runs; miss one and it fizzles. A perfect ring earns a bonus shard. The host phone can end the game or close the room; finished rooms close themselves after a few minutes. Full rules: `docs/game-design-v2.md` (v1 base in `docs/game-design.md`).
 
 ## Play-test checklist
 

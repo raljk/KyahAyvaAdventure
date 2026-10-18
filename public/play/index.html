@@ -29,6 +29,9 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg>
       <b id="me-count">0</b><span>/<span id="me-target">6</span></span>
     </div>
+    <button class="icon-btn host-btn" id="host-btn" type="button" aria-label="Host menu" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2.4" fill="#2B2440"/><circle cx="12" cy="12" r="2.4" fill="#2B2440"/><circle cx="19" cy="12" r="2.4" fill="#2B2440"/></svg>
+    </button>
     <button class="icon-btn" id="mute" type="button" aria-label="Sound on or off">
       <svg viewBox="0 0 24 24" aria-hidden="true"><use id="mute-use" href="#i-sound-on"/></svg>
     </button>
@@ -187,11 +190,23 @@
         <svg class="ring small" id="win-ring" role="img" aria-label="The Starlight Gem"></svg>
       </div>
       <div class="bottom-dock">
+        <p class="closes-in" id="closes-in" role="timer" hidden>This room closes in 3:00</p>
         <button class="btn btn-go" id="again-btn" type="button" hidden>Play Again!</button>
+        <button class="btn btn-stay btn-small" id="close-btn" type="button" hidden>Close room</button>
         <p class="hint" id="again-wait" hidden>Waiting for the host to play again<span class="dots"><i>.</i><i>.</i><i>.</i></span></p>
       </div>
     </section>
   </main>
+
+  <!-- host menu + friendly confirm sheets -->
+  <div class="sheet-wrap" id="sheet" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <div class="sheet-icon" id="sheet-icon" aria-hidden="true"></div>
+      <h2 class="sheet-title" id="sheet-title">Host menu</h2>
+      <p class="sheet-text" id="sheet-text"></p>
+      <div class="sheet-btns" id="sheet-btns"></div>
+    </div>
+  </div>
 
   <canvas id="confetti" aria-hidden="true"></canvas>
   <div class="flash" id="flash" aria-hidden="true"></div>

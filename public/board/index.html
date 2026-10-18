@@ -21,7 +21,7 @@
   <div id="dice" class="hidden"><div class="cube"><div class="face f1">1</div><div class="face f2">2</div><div class="face f3">3</div><div class="face f4">4</div><div class="face f5">5</div><div class="face f6">6</div></div></div>
   <div id="turnBanner" class="paper hidden"><span id="turnHero"></span><span id="turnText">Waiting…</span></div>
   <div id="miniPanel" class="paper hidden">
-    <div class="miniHead"><div id="miniFace"></div><div class="miniMeta"><div id="miniTitle"></div><div id="miniHint"></div></div><div id="miniTimer"></div></div>
+    <div class="miniHead"><div id="miniFace"></div><div class="miniMeta"><div id="miniTitle"></div><div id="miniTier" hidden></div><div id="miniHint"></div></div><div id="miniTimer"></div></div>
     <div id="miniScreen"><img id="miniView" alt="" hidden><div id="miniPlaceholder">Starting…</div></div>
     <div class="miniBarWrap"><div id="miniBar"></div></div>
   </div>
@@ -33,9 +33,9 @@
     <div id="joinUrl" class="url"></div>
     <div id="qr"></div>
     <div id="lobbyPlayers"></div>
-    <p class="hint small">Room <b id="roomCode"></b> · The first phone to join is the host and starts the game.</p>
+    <p class="hint small">Room <b id="roomCode"></b> · The first phone to join is the host and starts the game. <button id="newRoomBtn" class="linkBtn">New room</button></p>
   </div>
-  <div id="winOverlay" class="hidden"><div class="paper"><div id="winWord">WE DID IT!</div><div id="winName"></div><div class="hint" id="winSub"></div><div class="hint small">Host: tap Play Again on your phone.</div></div></div>
+  <div id="winOverlay" class="hidden"><div class="paper"><div id="winWord">WE DID IT!</div><div id="winName"></div><div class="hint" id="winSub"></div><div class="hint small">Host: tap Play Again on your phone. · <button id="newRoomBtn2" class="linkBtn">New room</button></div></div></div>
   <div id="toast" class="hidden"></div>
 </div>
 <div id="splash">

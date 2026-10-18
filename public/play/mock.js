@@ -4,11 +4,14 @@
 //   &ms=4000      time per (non mini-game) step
 //   &join=1       start on the Join screen (no session); joining then starts the cycle
 //                 (&room=XYZ with &join=1 tries a wrong room code first: only MOCK is accepted)
+//   &tier=hard    difficulty for the mini-games (easy | medium | hard); default: the tier of the player's hero
+//   &game=gate    jump to a Catcher bell gate (gate 2 of 4, Flower Garden: no title card, banner, gate pips)
 //   &frames=1     also stream the live mini-game picture (player:miniFrame); stats in window.__mock.frames
 //   &game=flight  jump straight into one mini-game and replay it after every result
 //                 (flight | shard | fetch | swish | cake | chase | bell | legacybell)
 // Mini-game steps wait for the phone's player:miniResult, then show the result for a moment and move on.
 import { HERO_BY_ID } from '/shared/heroes.js';
+import { MINI, tierFor } from '/shared/difficulty.js';
 
 const mk = (id, heroId, name, shards, extra = {}) => ({
   id, name, heroId, color: (HERO_BY_ID[heroId] || { color: '#6E8FE0' }).color, space: 0, shards,
@@ -18,7 +21,7 @@ const mk = (id, heroId, name, shards, extra = {}) => ({
 const PARAMS = { chase: { zone: [0.45, 0.80], perfect: [0.60, 0.68], loot: 3 }, fetch: { source: 'grabble' }, bell: { sweet: [0.30, 0.75], perfect: [0.48, 0.58] }, flight: { pair: 22 } };
 const TITLES = { flight: 'Flappy Flight', shard: 'Look Under the Flowers', fetch: 'Charli Catches', swish: 'Dodge the Net', cake: 'Strawberry Catch', chase: 'Vine Grab', bell: 'Ring the Bell' };
 
-export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = true, players = 4, game = '' } = {}) {
+export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = true, players = 4, game = '', tier = '' } = {}) {
   const handlers = {};
   const fire = (ev, ...args) => (handlers[ev] || []).forEach((fn) => fn(...args));
   const log = [];
@@ -26,7 +29,8 @@ export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = 
   let idx = Math.max(0, start);
   let paused = hold;
   let isJoined = joined;
-  let visit = 0; let visitDeadline = 0; let resultIn = null; let eventId = 0;
+  const tag = Math.random().toString(36).slice(2, 6); // ids differ per page load (answered games are remembered per tab)
+  let visit = 0; let visitDeadline = 0; let visitStart = Date.now(); let resultIn = null; let eventId = 0;
   const me = mk('p1', 'kyah', 'Kyah', 3);
   const grabble = (loot = 3) => ({ space: 20, loot, lastMove: null });
 
@@ -44,14 +48,24 @@ export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = 
     lastEvent: { type: 'shard', text: 'Kyah found a shining shard!', word: 'TING!' },
     ...over,
   });
+  const tierOf = () => (MINI.flight[tier] ? tier : tierFor(me.heroId));
+  const paramsFor = (type) => ({ ...(PARAMS[type] || {}), tier: tierOf(), cfg: { ...MINI[type][tierOf()] } });
+  const gate = () => {
+    const id = `mock-gate-${visit}-${tag}`;
+    if (resultIn && resultIn.id === id) return base({ turnPlayerId: 'p1', turnStep: 'resolving', minigame: null, lastEvent: { type: 'catcher:gateResult', text: 'The Catcher rolls on…', word: 'DING!' } });
+    return base({
+      turnPlayerId: 'p1', turnStep: 'minigame', turnDeadline: visitDeadline,
+      minigame: { id, type: 'bell', playerId: 'p1', deadline: visitDeadline, params: { ...paramsFor('bell'), gateIndex: 1, gateCount: 4, section: { id: 'garden', label: 'Flower Garden' } } },
+    });
+  };
   const mini = (type, playerId = 'p1') => {
-    const id = `mock-${type}-${visit}`;
+    const id = `mock-${type}-${visit}-${tag}`;
     if (resultIn && resultIn.id === id) {
       return base({ turnPlayerId: playerId, turnStep: 'resolving', minigame: null, lastEvent: { type: 'minigame:end', text: `${TITLES[type]}: score ${resultIn.score}!`, word: 'TING!' } });
     }
     return base({
       turnPlayerId: playerId, turnStep: 'minigame', turnDeadline: visitDeadline,
-      minigame: { id, type, playerId, deadline: visitDeadline, params: PARAMS[type] || {} },
+      minigame: { id, type, playerId, deadline: visitDeadline, params: paramsFor(type) },
       lastEvent: { type: 'minigame:start', text: `Time for ${TITLES[type]}!`, word: 'WHOOSH!' },
     });
   };
@@ -73,14 +87,16 @@ export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = 
     { name: 'mini: cake', mini: 'cake', build: () => mini('cake') },
     { name: 'mini: chase', mini: 'chase', build: () => mini('chase') },
     { name: 'mini: bell', mini: 'bell', build: () => mini('bell') },
+    { name: 'bell gate 2 of 4 (Flower Garden)', mini: 'gate', build: gate },
     { name: 'ring the bell (legacy launch_timing)', mini: 'legacybell', build: legacyBell },
     { name: 'fairy flight offer (legacy)', build: () => base({ turnPlayerId: 'p1', turnStep: 'flight_offer', turnDeadline: visitDeadline, lastEvent: { type: 'space', text: 'A fairy flight! Fly across the village?', word: 'WHOOSH!' } }) },
-    { name: 'waiting: Ayva plays Dodge the Net', watch: 'p2', build: () => base({ turnPlayerId: 'p2', turnStep: 'minigame', turnDeadline: visitDeadline, minigame: { id: `mock-watch-${visit}`, type: 'swish', playerId: 'p2', deadline: visitDeadline, params: {} } }) },
+    { name: 'waiting: Ayva plays Dodge the Net', watch: 'p2', build: () => base({ turnPlayerId: 'p2', turnStep: 'minigame', turnDeadline: visitDeadline, minigame: { id: `mock-watch-${visit}-${tag}`, type: 'swish', playerId: 'p2', deadline: visitDeadline, params: {} } }) },
     { name: 'waiting: Ayva moving (Grabble 6)', build: () => base({ turnPlayerId: 'p2', turnStep: 'moving', grabble: grabble(6), lastEvent: { type: 'swish', text: 'Swish! Grabble snatched a shard! Hey, that is not yours!', word: 'SWISH!' } }) },
     { name: 'waiting: me resolving', build: () => base({ turnPlayerId: 'p1', turnStep: 'resolving', lastEvent: { type: 'caught', text: 'Caught in the flower basket!', word: 'STUCK!' } }) },
-    { name: 'win (me)', build: () => base({ phase: 'ended', winnerId: 'p1', turnPlayerId: null, players: [{ ...me, shards: 8 }, ...others()], lastEvent: { type: 'win', text: 'The Starlight Gem is whole again!', word: 'TING!' } }) },
+    { name: 'win (me) + closing countdown', build: () => base({ phase: 'ended', winnerId: 'p1', turnPlayerId: null, closesAt: visitStart + 180000, players: [{ ...me, shards: 8 }, ...others()], lastEvent: { type: 'win', text: 'The Starlight Gem is whole again!', word: 'TING!' } }) },
     { name: 'win (Charli)', build: () => base({ phase: 'ended', winnerId: 'p3', hostId: 'p2', turnPlayerId: null, players: [me, ...others().map((p) => (p.id === 'p3' ? { ...p, shards: 8 } : p))] }) },
-    { name: 'win (Grabble)', build: () => base({ phase: 'ended', winnerId: 'grabble', turnPlayerId: null, grabble: grabble(8), lastEvent: { type: 'grabble:win', text: 'That gem will be mine!', word: 'SWISH!' } }) },
+    { name: 'win (Grabble), guest view', build: () => base({ phase: 'ended', winnerId: 'grabble', hostId: 'p2', turnPlayerId: null, closesAt: visitStart + 45000, grabble: grabble(8), lastEvent: { type: 'grabble:win', text: 'That gem will be mine!', word: 'SWISH!' } }) },
+    { name: 'room closed (finished)', closed: 'finished', build: () => base({ phase: 'lobby', room: 'NEW1', players: others().slice(0, 1), hostId: 'p2', lastEvent: null }) },
   ];
   const gameStep = game ? steps.findIndex((s) => s.mini === game) : -1;
   if (gameStep >= 0) { idx = gameStep; paused = true; }
@@ -104,7 +120,17 @@ export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = 
       if (p >= 1) { clearInterval(watchTimer); emitEvent({ type: 'minigame:end', playerId: s.watch, gameType: 'swish', score: 3, outcome: 'dodged' }); }
     }, 200);
   };
-  const enter = () => { visit++; visitDeadline = Date.now() + (step().mini ? 25000 : 20000); resultIn = null; emitState(); startWatch(); };
+  const closeRoom = (reason) => { // like the server: room:closed, then the phone is no longer in the game
+    isJoined = false; clearTimeout(timer);
+    fire('room:closed', { reason });
+    setTimeout(() => fire('state', base({ phase: 'lobby', room: 'MOCK', players: others().slice(0, 2), hostId: 'p2', lastEvent: null, grabble: null })), 300);
+    chip();
+  };
+  const enter = () => {
+    visit++; visitStart = Date.now(); visitDeadline = Date.now() + (step().mini === 'gate' ? 9000 : step().mini ? 25000 : 20000); resultIn = null;
+    if (step().closed) { closeRoom(step().closed); return; }
+    emitState(); startWatch();
+  };
   const schedule = () => {
     clearTimeout(timer);
     if (paused || !isJoined || step().mini) return;
@@ -163,14 +189,14 @@ export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = 
           }
           me.heroId = payload.heroId; me.name = payload.name; me.color = HERO_BY_ID[payload.heroId].color;
           isJoined = true; idx = gameStep >= 0 ? gameStep : Math.max(0, start); paused = hold || gameStep >= 0;
-          visit++; visitDeadline = Date.now() + 25000;
+          visit++; visitStart = Date.now(); visitDeadline = Date.now() + (step().mini === 'gate' ? 9000 : 25000);
           setTimeout(() => {
             ack && ack({ ok: true, playerId: 'p1', token: 'mock-token', state: current() });
             emitState(); startWatch(); schedule();
           }, 120);
           return undefined;
         case 'player:rejoin':
-          if (!visitDeadline) { visit++; visitDeadline = Date.now() + 25000; }
+          if (!visitDeadline) { visit++; visitStart = Date.now(); visitDeadline = Date.now() + (step().mini === 'gate' ? 9000 : 25000); }
           return setTimeout(() => { ack && ack({ ok: true, playerId: 'p1', state: current() }); chip(); startWatch(); schedule(); }, 80);
         case 'player:miniTick':
           emitEvent({ type: 'minigame:progress', playerId: 'p1', progress: payload.progress });
@@ -178,8 +204,12 @@ export function createMockSocket({ hold = false, start = 0, ms = 4000, joined = 
         case 'player:miniResult': {
           const cur = current();
           if (!cur.minigame || cur.minigame.id !== payload.id) return setTimeout(() => ack && ack({ ok: false, error: 'No mini-game right now.' }), 80);
-          ok(); afterResult(payload.id, payload.score); return undefined;
+          ok(); afterResult(payload.id, payload.failed ? 0 : payload.score); return undefined;
         }
+        case 'player:endGame': // host: back to the lobby, everyone stays
+          ok(); setTimeout(() => api.goto(0), 150); return undefined;
+        case 'player:closeRoom': // host: the room closes for everyone
+          ok(); setTimeout(() => closeRoom('host'), 150); return undefined;
         case 'player:launchTiming':
           if (step().mini !== 'legacybell') return ok();
           ok(); afterResult(`legacy-${visit}`, payload.score); return undefined;

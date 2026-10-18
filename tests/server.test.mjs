@@ -14,19 +14,19 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 function client(query = {}) {
   const qs = new URLSearchParams({ EIO: '4', transport: 'websocket', ...query }).toString();
   const ws = new WebSocket(`ws://localhost:${PORT}/socket.io/?${qs}`);
-  let ackId = 0; const acks = new Map(); const states = []; let ready;
+  let ackId = 0; const acks = new Map(); const states = []; const events = []; let ready;
   const opened = new Promise(r => { ready = r; });
   ws.onmessage = (e) => { const m = String(e.data);
     if (m.startsWith('0')) ws.send('40'); else if (m === '2') ws.send('3');
     else if (m.startsWith('40')) ready();
     else if (m.startsWith('43')) { const i = m.indexOf('['); const id = Number(m.slice(2, i)); acks.get(id)?.(JSON.parse(m.slice(i))[0]); acks.delete(id); }
-    else if (m.startsWith('42')) { const [ev, data] = JSON.parse(m.slice(2)); if (ev === 'state') states.push(data); } };
-  return { opened, states, close: () => ws.close(),
+    else if (m.startsWith('42')) { const [ev, data] = JSON.parse(m.slice(2)); if (ev === 'state') states.push(data); else events.push([ev, data]); } };
+  return { opened, states, events, close: () => ws.close(),
     emit: (ev, data) => new Promise(res => { const id = ackId++; acks.set(id, res); ws.send(`42${id}` + JSON.stringify([ev, data])); setTimeout(() => res({ timeout: true }), 4000); }) };
 }
 
 before(async () => {
-  srv = spawn(process.execPath, [path.join(root, 'server/index.js')], { env: { ...process.env, PORT: String(PORT), PUBLIC_URL: '' }, stdio: 'ignore' });
+  srv = spawn(process.execPath, [path.join(root, 'server/index.js')], { env: { ...process.env, PORT: String(PORT), PUBLIC_URL: '', AUTO_CLOSE_MINUTES: '0.02', WIN_TARGET: '1' }, stdio: 'ignore' });
   for (let i = 0; i < 50; i++) { try { if ((await fetch(`${base}/healthz`)).ok) return; } catch {} await sleep(100); }
   throw new Error('server did not start');
 });
@@ -49,4 +49,30 @@ test('each board gets its own room; players join the right one; wrong codes are 
   const p1b = client(); await p1b.opened; const rj = await p1b.emit('player:rejoin', { token: j1.token }); assert.ok(rj.ok); assert.equal(rj.state.room, r1.room);
   const rooms = await (await fetch(`${base}/api/dev/rooms`)).json(); assert.ok(rooms.length >= 3);
   for (const c of [b1, b2, p1, p2, b1b, b3, p1b]) c.close();
+});
+
+test('host controls: end the game back to the lobby, close the room for everyone, auto-close after a finished game', async () => {
+  const board = client(); await board.opened; const r = await board.emit('board:hello', { ready: true });
+  const host = client({ room: r.room }); const guest = client({ room: r.room }); await Promise.all([host.opened, guest.opened]);
+  const h = await host.emit('player:join', { room: r.room, name: 'Host', heroId: 'ayva' }); const gj = await guest.emit('player:join', { room: r.room, name: 'Guest', heroId: 'kyah' });
+  assert.ok(h.ok && gj.ok);
+  assert.ok((await host.emit('player:start', {})).ok);
+  assert.equal((await guest.emit('player:endGame', {})).ok, false, 'only the host can end the game');
+  assert.ok((await host.emit('player:endGame', {})).ok); await sleep(150);
+  const st = host.states.at(-1); assert.equal(st.phase, 'lobby'); assert.equal(st.players.length, 2, 'everyone stays');
+  assert.equal((await guest.emit('player:closeRoom', {})).ok, false, 'only the host can close the room');
+  assert.ok((await host.emit('player:closeRoom', {})).ok); await sleep(150);
+  for (const c of [board, host, guest]) assert.ok(c.events.some(([ev, d]) => ev === 'room:closed' && d.reason === 'host'), 'everyone hears room:closed');
+  assert.equal((await guest.emit('player:roll', {})).ok, false, 'the old room is gone');
+  const fresh = await board.emit('board:hello', { ready: true, fresh: true }); assert.ok(fresh.ok); assert.notEqual(fresh.room, r.room);
+  // a finished game closes by itself (AUTO_CLOSE_MINUTES is 0.02 here)
+  const p1 = client({ room: fresh.room }); const p2 = client({ room: fresh.room }); await Promise.all([p1.opened, p2.opened]);
+  await p1.emit('player:join', { room: fresh.room, name: 'A', heroId: 'ayva' }); await p2.emit('player:join', { room: fresh.room, name: 'B', heroId: 'kyah' });
+  const won = (s) => s?.phase === 'ended';
+  await fetch(`${base}/api/dev/fast?room=${fresh.room}`, { method: 'POST' }); await fetch(`${base}/api/dev/bots?room=${fresh.room}&n=0`, { method: 'POST' });
+  await p1.emit('player:start', {});
+  for (let i = 0; i < 200 && !won(p1.states.at(-1)); i++) { const s = p1.states.at(-1); const me = s.players.find(p => p.turnPlayerId); if (s.turnStep === 'roll') await (s.turnPlayerId === s.players[0].id ? p1 : p2).emit('player:roll', {}); else if (s.turnStep === 'minigame' && s.minigame) await (s.minigame.playerId === s.players[0].id ? p1 : p2).emit('player:miniResult', { id: s.minigame.id, score: 0.5 }); else if (s.turnStep?.startsWith('choose')) await (s.turnPlayerId === s.players[0].id ? p1 : p2).emit('player:chooseTarget', { targetId: s.players.find(p => p.id !== s.turnPlayerId).id }); await sleep(30); }
+  assert.ok(won(p1.states.at(-1)), 'game finished'); assert.ok(p1.states.findLast(s => s.closesAt)?.closesAt > Date.now() - 5000, 'closesAt is announced');
+  await sleep(2000); assert.ok(p1.events.some(([ev, d]) => ev === 'room:closed' && d.reason === 'finished'), 'closed itself after the game');
+  for (const c of [board, host, guest, p1, p2]) c.close();
 });

@@ -19,6 +19,8 @@
 // full-screen canvas with a countdown ring -> result flash. Art is drawn over/with book-style canvas shapes
 // (pastel fills, chunky ink outlines); every bitmap has a drawn fallback, so a missing file never blocks play.
 
+import { MINI, TIERS, maxScore } from '../shared/difficulty.js';
+
 const TAU = Math.PI * 2;
 const INK = '#2B2440';
 const FONT = 'Fredoka, "Baloo 2", ui-rounded, system-ui, sans-serif';
@@ -160,7 +162,8 @@ function drawFlower(g, x, y, r, color, o = {}) {
   }
   circ(g, x, y, r * 0.34); fillInk(g, o.center || '#FFE27A', lw);
 }
-function drawShard(g, x, y, s, rot = 0, glow = false) {
+function drawShard(g, x, y, s, rot = 0, glow = false, fake = false) {
+  if (fake) { drawFakeShard(g, x, y, s, rot); return; }
   g.save(); g.translate(x, y); g.rotate(rot);
   if (glow) {
     const rg = g.createRadialGradient(0, 0, 0, 0, 0, s * 2.2); rg.addColorStop(0, 'rgba(255,240,170,.85)'); rg.addColorStop(1, 'rgba(255,240,170,0)');
@@ -274,6 +277,32 @@ function drawBucket(g, x, y, s, rot) {
   for (const k of [-1, 0, 1]) { circ(g, k * s * 0.1, -s * 0.09 + (k ? s * 0.03 : 0), s * 0.04); g.fillStyle = '#FFFFFF'; g.fill(); }
   g.restore();
 }
+// Grabble's fake shard: the same shape, but dull grey-purple with a tiny green Grabble smudge (thumbprint + mustache curl)
+function drawFakeShard(g, x, y, s, rot = 0) {
+  g.save(); g.translate(x, y); g.rotate(rot);
+  const pts = [[0, -1], [0.62, -0.25], [0.4, 0.95], [-0.4, 0.95], [-0.62, -0.25]];
+  g.beginPath(); pts.forEach(([px, py], i) => (i ? g.lineTo(px * s, py * s) : g.moveTo(px * s, py * s))); g.closePath();
+  const gr = g.createLinearGradient(0, -s, 0, s); gr.addColorStop(0, '#C9C2D3'); gr.addColorStop(0.5, '#8E829F'); gr.addColorStop(1, '#9E8BA6');
+  g.fillStyle = gr; g.fill(); ink(g, Math.max(2.5, s * 0.13));
+  g.beginPath(); g.moveTo(-0.62 * s, -0.25 * s); g.lineTo(0.62 * s, -0.25 * s); g.moveTo(0, -s); g.lineTo(-0.2 * s, -0.25 * s); g.lineTo(0, 0.95 * s);
+  g.moveTo(0, -s); g.lineTo(0.2 * s, -0.25 * s); g.lineWidth = Math.max(1.2, s * 0.06); g.strokeStyle = 'rgba(43,36,64,.4)'; g.stroke();
+  g.beginPath(); g.ellipse(0.18 * s, 0.45 * s, 0.17 * s, 0.13 * s, 0.4, 0, TAU); g.fillStyle = 'rgba(127,176,105,.85)'; g.fill();
+  g.beginPath(); g.moveTo(-0.3 * s, 0.12 * s); g.quadraticCurveTo(-0.15 * s, 0.25 * s, 0, 0.12 * s); g.quadraticCurveTo(0.15 * s, 0.25 * s, 0.3 * s, 0.12 * s);
+  g.lineWidth = Math.max(1.5, s * 0.08); g.strokeStyle = 'rgba(59,42,38,.75)'; g.lineCap = 'round'; g.stroke();
+  g.restore();
+}
+// Grabble's mouldy berry: grey-green, fuzzy spots
+function drawRottenBerry(g, x, y, r, rot = 0) {
+  g.save(); g.translate(x, y); g.rotate(rot);
+  g.beginPath(); g.moveTo(0, r * 1.05);
+  g.bezierCurveTo(-r * 1.2, r * 0.3, -r * 1.05, -r * 0.85, 0, -r * 0.62);
+  g.bezierCurveTo(r * 1.05, -r * 0.85, r * 1.2, r * 0.3, 0, r * 1.05); g.closePath();
+  fillInk(g, '#8FA27A', Math.max(2.5, r * 0.1));
+  for (const [sx, sy, sr] of [[-0.35, -0.15, 0.22], [0.3, 0.1, 0.28], [-0.05, 0.5, 0.18], [0.25, -0.35, 0.14]]) { circ(g, sx * r, sy * r, sr * r); g.fillStyle = 'rgba(220,226,200,.85)'; g.fill(); }
+  g.beginPath(); for (let i = 0; i < 4; i++) { const a = -Math.PI / 2 + ((i - 1.5) * Math.PI) / 5; g.moveTo(0, -r * 0.62); g.lineTo(Math.cos(a) * r * 0.45, -r * 0.62 + Math.sin(a) * r * 0.25 + r * 0.05); }
+  g.lineWidth = Math.max(3, r * 0.16); g.strokeStyle = '#6E6650'; g.lineCap = 'round'; g.stroke();
+  g.restore();
+}
 function drawBerry(g, x, y, r, rot = 0) {
   g.save(); g.translate(x, y); g.rotate(rot);
   g.beginPath(); g.moveTo(0, r * 1.05);
@@ -364,7 +393,8 @@ const GAMES = {};
 
 // ---- Flappy Flight: tap to flap through 8 flower-ring gates over the rooftops (12 s). Rim flowers = tumble.
 GAMES.flight = (api) => {
-  const DUR = 12; const N = 8;
+  const cfg = api.cfg; const DUR = cfg.duration; const N = cfg.rings;
+  const STEP = (DUR - 2.9) / Math.max(1, N - 1); // first hoop arrives at 1.9 s, the last ~1 s before the end
   const st = { cam: 0, rings: 0, gates: [], hero: null, tumble: 0, wing: 0, flaps: 0, trail: [], trailT: 0 };
   let A, top, bottom, roofH, speed, G, FLAP, MAXF;
   const heroId = api.hero.id;
@@ -374,7 +404,7 @@ GAMES.flight = (api) => {
     roofH = clamp(api.H * 0.15, 76, 124);
     top = api.top + 2; bottom = api.H - roofH * 0.55;
     A = bottom - top;
-    speed = clamp(api.W * 0.38, 130, 215);
+    speed = clamp(api.W * 0.38, 130, 215) * (cfg.speed || 1);
     G = A * 0.95; FLAP = -A * 0.42; MAXF = A * 0.42; // floaty: slow falls are easy to catch
   }
   function init() {
@@ -388,12 +418,14 @@ GAMES.flight = (api) => {
     let prev = top + A * 0.48;
     for (let k = 0; k < N; k++) {
       const kr = 14; const safe = r * 0.55 + kr + 10;
-      let gap = Math.max(A * (0.42 - k * 0.008), r * 5.2);
+      let gap = Math.max(A * 0.42 * (cfg.gap || 1) * (1 - (0.06 * k) / Math.max(1, N - 1)), r * 5.2);
       gap = Math.min(gap, Math.max(r * 4, bounceTop - safe - (top + A * 0.07))); // short screens: shrink before overlapping
       const lo = top + gap / 2 + A * 0.07; const hi = Math.max(lo, bounceTop - safe - gap / 2);
-      const cy = k === 0 ? clamp(prev, lo, hi) : clamp(prev + (Math.random() < 0.5 ? -1 : 1) * rand(0.06, 0.16) * A, lo, hi);
+      // heightVar: how far a hoop's height can jump from the previous one (fraction of the playable height)
+      const hv = cfg.heightVar ?? 0.15; const jump = rand(0.35, 1) * hv * A;
+      const cy = k === 0 ? clamp(prev, lo, hi) : clamp(prev + (prev + jump > hi ? -1 : prev - jump < lo ? 1 : (Math.random() < 0.5 ? -1 : 1)) * jump, lo, hi);
       prev = cy;
-      st.gates.push({ x: st.hero.x + speed * (1.9 + k * 1.3), cy, gap, kr: Math.min(kr, clamp(gap * 0.06, 8, 14)), passed: false, got: false, flash: 0 });
+      st.gates.push({ x: st.hero.x + speed * (1.9 + k * STEP), cy, gap, kr: Math.min(kr, clamp(gap * 0.06, 8, 14)), passed: false, got: false, flash: 0 });
     }
   }
   // sprite drawn at ~22% of the canvas height; the collision circle (0.55·r) stays on the body only
@@ -573,18 +605,19 @@ GAMES.flight = (api) => {
     score: () => st.rings,
     progress: () => clamp(api.t / DUR, 0, 1),
     result(s) {
-      if (s >= 4) return { word: 'WOW!', line: `${s} rings! Fly away, and a bonus shard!`, good: true };
+      if (s >= Math.ceil(N / 2)) return { word: 'WOW!', line: `${s} of ${N} rings! Off you fly!`, good: true };
       if (s >= 1) return { word: 'WHOOSH!', line: `${s} ring${s > 1 ? 's' : ''}! Off you fly!`, good: true };
       return { word: 'BUMP!', line: 'No rings this time. You stay here.', good: false };
     },
   };
 };
 
-// ---- Look under the flowers: 9 flowers, one twinkles at a time; tap it before it stops (6 rounds).
+// ---- Look under the flowers: 9 flowers; the real shard twinkles under one of them for cfg.window seconds
+// (cfg.rounds rounds). On harder tiers Grabble's grey fakes peek out of other flowers too: tapping one ends the game.
 GAMES.shard = (api) => {
-  const ROUNDS = 6; const WIN = [1.45, 1.4, 1.35, 1.3, 1.25, 1.2]; const GAP = 0.45;
+  const cfg = api.cfg; const ROUNDS = cfg.rounds; const WIN = cfg.window; const GAP = 0.45;
   const COLORS = ['#F7B6D6', '#BFE3F5', '#CDB4F0', '#A8E0B8', '#FFD98A', '#F7B6D6', '#BFE3F5', '#CDB4F0', '#A8E0B8'];
-  const st = { round: -1, phase: 'gap', timer: 0.5, cur: -1, caught: 0, wob: new Array(9).fill(0), pop: 0, flying: [] };
+  const st = { round: -1, phase: 'gap', timer: 0.5, cur: -1, fakes: [], caught: 0, wob: new Array(9).fill(0), pop: 0, flying: [], failed: false };
   const grid = () => {
     const y0a = api.top + 8; const h = api.H - y0a - 20;
     const size = Math.min(api.W - 20, h * 0.96, 480);
@@ -598,23 +631,31 @@ GAMES.shard = (api) => {
     g.save(); g.translate(x, y); g.rotate((o.rot || 0) * 0.15 + (i % 3 - 1) * 0.12); g.drawImage(img, -s / 2, -s / 2, s, s); g.restore();
   };
   return {
-    duration: 12, pips: ROUNDS, art: ['mini_bg_garden', 'mini_flower_tile'], __st: () => ({ ...st, grid }),
+    duration: ROUNDS * (WIN + GAP) + 1.5, pips: ROUNDS, art: ['mini_bg_garden', 'mini_flower_tile'], __st: () => ({ ...st, grid }),
     update(dt) {
       for (let i = 0; i < 9; i++) st.wob[i] = Math.max(0, st.wob[i] - dt);
       st.pop = Math.min(1, st.pop + dt * 4);
       st.flying = st.flying.filter((f) => (f.t += dt / 0.55) < 1);
+      if (st.failed) return;
       st.timer -= dt;
       if (st.phase === 'gap' && st.timer <= 0) {
         st.round++;
         if (st.round >= ROUNDS) { st.phase = 'done'; st.timer = 0.35; return; }
         let i; do { i = (Math.random() * 9) | 0; } while (i === st.cur);
-        st.cur = i; st.phase = 'twinkle'; st.timer = WIN[st.round]; st.pop = 0; api.snd('twinkle'); api.buzz(10);
+        st.cur = i; st.fakes = [];
+        if (cfg.decoys > 0 && Math.random() < cfg.decoyChance) { // Grabble's fakes peek out of other flowers
+          const n = 1 + Math.floor(Math.random() * cfg.decoys);
+          const others = [0, 1, 2, 3, 4, 5, 6, 7, 8].filter((k) => k !== i).sort(() => Math.random() - 0.5);
+          st.fakes = others.slice(0, n);
+        }
+        st.phase = 'twinkle'; st.timer = WIN; st.pop = 0; api.snd('twinkle'); api.buzz(10);
       } else if (st.phase === 'twinkle' && st.timer <= 0) {
         const c = center(st.cur); api.fx.burst(c.x, c.y - c.r * 0.3, { n: 8, colors: ['#DCD5E2', '#FFFFFF'], kind: 'dot', speed: 70 }); api.snd('puff');
-        st.phase = 'gap'; st.timer = GAP;
+        st.phase = 'gap'; st.timer = GAP; st.fakes = [];
       } else if (st.phase === 'done' && st.timer <= 0) api.end();
     },
     down(x, y) {
+      if (st.failed) return;
       const gd = grid(); const cx = Math.floor((x - gd.x0) / gd.cell); const cy = Math.floor((y - gd.y0) / gd.cell);
       if (cx < 0 || cx > 2 || cy < 0 || cy > 2) return;
       const i = cy * 3 + cx;
@@ -624,7 +665,13 @@ GAMES.shard = (api) => {
         api.fx.burst(c.x, c.y - c.r * 0.5, { n: 18 }); api.fx.word(c.x, c.y - c.r * 1.2, 'TING!', '#FFE27A', 36);
         st.flying.push({ x: c.x, y: c.y - c.r * 0.6, t: 0 });
         api.snd('ring'); api.buzz(25);
-        st.phase = 'gap'; st.timer = GAP;
+        st.phase = 'gap'; st.timer = GAP; st.fakes = [];
+      } else if (st.phase === 'twinkle' && st.fakes.includes(i)) { // Grabble's fake: the game ends at once
+        st.failed = true; const c = center(i);
+        api.snd('caught'); api.buzz([120, 60, 160]); api.shake(8, 0.35);
+        api.fx.burst(c.x, c.y - c.r * 0.4, { n: 14, colors: ['#9A90A8', '#7FB069', '#5E5470'], kind: 'dot', speed: 160 });
+        api.fx.word(c.x, c.y - c.r * 1.2, 'FAKE!', '#CDB4F0', 40);
+        setTimeout(() => api.fail({ word: 'OH NO!', line: "That was Grabble's fake!" }), 500);
       } else { st.wob[i] = 0.35; api.snd('boop'); }
     },
     draw(g, t) {
@@ -633,44 +680,52 @@ GAMES.shard = (api) => {
       else paper(g, api.W, api.H, '#EAF6E4', '#FFF6E0', [[0.1, 0.2, 0.35, 'rgba(191,227,245,.7)'], [0.95, 0.9, 0.35, 'rgba(247,182,214,.45)']]);
       const gd = grid(); rrect(g, gd.x0 - 6, gd.y0 - 6, gd.size + 12, gd.size + 12, 28); g.fillStyle = 'rgba(255,255,255,.55)'; g.fill(); ink(g, 3);
       for (let i = 0; i < 9; i++) {
-        const c = center(i); const live = st.phase === 'twinkle' && i === st.cur;
+        const c = center(i); const live = st.phase === 'twinkle' && i === st.cur; const fake = st.phase === 'twinkle' && st.fakes.includes(i);
         const wob = st.wob[i] > 0 ? Math.sin(st.wob[i] * 45) * st.wob[i] * 14 : 0;
         g.beginPath(); g.ellipse(c.x, c.y + c.r * 0.95, c.r * 1.25, c.r * 0.38, 0, 0, TAU); fillInk(g, '#BFE6B0', 2.5);
-        if (live) {
-          const k = st.timer / WIN[st.round]; const pulse = 0.75 + 0.25 * Math.sin(t * 16);
-          const rg = g.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r * 1.75); rg.addColorStop(0, `rgba(255,232,140,${0.95 * pulse})`); rg.addColorStop(1, 'rgba(255,232,140,0)');
+        if (live || fake) {
+          const k = st.timer / WIN; const pulse = 0.75 + 0.25 * Math.sin(t * 16 + i);
+          const glowC = live ? '255,232,140' : '214,204,232';
+          const rg = g.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r * 1.75); rg.addColorStop(0, `rgba(${glowC},${0.9 * pulse})`); rg.addColorStop(1, `rgba(${glowC},0)`);
           g.fillStyle = rg; g.fillRect(c.x - c.r * 1.8, c.y - c.r * 1.8, c.r * 3.6, c.r * 3.6);
           g.beginPath(); g.arc(c.x, c.y, c.r * 1.38, -Math.PI / 2, -Math.PI / 2 + TAU * k); g.lineWidth = 11; g.strokeStyle = INK; g.lineCap = 'round'; g.stroke(); g.lineWidth = 6; g.strokeStyle = '#F2C14E'; g.stroke();
           const lift = easeOutBack(st.pop);
           flower(g, c.x + wob + c.r * 0.45 * lift, c.y + c.r * 0.35 * lift, c.r * 0.8, i, { open: 1, rot: 1.6 * lift + Math.sin(t * 8) * 0.3 });
-          drawShard(g, c.x - c.r * 0.2 * lift, c.y - c.r * 0.4 * lift, c.r * 0.72 * (0.6 + 0.4 * lift), Math.sin(t * 6) * 0.15, true);
-          for (let s = 0; s < 3; s++) { const a = t * 3 + (s * TAU) / 3; sparklePath(g, c.x + Math.cos(a) * c.r * 1.05, c.y - c.r * 0.3 + Math.sin(a) * c.r * 0.7, 7 + 3 * Math.sin(t * 10 + s), t * 2); g.fillStyle = '#FFFFFF'; g.fill(); g.lineWidth = 1.5; g.strokeStyle = INK; g.stroke(); }
+          drawShard(g, c.x - c.r * 0.2 * lift, c.y - c.r * 0.4 * lift, c.r * 0.72 * (0.6 + 0.4 * lift), Math.sin(t * 6 + i) * 0.15, live, fake);
+          if (live) for (let s = 0; s < 3; s++) { const a = t * 3 + (s * TAU) / 3; sparklePath(g, c.x + Math.cos(a) * c.r * 1.05, c.y - c.r * 0.3 + Math.sin(a) * c.r * 0.7, 7 + 3 * Math.sin(t * 10 + s), t * 2); g.fillStyle = '#FFFFFF'; g.fill(); g.lineWidth = 1.5; g.strokeStyle = INK; g.stroke(); }
         } else flower(g, c.x + wob, c.y, c.r, i);
       }
       for (const f of st.flying) { const e = easeInOut(f.t); drawShard(g, lerp(f.x, 40, e), lerp(f.y, 36, e) - Math.sin(e * Math.PI) * 60, lerp(22, 10, e), e * 4); }
     },
-    score: () => st.caught,
-    progress: () => (st.round < 0 ? 0 : clamp((st.round + (st.phase === 'twinkle' ? 1 - st.timer / WIN[st.round] : 1)) / ROUNDS, 0, 1)),
+    score: () => (st.failed ? 0 : st.caught),
+    progress: () => (st.round < 0 ? 0 : clamp((st.round + (st.phase === 'twinkle' ? 1 - st.timer / WIN : 1)) / ROUNDS, 0, 1)),
     result(s) {
-      if (s >= 5) return { word: 'TING!', line: `${s} twinkles! Two shards for you!`, good: true };
-      if (s >= 1) return { word: 'TING!', line: `${s} twinkle${s > 1 ? 's' : ''}! A shard for you!`, good: true };
+      if (s >= Math.ceil(ROUNDS * 0.7)) return { word: 'TING!', line: `${s} of ${ROUNDS} shards found! Sharp eyes!`, good: true };
+      if (s >= 1) return { word: 'TING!', line: `${s} shard${s > 1 ? 's' : ''} found under the flowers!`, good: true };
       return { word: 'OH NO!', line: 'It got away… next time!', good: false };
     },
   };
 };
 
-// ---- Charli catches: drag Charli left/right; 3 shards fall in 8 s, plus 2 buckets (they only shake you).
+// ---- Charli catches: drag Charli left/right; cfg.shards shards (and cfg.buckets buckets that only shake you)
+// fall over cfg.duration seconds, getting faster up to ×(1 + cfg.accel); cfg.catchWidth scales Charli's catch box.
 GAMES.fetch = (api) => {
-  const DUR = 8.0; const FALL = 2.25;
-  const plan = [{ t: 0.3, k: 'shard' }, { t: 1.45, k: 'bucket' }, { t: 2.7, k: 'shard' }, { t: 3.85, k: 'bucket' }, { t: 5.1, k: 'shard' }];
+  const cfg = api.cfg; const DUR = cfg.duration; const FALL = 2.25; const ACC = cfg.accel || 0;
+  const speedAt = (t) => 1 + ACC * clamp(t / DUR, 0, 1);
+  // the drop plan: shards and buckets interleaved, the first one always a shard, all landing before the end
+  const total = cfg.shards + cfg.buckets; const lastSpawn = Math.max(0.3, DUR - FALL / (1 + ACC) - 0.35);
+  const kinds = new Array(total).fill('shard');
+  for (let j = 0; j < cfg.buckets; j++) kinds[clamp(Math.round(((j + 0.6) * total) / cfg.buckets), 1, total - 1)] = 'bucket';
+  let nb = kinds.filter((k) => k === 'bucket').length; for (let i = total - 1; nb < cfg.buckets && i > 0; i--) if (kinds[i] === 'shard') { kinds[i] = 'bucket'; nb++; }
+  const plan = kinds.map((k, i) => ({ t: 0.3 + (total > 1 ? (i * (lastSpawn - 0.3)) / (total - 1) : 0), k }));
   const st = { items: [], next: 0, caught: 0, dog: null, squash: 0, moved: false, lastX: null, side: Math.random() < 0.5 ? -1 : 1, face: 1 };
   const L = () => {
-    const groundY = api.H - clamp(api.H * 0.06, 30, 54);
-    if (api.img('mini_pup_run')) { const bw = clamp(api.W * 0.4, 130, 200); return { bw, groundY, catchY: groundY - bw * 0.52, half: bw * 0.4, sprite: true }; }
-    const bw = clamp(api.W * 0.32, 100, 160); return { bw, groundY, catchY: groundY - bw * 0.36 - 6, half: bw * 0.56, sprite: false };
+    const groundY = api.H - clamp(api.H * 0.06, 30, 54); const cw = cfg.catchWidth || 1;
+    if (api.img('mini_pup_run')) { const bw = clamp(api.W * 0.4, 130, 200); return { bw, groundY, catchY: groundY - bw * 0.52, half: bw * 0.4 * cw, sprite: true }; }
+    const bw = clamp(api.W * 0.32, 100, 160); return { bw, groundY, catchY: groundY - bw * 0.36 - 6, half: bw * 0.56 * cw, sprite: false };
   };
   function init() { const l = L(); st.dog = { x: api.W / 2, tx: api.W / 2, w: l.bw }; }
-  function spawn(k) {
+  function spawn(k, t) {
     const W = api.W; const l = L(); let x;
     if (k === 'shard') {
       const from = st.lastX ?? st.dog.x; st.side = -st.side;
@@ -681,15 +736,15 @@ GAMES.fetch = (api) => {
       const shards = st.items.filter((it) => it.k === 'shard' && it.state === 'fall').map((it) => it.x).concat(st.lastX ?? []);
       for (let tries = 0; tries < 12; tries++) { x = rand(W * 0.14, W * 0.86); if (shards.every((sx) => Math.abs(sx - x) > W * 0.24)) break; }
     }
-    const y0 = api.top * 0.5; const r = k === 'shard' ? clamp(W * 0.075, 24, 34) : clamp(W * 0.075, 24, 34);
-    st.items.push({ k, x, y: y0, prevY: y0, vy: (l.catchY - y0) / FALL, r, rot: rand(-0.3, 0.3), vr: k === 'bucket' ? rand(-2.5, 2.5) : rand(-0.8, 0.8), state: 'fall', t: 0, vx: 0 });
+    const y0 = api.top * 0.5; const r = clamp(W * 0.075, 24, 34);
+    st.items.push({ k, x, y: y0, prevY: y0, vy: ((l.catchY - y0) / FALL) * speedAt(t), r, rot: rand(-0.3, 0.3), vr: k === 'bucket' ? rand(-2.5, 2.5) : rand(-0.8, 0.8), state: 'fall', t: 0, vx: 0 });
   }
   init();
   return {
-    duration: DUR, pips: 3, art: ['mini_bg_petwash', 'mini_pup_run', 'mini_bucket'], __st: () => st,
+    duration: DUR + 0.6, pips: cfg.shards, art: ['mini_bg_petwash', 'mini_pup_run', 'mini_bucket'], __st: () => st,
     resize() { if (!api.started) init(); },
     update(dt, t) {
-      while (st.next < plan.length && t >= plan[st.next].t) spawn(plan[st.next++].k);
+      while (st.next < plan.length && t >= plan[st.next].t) spawn(plan[st.next++].k, t);
       const l = L(); const d = st.dog; d.w = l.bw;
       const maxV = api.W * 2.6; d.x += clamp((d.tx - d.x) * 14 * dt, -maxV * dt, maxV * dt);
       if (Math.abs(d.tx - d.x) > 4) st.face = d.tx > d.x ? 1 : -1;
@@ -754,21 +809,24 @@ GAMES.fetch = (api) => {
     score: () => st.caught,
     progress: () => clamp(api.t / DUR, 0, 1),
     result(s) {
-      const from = api.params.source === 'grabble' ? ' Charli took them back from Grabble!' : '';
-      if (s >= 3) return { word: 'WOOF!', line: `All 3 shards! Two for you!${from}`, good: true };
-      if (s >= 1) return { word: 'WOOF!', line: `${s} caught! A shard for you!${from.replace('them', 'it')}`, good: true };
+      const from = api.params.source === 'grabble' ? ' Charli took some back from Grabble!' : '';
+      if (s >= cfg.shards) return { word: 'WOOF!', line: `All ${cfg.shards} shards!${from}`, good: true };
+      if (s >= 1) return { word: 'WOOF!', line: `Charli caught ${s} of ${cfg.shards}!${from}`, good: true };
       return { word: 'OOPS!', line: 'No catches this time.', good: false };
     },
   };
 };
 
-// ---- Dodge the net: Grabble swoops down 3 times with his net; tap while it glows to hop over it.
-// Grabble is one sprite (mini_grabble_net_swoop, net held up at the right); the swoop moves + rotates the whole
-// sprite so its net hoop follows a curve down to the hero and on past (dodge) or back up (caught).
+// ---- Dodge the net: Grabble swoops down cfg.swoops times; tap while the net glows (cfg.window s) to hop over it.
+// Feints (cfg.feints): before some swoops the net only twitches with a quick white flicker. Hopping on a feint
+// costs a dodge ("TRICKED!"). Grabble is one sprite (mini_grabble_net_swoop); a swoop moves + rotates it so its
+// net hoop follows a curve down to the hero and on past (dodge) or back up (caught).
 GAMES.swish = (api) => {
-  const N = 3; const ENTER = 0.65; const GLOW = 0.9; const RES = 1.0;
+  const cfg = api.cfg; const N = cfg.swoops; const GLOW = cfg.window; const ENTER = 0.55; const RES = 0.9; const TWITCH = 0.45;
   const NET = { x: 0.33, y: -0.23, aspect: 512 / 768 }; // net hoop centre relative to the sprite centre (× w, × h)
-  const st = { k: 0, ph: 'enter', tm: 0, wind: rand(0.85, 1.4), side: Math.random() < 0.5 ? -1 : 1, gx: null, fromX: null, dodges: 0, jump: null, res: null, hinted: false, netU: 0, done: false };
+  const feintAt = new Set([...Array(Math.max(0, N - 1)).keys()].map((k) => k + 1).sort(() => Math.random() - 0.5).slice(0, cfg.feints || 0));
+  const windTime = () => (N > 3 ? rand(0.7, 1.2) : rand(0.85, 1.4));
+  const st = { k: 0, ph: 'enter', tm: 0, wind: windTime(), side: Math.random() < 0.5 ? -1 : 1, gx: null, fromX: null, dodges: 0, tricks: 0, feintDone: false, jump: null, res: null, hinted: false, netU: 0, done: false };
   const L = () => {
     const W = api.W, H = api.H; const hr = clamp(W * 0.115, 32, 52);
     const groundY = H - clamp(H * 0.12, 60, 100); const gh = clamp(H * 0.3, 170, 260);
@@ -777,9 +835,9 @@ GAMES.swish = (api) => {
   const sideX = (side) => api.W / 2 + side * api.W * 0.2;
   const heroLift = () => { const j = st.jump; if (!j) return 0; const k = clamp(j.t / j.dur, 0, 1); return Math.sin(Math.PI * k) * j.h; };
   const rot2 = (v, a) => ({ x: v.x * Math.cos(a) - v.y * Math.sin(a), y: v.x * Math.sin(a) + v.y * Math.cos(a) });
-  // where Grabble is for swoop progress u (0 = standing at the top, 1 = net on the hero, 2 = tumbled past)
-  function frameAt(u) {
-    const l = L(); const m = st.side > 0 ? -1 : 1; // on the right he is mirrored so the net faces the middle
+  const scoreNow = () => Math.max(0, st.dodges - st.tricks);
+  function frameAt(u, twitch = 0) {
+    const l = L(); const m = st.side > 0 ? -1 : 1;
     const n0 = { x: m * NET.x * l.gw, y: NET.y * l.gh };
     const S0 = { x: st.gx ?? sideX(st.side), y: api.top + 2 + l.gh / 2 };
     const p0 = { x: S0.x + n0.x, y: S0.y + n0.y };
@@ -789,10 +847,11 @@ GAMES.swish = (api) => {
     let hoop; let ang;
     if (u <= 1) { const a = 1 - u; hoop = { x: a * a * p0.x + 2 * a * u * p1.x + u * u * p2.x, y: a * a * p0.y + 2 * a * u * p1.y + u * u * p2.y }; ang = m * 1.4 * easeInOut(u); }
     else { const v = clamp(u - 1, 0, 1); hoop = { x: lerp(p2.x, p3.x, v), y: lerp(p2.y, p3.y, v) - Math.sin(v * Math.PI) * l.hr * 1.2 }; ang = m * (1.4 + v * 2.2); }
+    ang += m * twitch; // a feint: the net only twitches
     const rn = rot2(n0, ang);
     return { cx: hoop.x - rn.x, cy: hoop.y - rn.y, ang, m, hoop, w: l.gw, h: l.gh };
   }
-  function drawSwooper(g, f, t, glow) {
+  function drawSwooper(g, f, t, glow, flicker) {
     const img = api.img('mini_grabble_net_swoop');
     if (glow) {
       const p = 0.6 + 0.4 * Math.sin(t * 18); const R = f.h * 0.3;
@@ -809,16 +868,17 @@ GAMES.swish = (api) => {
     }
     g.restore();
     if (glow) { g.beginPath(); g.ellipse(f.hoop.x, f.hoop.y, f.h * 0.15, f.h * 0.15, 0, 0, TAU); g.lineWidth = 6; g.strokeStyle = `rgba(242,193,78,${0.6 + 0.4 * Math.sin(t * 18)})`; g.stroke(); }
+    if (flicker) { g.beginPath(); g.ellipse(f.hoop.x, f.hoop.y, f.h * 0.14, f.h * 0.14, 0, 0, TAU); g.lineWidth = 4; g.strokeStyle = 'rgba(255,255,255,.95)'; g.stroke(); }
   }
   function next() {
     st.k++;
     if (st.k >= N) { st.done = true; api.end(); return; }
     const wasDodge = st.res === 'dodge';
-    st.side = -st.side; st.ph = 'enter'; st.tm = 0; st.wind = rand(0.85, 1.45); st.res = null; st.hinted = false; st.netU = 0;
+    st.side = -st.side; st.ph = 'enter'; st.tm = 0; st.wind = windTime(); st.res = null; st.hinted = false; st.netU = 0; st.feintDone = false;
     st.fromX = wasDodge ? sideX(st.side) + st.side * api.W * 0.5 : st.gx;
   }
   return {
-    duration: 13, pips: N, art: ['mini_bg_petwash', 'mini_grabble_net_swoop'], __st: () => st,
+    duration: N * (ENTER + 1.4 + GLOW + RES) + (cfg.feints || 0) * (TWITCH + 0.8) + 1, pips: N, art: ['mini_bg_petwash', 'mini_grabble_net_swoop'], __st: () => st,
     update(dt) {
       const l = L();
       if (st.jump) { st.jump.t += dt; if (st.jump.t >= st.jump.dur) st.jump = null; }
@@ -830,7 +890,12 @@ GAMES.swish = (api) => {
         if (st.tm >= ENTER) { st.ph = 'wind'; st.tm = 0; }
       } else if (st.ph === 'wind') {
         st.gx = target; st.netU = 0;
-        if (st.tm >= st.wind) { st.ph = 'glow'; st.tm = 0; api.snd('alert'); api.snd('swoop'); api.buzz(25); }
+        if (st.tm >= st.wind) {
+          if (feintAt.has(st.k) && !st.feintDone) { st.ph = 'twitch'; st.tm = 0; st.feintDone = true; api.snd('boop'); }
+          else { st.ph = 'glow'; st.tm = 0; api.snd('alert'); api.snd('swoop'); api.buzz(25); }
+        }
+      } else if (st.ph === 'twitch') {
+        if (st.tm >= TWITCH) { st.ph = 'wind'; st.tm = 0; st.wind = rand(0.45, 0.8); }
       } else if (st.ph === 'glow') {
         st.netU = easeInOut(clamp(st.tm / GLOW, 0, 1));
         if (st.tm >= GLOW) {
@@ -848,9 +913,12 @@ GAMES.swish = (api) => {
       if (st.done || st.jump) return;
       const l = L();
       if (st.ph === 'glow') {
-        st.jump = { t: 0, dur: 0.8, h: l.hr * 3.3 }; st.ph = 'res'; st.tm = 0; st.res = 'dodge'; st.dodges++; api.setPips(st.dodges);
+        st.jump = { t: 0, dur: 0.8, h: l.hr * 3.3 }; st.ph = 'res'; st.tm = 0; st.res = 'dodge'; st.dodges++; api.setPips(scoreNow());
         api.snd('hop'); api.buzz(30); api.fx.word(l.heroX, l.heroY - l.hr * 4.6, 'HOP!', '#A8E0B8', 46);
         api.fx.burst(l.heroX, l.heroY + l.hr, { n: 10, colors: ['#FFFFFF', '#A8E0B8', '#FFE27A'], speed: 160 });
+      } else if (st.ph === 'twitch') { // fooled by a feint: costs a dodge
+        st.jump = { t: 0, dur: 0.42, h: l.hr * 1.1 }; st.tricks++; api.setPips(scoreNow());
+        api.snd('meh'); api.buzz([60, 40, 60]); api.fx.word(l.heroX, l.heroY - l.hr * 2.8, 'TRICKED!', '#CDB4F0', 38);
       } else if (st.ph === 'enter' || st.ph === 'wind') {
         st.jump = { t: 0, dur: 0.42, h: l.hr * 1.1 }; api.snd('boop');
         if (!st.hinted) { st.hinted = true; api.fx.word(l.heroX, l.heroY - l.hr * 2.6, 'Wait for the glow!', '#FFFFFF', 26); }
@@ -874,32 +942,40 @@ GAMES.swish = (api) => {
       }
       bunting(g, W, api.top - 6);
       const glow = st.ph === 'glow';
+      const twitchK = st.ph === 'twitch' ? Math.sin((st.tm / TWITCH) * Math.PI * 4) * 0.12 : 0;
+      const flicker = st.ph === 'twitch' && Math.floor(st.tm / 0.08) % 2 === 0;
       if (glow) { const p = 0.5 + 0.5 * Math.sin(t * 18); g.save(); g.lineWidth = 22; g.strokeStyle = `rgba(242,193,78,${0.35 + 0.35 * p})`; g.strokeRect(0, 0, W, H); g.restore(); }
-      const f = frameAt(st.netU);
+      const f = frameAt(st.netU, twitchK);
       const caughtNow = st.res === 'caught' && st.tm < 0.55;
       const lift = heroLift(); const hx = l.heroX + (caughtNow ? Math.sin(t * 40) * 5 : 0); const hy = l.heroY - lift;
       g.beginPath(); g.ellipse(l.heroX, l.groundY + 6, l.hr * (0.9 - lift / (l.hr * 8)), l.hr * 0.22, 0, 0, TAU); g.fillStyle = 'rgba(43,36,64,.22)'; g.fill();
-      if (!caughtNow) drawSwooper(g, f, t, glow);
+      if (!caughtNow) drawSwooper(g, f, t, glow, flicker);
       for (const k of [-1, 1]) { g.beginPath(); g.ellipse(hx + k * l.hr * 0.38, hy + l.hr * 0.98, l.hr * 0.26, l.hr * 0.15, 0, 0, TAU); fillInk(g, api.hero.color, 3); }
       drawFaceDisc(g, api.face(api.hero.id), hx, hy, l.hr, api.hero.color, (api.hero.name || '?')[0]);
-      if (caughtNow) drawSwooper(g, f, t, false);
+      if (caughtNow) drawSwooper(g, f, t, false, false);
       if (st.res === 'caught' && st.tm >= 0.5) drawShard(g, f.hoop.x, f.hoop.y, 13, t * 3);
       if (glow) drawWord(g, l.heroX, l.heroY - l.hr * 2.2, 'TAP!', '#FFE27A', 46, 1, 1 + 0.08 * Math.sin(t * 18));
     },
-    score: () => st.dodges,
-    progress: () => clamp((st.k + (st.ph === 'res' ? 0.9 : st.ph === 'glow' ? 0.6 : st.ph === 'wind' ? 0.3 : 0.1)) / N, 0, 1),
+    score: scoreNow,
+    progress: () => clamp((st.k + (st.ph === 'res' ? 0.9 : st.ph === 'glow' ? 0.6 : st.ph === 'wind' || st.ph === 'twitch' ? 0.3 : 0.1)) / N, 0, 1),
     result(s) {
-      if (s >= 3) return { word: 'HOP!', line: '3 dodges! Grabble tripped over his net!', good: true };
-      return { word: 'SWISH!', line: s ? `${s} of 3 dodges. The net got you!` : 'The net got you!', good: false };
+      if (s >= N) return { word: 'HOP!', line: `All ${N} dodges! Grabble tripped over his net!`, good: true };
+      return { word: 'SWISH!', line: s ? `${s} of ${N} dodges. The net got you!` : 'The net got you!', good: false };
     },
   };
 };
 
-// ---- Strawberry catch: tap falling strawberries to plop them onto the cake (6 s, up to 8).
+// ---- Strawberry catch: tap falling strawberries (cfg.berries over cfg.duration s, ×cfg.speed) to plop them onto the
+// cake. Grabble's mouldy berries (cfg.rotten) take a point away when tapped (never below 0).
 GAMES.cake = (api) => {
-  const DUR = 6.6; const N = 10; const MAX = 8;
-  const times = Array.from({ length: N }, (_, i) => 0.2 + i * 0.45);
-  const st = { berries: [], next: 0, score: 0, onCake: 0, prevX: null, bob: 0 };
+  const cfg = api.cfg; const DUR = cfg.duration; const N = cfg.berries; const R = cfg.rotten || 0; const SPD = cfg.speed || 1;
+  const FALL = 2.3 / SPD;
+  const lastSpawn = Math.max(0.6, DUR - FALL - 0.1);
+  const kinds = new Array(N + R).fill('good');
+  for (let j = 0; j < R; j++) kinds[clamp(Math.round(((j + 0.5) * (N + R)) / R), 1, N + R - 1)] = 'rotten';
+  let nr = kinds.filter((k) => k === 'rotten').length; for (let i = N + R - 1; nr < R && i > 0; i--) if (kinds[i] === 'good') { kinds[i] = 'rotten'; nr++; }
+  const times = kinds.map((_, i) => 0.2 + (kinds.length > 1 ? (i * (lastSpawn - 0.2)) / (kinds.length - 1) : 0));
+  const st = { berries: [], next: 0, score: 0, prevX: null, bob: 0, on: [] };
   // cake geometry: with the art the cake is a square image whose top surface sits ~0.68 cw above its base
   const L = () => {
     const by = api.H - clamp(api.H * 0.05, 18, 40); const r = clamp(api.W * 0.088, 27, 40);
@@ -907,96 +983,111 @@ GAMES.cake = (api) => {
     const cw = Math.min(api.W * 0.66, 290); const ch = cw * 0.5;
     return { cw, ch, cx: api.W / 2, by, topY: by - ch * 1.42, r, art: false };
   };
+  const ROWS = [5, 4, 4, 3, 3, 2]; // stacked on top of the cake, up to 21
   const slot = (i) => {
-    const l = L(); const row = i < 5 ? 0 : 1; const n = row ? 3 : 5; const j = row ? i - 5 : i;
-    const span = l.cw * (row ? 0.3 : 0.48);
-    return { x: l.cx - span / 2 + (n > 1 ? (j * span) / (n - 1) : 0), y: l.topY - l.r * 0.3 - row * l.r * 0.7 };
+    const l = L(); let row = 0; let j = i; while (row < ROWS.length - 1 && j >= ROWS[row]) { j -= ROWS[row]; row++; }
+    const n = ROWS[row]; const span = l.cw * Math.max(0.12, 0.48 - row * 0.08);
+    return { x: l.cx - span / 2 + (n > 1 ? (j * span) / (n - 1) : span / 2), y: l.topY - l.r * 0.3 - row * l.r * 0.6 };
   };
-  const berry = (g, x, y, r, rot) => {
+  const berry = (g, x, y, r, rot, rotten) => {
     const img = api.img('mini_strawberry');
+    if (rotten) { drawRottenBerry(g, x, y, r, rot); return; }
     if (!img) { drawBerry(g, x, y, r, rot); return; }
     const s = r * 2.75; g.save(); g.translate(x, y); g.rotate(rot); g.drawImage(img, -s / 2, -s / 2, s, s); g.restore();
   };
   return {
-    duration: DUR, pips: MAX, art: ['mini_strawberry', 'mini_cake_base'], __st: () => st,
+    duration: DUR, pips: N, art: ['mini_strawberry', 'mini_cake_base'], __st: () => st,
     update(dt, t) {
       const l = L();
       st.bob = Math.max(0, st.bob - dt * 3);
-      while (st.next < N && t >= times[st.next]) {
+      while (st.next < kinds.length && t >= times[st.next]) {
         let x; for (let k = 0; k < 10; k++) { x = rand(api.W * 0.14, api.W * 0.86); if (st.prevX == null || Math.abs(x - st.prevX) > api.W * 0.2) break; }
-        st.prevX = x; st.next++;
-        st.berries.push({ bx: x, x, y: -l.r, vy: (l.topY + l.r) / 2.3, r: l.r, ph: rand(0, TAU), state: 'fall', t: 0, rot: rand(-0.3, 0.3) });
+        st.prevX = x;
+        st.berries.push({ bx: x, x, y: -l.r, vy: (l.topY + l.r) / FALL, r: l.r, ph: rand(0, TAU), state: 'fall', t: 0, rot: rand(-0.3, 0.3), rotten: kinds[st.next] === 'rotten' });
+        st.next++;
       }
       for (const b of st.berries) {
         if (b.state === 'fall') { b.y += b.vy * dt; b.x = b.bx + Math.sin(t * 2.2 + b.ph) * 10; if (b.y > api.H + b.r * 2) b.state = 'gone'; }
         else if (b.state === 'fly') {
           b.t += dt / 0.42;
           if (b.t >= 1) { b.state = 'on'; st.bob = 1; api.snd('plop'); api.fx.burst(b.to.x, b.to.y, { n: 6, colors: ['#FFFFFF', '#F7B6D6'], kind: 'dot', speed: 90, r: 5 }); }
-        }
+        } else if (b.state === 'off') { b.t += dt; b.vy += 900 * dt; b.y += b.vy * dt; b.x += b.vx * dt; b.rot += 6 * dt; if (b.y > api.H + 60) b.state = 'gone'; }
       }
     },
     down(x, y) {
       let best = null; let bd = Infinity;
       for (const b of st.berries) { if (b.state !== 'fall') continue; const d = Math.hypot(b.x - x, b.y - y); if (d < b.r * 1.75 && d < bd) { bd = d; best = b; } }
       if (!best) return;
+      if (best.rotten) { // Grabble's mouldy berry: −1, and the last berry on the cake hops off
+        best.state = 'off'; best.vy = -260; best.vx = rand(-80, 80); best.t = 0;
+        if (st.score > 0) {
+          st.score--; api.setPips(st.score);
+          const top = [...st.berries].reverse().find((b) => (b.state === 'on' || b.state === 'fly') && !b.rotten);
+          if (top) { top.state = 'off'; top.vy = -320; top.vx = rand(-120, 120); top.x = top.to.x; top.y = top.to.y; top.t = 0; }
+        }
+        api.snd('meh'); api.buzz([80, 40, 80]); api.fx.word(best.x, best.y - best.r * 1.4, 'YUCK!', '#B8D89A', 38);
+        api.fx.burst(best.x, best.y, { n: 10, colors: ['#9DB07A', '#7C8A66', '#C9D6A8'], kind: 'dot', speed: 140 });
+        return;
+      }
       best.state = 'fly'; best.t = 0; best.from = { x: best.x, y: best.y };
-      if (st.score < MAX) { best.to = slot(st.score); st.score++; api.setPips(st.score); }
-      else { const l = L(); best.to = { x: l.cx + rand(-0.2, 0.2) * l.cw, y: l.topY - l.r * 1.6 }; }
+      best.to = slot(st.berries.filter((b) => (b.state === 'on' || b.state === 'fly') && !b.rotten).length);
+      st.score = Math.min(N, st.score + 1); api.setPips(st.score);
       api.snd('pop'); api.buzz(15); api.fx.burst(best.x, best.y, { n: 8, colors: ['#FFE27A', '#FFFFFF', '#F7B6D6'], speed: 140 });
     },
     draw(g, t) {
       const W = api.W, H = api.H; const l = L();
       paper(g, W, H, '#FDE7F0', '#FFF6E0', [[0.1, 0.15, 0.3, 'rgba(255,255,255,.7)'], [0.9, 0.35, 0.3, 'rgba(191,227,245,.5)']]);
       bunting(g, W, api.top - 4);
-      // tablecloth
       const ty = l.by - (l.art ? l.cw * 0.12 : l.ch * 0.18);
       g.fillStyle = '#FFFFFF'; g.fillRect(-10, ty, W + 20, H - ty + 10);
       for (let i = 0; i < W / 28 + 1; i++) for (let j = 0; j < 4; j++) if ((i + j) % 2 === 0) { g.fillStyle = 'rgba(242,155,200,.5)'; g.fillRect(i * 28, ty + j * 28, 28, 28); }
       g.beginPath(); g.moveTo(-10, ty); g.lineTo(W + 10, ty); ink(g, 3);
-      // berries falling behind the cake
-      for (const b of st.berries) if (b.state === 'fall') berry(g, b.x, b.y, b.r, b.rot + Math.sin(t * 3 + b.ph) * 0.15);
-      // the cake
+      for (const b of st.berries) if (b.state === 'fall') berry(g, b.x, b.y, b.r, b.rot + Math.sin(t * 3 + b.ph) * 0.15, b.rotten);
       const s = 1 + st.bob * 0.04;
       const ci = api.img('mini_cake_base');
       if (ci) { g.save(); g.translate(l.cx, l.by); g.scale(s, 2 - s); g.drawImage(ci, -l.cw / 2, -l.cw * 0.95, l.cw, l.cw); g.restore(); }
       else {
-      g.save(); g.translate(l.cx, l.by); g.scale(s, 2 - s);
-      g.beginPath(); g.ellipse(0, 0, l.cw * 0.62, l.ch * 0.14, 0, 0, TAU); fillInk(g, '#FFFFFF', 3);
-      rrect(g, -l.cw / 2, -l.ch * 0.62, l.cw, l.ch * 0.56, 14); fillInk(g, '#F7B6D6', 3);
-      rrect(g, -l.cw * 0.36, -l.ch * 1.05, l.cw * 0.72, l.ch * 0.46, 12); fillInk(g, '#FFF6E0', 3);
-      g.beginPath(); g.moveTo(-l.cw / 2 + 4, -l.ch * 0.6);
-      for (let i = 0; i <= 8; i++) { const x = -l.cw / 2 + 4 + (i * (l.cw - 8)) / 8; g.quadraticCurveTo(x - (l.cw - 8) / 16, -l.ch * (i % 2 ? 0.42 : 0.5), x, -l.ch * 0.6); }
-      g.lineWidth = 3; g.strokeStyle = INK; g.fillStyle = '#FFFFFF'; g.fill(); g.stroke();
-      g.restore();
+        g.save(); g.translate(l.cx, l.by); g.scale(s, 2 - s);
+        g.beginPath(); g.ellipse(0, 0, l.cw * 0.62, l.ch * 0.14, 0, 0, TAU); fillInk(g, '#FFFFFF', 3);
+        rrect(g, -l.cw / 2, -l.ch * 0.62, l.cw, l.ch * 0.56, 14); fillInk(g, '#F7B6D6', 3);
+        rrect(g, -l.cw * 0.36, -l.ch * 1.05, l.cw * 0.72, l.ch * 0.46, 12); fillInk(g, '#FFF6E0', 3);
+        g.beginPath(); g.moveTo(-l.cw / 2 + 4, -l.ch * 0.6);
+        for (let i = 0; i <= 8; i++) { const x = -l.cw / 2 + 4 + (i * (l.cw - 8)) / 8; g.quadraticCurveTo(x - (l.cw - 8) / 16, -l.ch * (i % 2 ? 0.42 : 0.5), x, -l.ch * 0.6); }
+        g.lineWidth = 3; g.strokeStyle = INK; g.fillStyle = '#FFFFFF'; g.fill(); g.stroke();
+        g.restore();
       }
       for (const b of st.berries) {
-        if (b.state === 'on') berry(g, b.to.x, b.to.y + (1 - s) * 20, b.r * 0.72, b.rot);
-        else if (b.state === 'fly') { const e = easeInOut(b.t); berry(g, lerp(b.from.x, b.to.x, e), lerp(b.from.y, b.to.y, e) - Math.sin(e * Math.PI) * 80, b.r * lerp(1, 0.72, e), b.rot + e * 6); }
+        if (b.state === 'on') berry(g, b.to.x, b.to.y + (1 - s) * 20, b.r * 0.66, b.rot, false);
+        else if (b.state === 'fly') { const e = easeInOut(b.t); berry(g, lerp(b.from.x, b.to.x, e), lerp(b.from.y, b.to.y, e) - Math.sin(e * Math.PI) * 80, b.r * lerp(1, 0.66, e), b.rot + e * 6, false); }
+        else if (b.state === 'off') berry(g, b.x, b.y, b.r * 0.8, b.rot, b.rotten);
       }
     },
     score: () => st.score,
     progress: () => clamp(api.t / DUR, 0, 1),
     result(s) {
-      if (s >= 5) return { word: 'CAKE!', line: `${s} strawberries! A bonus shard for you!`, good: true };
-      return { word: 'CAKE!', line: `${s} strawberr${s === 1 ? 'y' : 'ies'}! Cake for everyone!`, good: s >= 5 };
+      if (s >= Math.ceil(N / 2)) return { word: 'CAKE!', line: `${s} strawberries! What a cake!`, good: true };
+      return { word: 'CAKE!', line: `${s} strawberr${s === 1 ? 'y' : 'ies'}! Cake for everyone!`, good: s >= 1 };
     },
   };
 };
 
 // ---- Vine grab: hold to grow the vine toward Grabble; let go while the tip is in the glow around him.
-// score = how far the vine grew (0..1); the glow is params.zone (server: CHASE_ZONE) and the gold band
-// params.perfect; without params it falls back to the bell's windows.
+// cfg.zone / cfg.perfect are the windows (server CHASE windows), cfg.speed the growth speed, cfg.wobble makes the
+// glow (and Grabble) drift. The score sent is the tip measured in the zone's resting frame (tip − drift at release),
+// so what the player saw is what the server judges.
 GAMES.chase = (api) => {
-  const sweet = win2(api.params.zone || api.params.sweet, SWEET); const perfect = win2(api.params.perfect, PERFECT);
-  const GROW = 0.4; const WAIT = 7.5;
-  const st = { ph: 'wait', tip: 0, score: null, res: null, tEnd: 0, stop: null, downAt: 0, armed: false, inZone: false, hop: 0 };
+  const cfg = api.cfg;
+  const sweet = win2(cfg.zone || api.params.zone || api.params.sweet, SWEET); const perfect = win2(cfg.perfect || api.params.perfect, PERFECT);
+  const GROW = 0.4 * (cfg.speed || 1); const WAIT = 7.5; const WOB = cfg.wobble || 0;
+  const drift = (t) => (WOB ? WOB * 0.12 * Math.sin(t * 1.7) + WOB * 0.05 * Math.sin(t * 3.1 + 1) : 0);
+  const st = { ph: 'wait', tip: 0, score: null, res: null, tEnd: 0, stop: null, downAt: 0, armed: false, inZone: false, hop: 0, dr: 0 };
   const P = () => { const y0 = api.H - clamp(api.H * 0.15, 84, 130); const y1 = api.top + 26; return { y0, y1 }; };
   const path = (u) => { const { y0, y1 } = P(); return { x: api.W / 2 + Math.sin(u * Math.PI * 1.5) * api.W * 0.12, y: y0 - u * (y0 - y1) }; };
   const uMid = (perfect[0] + perfect[1]) / 2;
   function release() {
     if (st.ph !== 'grow') return;
-    st.ph = 'done'; st.tEnd = 0; st.score = round3(st.tip); if (st.stop) st.stop();
-    const p = path(uMid);
+    st.ph = 'done'; st.tEnd = 0; st.score = round3(st.tip - st.dr); if (st.stop) st.stop();
+    const p = path(uMid + st.dr);
     if (st.score >= perfect[0] && st.score <= perfect[1]) {
       st.res = 'perfect'; api.snd('bloom'); api.buzz([40, 30, 40, 30, 140]); api.fx.word(p.x, p.y - 90, 'PERFECT!', '#FFE27A', 46);
       api.fx.burst(p.x, p.y, { n: 26, colors: ['#5B8DEF', '#BFE3F5', '#FFE27A', '#FFFFFF'], kind: 'petal', speed: 260 });
@@ -1011,10 +1102,11 @@ GAMES.chase = (api) => {
   return {
     duration: 12, pips: 0, art: ['mini_bg_garden', 'mini_vine_tip', 'mini_grabble_net_swoop', 'grabble_caught'], __st: () => st,
     update(dt, t) {
+      if (st.ph !== 'done') st.dr = drift(t);
       if (st.ph === 'wait' && t > WAIT) { st.ph = 'grow'; st.tip = 0; release(); }
       if (st.ph === 'grow') {
         st.tip = Math.min(1, st.tip + GROW * dt);
-        const inZ = st.tip >= sweet[0] && st.tip <= sweet[1];
+        const rel = st.tip - st.dr; const inZ = rel >= sweet[0] && rel <= sweet[1];
         if (inZ && !st.inZone) { api.snd('twinkle'); api.buzz(15); }
         st.inZone = inZ;
         if (st.tip >= 1) release();
@@ -1038,14 +1130,14 @@ GAMES.chase = (api) => {
     },
     timeUp() { if (st.ph === 'grow') release(); },
     draw(g, t) {
-      const W = api.W, H = api.H; const { y0 } = P();
+      const W = api.W, H = api.H; const { y0 } = P(); const dr = st.dr;
       const bg = api.img('mini_bg_garden');
       if (bg) { drawCover(g, bg, W, H); wash(g, W, H, 'rgba(255,246,224,.6)'); }
       else paper(g, W, H, '#E6F4E0', '#FFF6E0', [[0.15, 0.2, 0.35, 'rgba(191,227,245,.6)'], [0.9, 0.7, 0.35, 'rgba(247,182,214,.4)']]);
       for (let i = 0; i < 7; i++) drawFlower(g, (i * W) / 6, y0 + 40 + (i % 2) * 18, 9, i % 2 ? '#F7B6D6' : '#9DB8F5', { lw: 1.5 });
       grassBand(g, W, y0 + 26, H);
-      // the glow zones around Grabble
-      const a = path(sweet[0]), b = path(sweet[1]); const pa = path(perfect[0]), pb = path(perfect[1]);
+      // the glow zones around Grabble (shifted by the drift)
+      const a = path(sweet[0] + dr), b = path(sweet[1] + dr); const pa = path(perfect[0] + dr), pb = path(perfect[1] + dr);
       const pulse = 0.55 + 0.45 * Math.sin(t * 5); const hot = st.ph === 'grow' && st.inZone;
       const zry = (a.y - b.y) / 2; const zrx = Math.min(W * 0.4, Math.max(zry * 1.05, W * 0.3));
       g.save();
@@ -1057,7 +1149,7 @@ GAMES.chase = (api) => {
       g.lineWidth = 2.5; g.strokeStyle = 'rgba(43,36,64,.4)'; g.stroke();
       g.restore();
       // Grabble
-      const gp = path(uMid); const gh = clamp(zry * 1.25, 110, 210);
+      const gp = path(uMid + dr); const gh = clamp(Math.max(zry, 70) * 1.25, 110, 210);
       let gx = gp.x + W * 0.04; let gy = gp.y + gh * 0.48;
       if (st.res === 'short' || st.res === 'long') { const k = clamp(st.hop / 1.1, 0, 1); gx += k * W * 0.7; gy -= Math.sin(k * Math.PI * 2) * 40; }
       const stuck = st.res === 'sweet' || st.res === 'perfect';
@@ -1085,8 +1177,8 @@ GAMES.chase = (api) => {
         if (hot || st.res === 'perfect' || st.res === 'sweet') { const rg = g.createRadialGradient(tp.x, tp.y, 0, tp.x, tp.y, 46); rg.addColorStop(0, 'rgba(255,226,122,.95)'); rg.addColorStop(1, 'rgba(255,226,122,0)'); g.fillStyle = rg; g.fillRect(tp.x - 46, tp.y - 46, 92, 92); }
         const tipImg = api.img('mini_vine_tip');
         if (tipImg) {
-          const pb = path(Math.max(0, tipU - 0.02)); const a = Math.atan2(tp.x - pb.x, pb.y - tp.y); const s = 74;
-          g.save(); g.translate(tp.x, tp.y); g.rotate(a); g.drawImage(tipImg, -s * 0.57, -s * 0.12, s, s); g.restore();
+          const pb2 = path(Math.max(0, tipU - 0.02)); const ang = Math.atan2(tp.x - pb2.x, pb2.y - tp.y); const s = 74;
+          g.save(); g.translate(tp.x, tp.y); g.rotate(ang); g.drawImage(tipImg, -s * 0.57, -s * 0.12, s, s); g.restore();
         } else drawFlower(g, tp.x, tp.y, 13, '#5B8DEF', { rot: t * 2 });
       }
       if (stuck && !(caughtImg && st.tEnd > 0.25)) {
@@ -1096,12 +1188,11 @@ GAMES.chase = (api) => {
           g.beginPath(); g.ellipse(gx, yy, gh * 0.3, gh * 0.08, 0.15 * (i - 1), Math.PI * (1 - k), Math.PI * (1 - k) + TAU * k); g.lineWidth = 12; g.strokeStyle = INK; g.stroke(); g.lineWidth = 7; g.strokeStyle = '#6DB65B'; g.stroke();
         }
       }
-      // the hero at the vine's root
       const root = path(0);
       drawFaceDisc(g, api.face(api.hero.id), root.x, root.y + 18, clamp(W * 0.1, 28, 44), api.hero.color, (api.hero.name || '?')[0]);
       if (st.ph === 'wait' && api.started) drawWord(g, W / 2, root.y - 52, 'HOLD!', '#FFE27A', 40, 0.65 + 0.35 * Math.sin(t * 6), 1);
     },
-    score: () => (st.score != null ? st.score : round3(st.tip)),
+    score: () => (st.score != null ? st.score : round3(st.tip - st.dr)),
     progress: () => (st.ph === 'wait' ? clamp(0.1 * (api.t / WAIT), 0, 0.1) : st.ph === 'grow' ? 0.1 + 0.8 * st.tip : 1),
     result(s) {
       const empty = api.params.loot === 0;
@@ -1112,40 +1203,61 @@ GAMES.chase = (api) => {
   };
 };
 
-// ---- Ring the bell (v1 timing bar): the star sweeps 0 -> 1 -> 0 every 1.6 s; tap when it is in the glow.
+// ---- Ring the bell: the star sweeps 0 -> 1 -> 0 (one sweep = cfg.period s); tap when it is in the glow (cfg.zone).
+// cfg.speedJitter > 0: every 0.6–1.2 s the star eases to a new speed in [1 − j, 1 + j] × base.
+// Catcher gates: params.gateIndex / gateCount / section — gates after the first start straight away (see the shell).
 GAMES.bell = (api) => {
-  const sweet = win2(api.params.sweet, SWEET); const perfect = win2(api.params.perfect, PERFECT);
-  const SWEEP = (Number(api.params.sweepMs) || 1600) / 1000; const LAT = 0.06; const GUARD = 0.25;
-  const st = { score: null, doneT: 0, swing: 0 };
-  const pos = (ts) => { const ph = mod(ts, SWEEP) / SWEEP; return ph < 0.5 ? ph * 2 : 2 - ph * 2; };
+  const cfg = api.cfg;
+  const sweet = win2(cfg.zone || api.params.sweet, SWEET); const perfect = win2(cfg.perfect || api.params.perfect, PERFECT);
+  const PERIOD = cfg.period || (Number(api.params.sweepMs) || 1600) / 1000; const JIT = cfg.speedJitter || 0;
+  const LAT = 0.06; const GUARD = api.params.gateIndex >= 1 ? 0.12 : 0.25;
+  const st = { score: null, doneT: 0, swing: 0, phase: Math.random() * 0.5, spd: 1, target: 1, nextChange: rand(0.6, 1.2), hist: [] };
+  const tri = (ph) => { const p = mod(ph, 1); return p < 0.5 ? p * 2 : 2 - p * 2; };
+  // star position at a past play time, from the recorded (time, phase) samples (the speed changes, so no formula)
+  const posAt = (ts) => {
+    const h = st.hist; if (!h.length) return tri(st.phase);
+    if (ts >= h[h.length - 1][0]) return tri(h[h.length - 1][1]);
+    for (let i = h.length - 1; i > 0; i--) if (h[i - 1][0] <= ts) { const [t0, p0] = h[i - 1]; const [t1, p1] = h[i]; return tri(p0 + ((ts - t0) / Math.max(1e-6, t1 - t0)) * (p1 - p0)); }
+    return tri(h[0][1]);
+  };
   const bar = () => { const x0 = 30, x1 = api.W - 30; return { x0, x1, y: Math.max(api.top + 70, api.H * 0.34), h: 58, r0: x0 + 30, r1: x1 - 30 }; };
   function hit(sc) {
     st.score = sc; st.doneT = 0; st.swing = 1;
     const b = bar(); const sx = lerp(b.r0, b.r1, sc);
-    const perf = sc >= perfect[0] && sc <= perfect[1];
-    api.snd('bell'); api.buzz(perf ? [60, 40, 120] : 60);
-    api.fx.burst(sx, b.y, { n: perf ? 28 : 16, speed: perf ? 300 : 220 });
-    api.fx.word(api.W / 2, b.y - 70, perf ? 'PERFECT!' : 'DING!', perf ? '#FFE27A' : '#BFE3F5', 48);
+    const perf = sc >= perfect[0] && sc <= perfect[1]; const ok = sc >= sweet[0] && sc <= sweet[1];
+    api.snd(ok ? 'bell' : 'meh'); api.buzz(perf ? [60, 40, 120] : ok ? 60 : [120]);
+    api.fx.burst(sx, b.y, { n: perf ? 28 : ok ? 16 : 6, speed: perf ? 300 : 220 });
+    api.fx.word(api.W / 2, b.y - 70, perf ? 'PERFECT!' : ok ? 'DING!' : 'MISS', perf ? '#FFE27A' : ok ? '#BFE3F5' : '#F7B6D6', 48);
   }
   return {
     duration: null, pips: 0, __st: () => st,
-    update(dt) {
+    update(dt, t) {
       st.swing = Math.max(0, st.swing - dt * 0.8);
-      if (st.score != null) { st.doneT += dt; if (st.doneT > 0.8) api.end(); }
+      if (st.score == null) {
+        if (JIT > 0) {
+          st.nextChange -= dt;
+          if (st.nextChange <= 0) { st.nextChange = rand(0.6, 1.2); st.target = 1 + rand(-JIT, JIT); }
+          st.spd += (st.target - st.spd) * Math.min(1, dt * 4); // eased
+        }
+        st.phase += (dt / PERIOD) * st.spd;
+        st.hist.push([t, st.phase]); if (st.hist.length > 90) st.hist.shift();
+      } else { st.doneT += dt; if (st.doneT > 0.8) api.end(); }
     },
     down(x, y, e) {
       if (st.score != null) return;
       const te = api.eventTime(e); if (te < GUARD) return;
-      hit(round3(pos(te - LAT)));
+      hit(round3(posAt(te - LAT)));
     },
-    timeUp() { if (st.score == null) hit(round3(pos(api.t))); },
+    timeUp() { if (st.score == null) hit(round3(tri(st.phase))); },
     draw(g, t, phase) {
       const W = api.W, H = api.H; const b = bar();
       paper(g, W, H, '#D7EBF8', '#FFF6E0', [[0.2, 0.15, 0.3, 'rgba(255,255,255,.7)'], [0.85, 0.75, 0.35, 'rgba(242,193,78,.25)']]);
       for (let i = 0; i < 4; i++) cloud(g, mod(i * 150 + 40 + t * 8, W + 200) - 100, api.top + 20 + (i % 2) * 34, 22 + i * 4);
+      const sec = api.params.section && api.params.section.label;
+      if (sec && api.params.gateCount > 1) drawWord(g, W / 2, b.y - b.h / 2 - 34, sec, '#FFFFFF', Math.min(30, Math.round((W - 40) / (sec.length * 0.6))), 1, 1);
       rrect(g, b.x0, b.y - b.h / 2, b.x1 - b.x0, b.h, b.h / 2);
       const gr = g.createLinearGradient(0, b.y - b.h / 2, 0, b.y + b.h / 2); gr.addColorStop(0, '#EAF6FC'); gr.addColorStop(1, '#BFE3F5'); g.fillStyle = gr; g.fill(); ink(g, 3);
-      const sp = st.score != null ? st.score : (phase === 'play' ? pos(api.t) : 0.12);
+      const sp = st.score != null ? st.score : (phase === 'play' ? tri(st.phase) : 0.12);
       const inSweet = sp >= sweet[0] && sp <= sweet[1];
       const pulse = 0.6 + 0.4 * Math.sin(t * 7);
       const sx0 = lerp(b.r0, b.r1, sweet[0]), sx1 = lerp(b.r0, b.r1, sweet[1]);
@@ -1155,12 +1267,11 @@ GAMES.bell = (api) => {
       rrect(g, sx0, b.y - b.h / 2 + 6, sx1 - sx0, b.h - 12, (b.h - 12) / 2); g.lineWidth = 2.5; g.strokeStyle = 'rgba(43,36,64,.6)'; g.stroke();
       const px0 = lerp(b.r0, b.r1, perfect[0]), px1 = lerp(b.r0, b.r1, perfect[1]);
       g.save(); g.shadowColor = 'rgba(255,226,122,.95)'; g.shadowBlur = 20 + 8 * pulse;
-      rrect(g, px0, b.y - b.h / 2 - 4, px1 - px0, b.h + 8, 10); g.fillStyle = '#FFE27A'; g.fill(); g.restore();
-      rrect(g, px0, b.y - b.h / 2 - 4, px1 - px0, b.h + 8, 10); ink(g, 3);
+      rrect(g, px0, b.y - b.h / 2 - 4, px1 - px0, b.h + 8, 6); g.fillStyle = '#FFE27A'; g.fill(); g.restore();
+      rrect(g, px0, b.y - b.h / 2 - 4, px1 - px0, b.h + 8, 6); ink(g, 3);
       const sx = lerp(b.r0, b.r1, sp); const sr = 30 * (inSweet ? 1.12 : 1) * (st.score != null ? 1.15 : 1);
       star5(g, sx, b.y, sr); fillInk(g, '#FFE27A', 3);
       g.beginPath(); g.moveTo(sx - sr * 0.25, b.y - sr * 0.18); g.lineTo(sx - sr * 0.05, b.y - sr * 0.45); g.lineWidth = 3; g.strokeStyle = '#FFFFFF'; g.lineCap = 'round'; g.stroke();
-      // the bell
       const bs = Math.min(W * 0.5, (H - b.y - 120) * 0.9, 230); const by = b.y + b.h / 2 + 40 + bs * 0.6;
       const swing = st.score != null ? Math.sin(t * 16) * 0.35 * st.swing : Math.sin(t * 5) * 0.12;
       drawBell(g, W / 2, by, bs, swing);
@@ -1169,8 +1280,11 @@ GAMES.bell = (api) => {
     score: () => (st.score != null ? st.score : 0),
     progress: () => (st.score != null ? 1 : clamp(api.t / 8, 0, 0.95)),
     result(s) {
-      const perf = s >= perfect[0] && s <= perfect[1];
-      return { word: perf ? 'PERFECT!' : 'DING!', line: perf ? 'Perfect ring! Here comes the Catcher…' : 'You rang the bell! Here comes the Catcher…', good: true };
+      const perf = s >= perfect[0] && s <= perfect[1]; const ok = s >= sweet[0] && s <= sweet[1];
+      const gate = api.params.gateCount > 1 ? `Gate ${api.params.gateIndex + 1} of ${api.params.gateCount}: ` : '';
+      if (perf) return { word: 'PERFECT!', line: `${gate}Perfect ring!`, good: true };
+      if (ok) return { word: 'DING!', line: `${gate}You rang the bell!`, good: true };
+      return { word: 'MISS', line: `${gate}Oh no, the star missed the glow!`, good: false };
     },
   };
 };
@@ -1209,6 +1323,13 @@ export function runMinigame(type, opts = {}) {
     const buzz = typeof opts.buzz === 'function' ? opts.buzz : defaultBuzz;
     const faceUrls = { ...((opts.art && opts.art.faces) || {}) };
     const artUrls = { ...((opts.art && opts.art.urls) || {}) };
+    const params = opts.params || {};
+    const tier = TIERS[params.tier] ? params.tier : null;
+    // the game is built from params.cfg (MINI[type][tier]); anything missing falls back to the easy tuning
+    const cfg = { ...((MINI[type] && MINI[type].easy) || {}), ...((params.cfg && typeof params.cfg === 'object') ? params.cfg : {}) };
+    const maxS = Math.max(1, maxScore(type, cfg) || info.max);
+    const gateIndex = Number(params.gateIndex) || 0; const gateCount = Number(params.gateCount) || 1;
+    const fastGate = type === 'bell' && gateIndex >= 1; // later Catcher gates: no title card, no Start tap
     if (hero.face && !faceUrls[hero.id]) faceUrls[hero.id] = hero.face;
 
     // ---- DOM
@@ -1224,7 +1345,13 @@ export function runMinigame(type, opts = {}) {
     if (hero.face) { face.style.backgroundImage = `url("${hero.face}")`; face.classList.add('has-img'); } else face.textContent = (hero.name || '?').charAt(0).toUpperCase();
     const startBtn = el('button', 'btn btn-go mg-start', 'Start!'); startBtn.type = 'button';
     card.append(ringT.el, face, el('h2', 'mg-title', info.title), el('p', 'mg-line', info.line), startBtn);
+    if (tier) { // difficulty badge: "Starlight ★★★"
+      const t = TIERS[tier]; const badge = el('div', `mg-tier tier-${tier}`, `${t.label} ${'★'.repeat(t.stars)}`);
+      badge.setAttribute('aria-label', `${t.label} level, ${t.stars} star${t.stars > 1 ? 's' : ''}`); card.insertBefore(badge, face);
+    }
+    if (type === 'bell' && gateCount > 1 && params.section && params.section.label) card.querySelector('.mg-line').textContent = `Gate ${gateIndex + 1} of ${gateCount}: ${params.section.label}. ${info.line}`;
     titleWrap.appendChild(card);
+    if (fastGate) titleWrap.hidden = true;
     const result = el('div', 'mg-result'); result.hidden = true; result.setAttribute('role', 'status');
     root.append(canvas, hud, go, titleWrap, result);
     container.appendChild(root);
@@ -1254,7 +1381,7 @@ export function runMinigame(type, opts = {}) {
     }
     const api = {
       get W() { return W; }, get H() { return H; }, get t() { return t; }, get started() { return started; }, get live() { return phase === 'play'; },
-      top: HUD_TOP, hero, params: opts.params || {}, fx, buzz, info,
+      top: HUD_TOP, hero, params, cfg, tier, fx, buzz, info,
       snd(name) { try { if (sfx[name]) sfx[name](); } catch { /* ignore */ } },
       sweep(o) { try { return audio.sweep ? audio.sweep(o) : () => {}; } catch { return () => {}; } },
       shake(m, d = 0.35) { shakeMag = m; shakeT = d; shakeDur = d; },
@@ -1262,6 +1389,7 @@ export function runMinigame(type, opts = {}) {
       face(id) { const rec = lazyImage(faceUrls[id]); return rec && rec.img; },
       img(key) { const rec = lazyImage(artUrls[key]); return rec && rec.img; },
       end() { if (phase === 'play') finish(); },
+      fail(r) { if (phase === 'play') finish({ failed: true, result: r }); }, // e.g. Grabble's fake shard: score 0, failed
       eventTime(e) { const now = performance.now(); const ts = e && e.timeStamp > 0 && Math.abs(e.timeStamp - now) < 400 ? e.timeStamp : now; return (ts - playStart) / 1000; },
     };
     function measure() {
@@ -1274,7 +1402,12 @@ export function runMinigame(type, opts = {}) {
     const game = GAMES[type](api);
     for (const k of game.art || []) lazyImage(artUrls[k]); // start downloading this game's art during the title card
     pipsMax = game.pips || 0;
-    for (let i = 0; i < pipsMax; i++) pipsEl.appendChild(el('i'));
+    if (type === 'bell' && gateCount > 1) { // Catcher gates: ●●○○ (done, this one, still to come)
+      pipsMax = gateCount;
+      for (let i = 0; i < gateCount; i++) pipsEl.appendChild(el('i', i < gateIndex ? 'on' : i === gateIndex ? 'cur' : ''));
+      pipsEl.classList.add('gates'); pipsEl.setAttribute('aria-label', `Gate ${gateIndex + 1} of ${gateCount}`);
+    } else for (let i = 0; i < pipsMax; i++) pipsEl.appendChild(el('i'));
+    if (pipsMax > 10) pipsEl.classList.add('many');
     let ro = null;
     const onResize = () => { measure(); if (game.resize) game.resize(); };
     if (window.ResizeObserver) { ro = new ResizeObserver(onResize); ro.observe(root); } else window.addEventListener('resize', onResize);
@@ -1285,7 +1418,7 @@ export function runMinigame(type, opts = {}) {
     if (!(rem > -2000 && rem < 90000)) rem = 25000;
     const deadlineAt = now0 + rem;
     const playLen = (game.duration || 9) * 1000;
-    const autoAt = Math.max(now0 + 4000, deadlineAt - playLen - 2600);
+    const autoAt = fastGate ? now0 : Math.max(now0 + 4000, deadlineAt - playLen - 2600);
     const titleTotal = Math.max(1000, autoAt - now0);
 
     // ---- input
@@ -1299,10 +1432,15 @@ export function runMinigame(type, opts = {}) {
     startBtn.addEventListener('click', () => { if (phase === 'title') { api.snd('tap'); buzz(20); startReady(); } });
 
     function setGo(text) { go.textContent = ''; const s = el('span', null, text); go.appendChild(s); go.dataset.s = text; }
+    let readyMs = 1150; let goAt = 600;
     function startReady() {
       if (phase !== 'title') return;
       phase = 'ready'; root.dataset.phase = 'ready'; titleWrap.hidden = true; go.hidden = false; readyStart = performance.now();
-      setGo('Ready…'); api.snd('ready');
+      if (fastGate) { // "Gate 2 of 4 — Flower Garden! Ring the bell!" for 0.6 s, then the bar
+        readyMs = 600; goAt = 1e9; go.classList.add('banner');
+        const label = params.section && params.section.label ? ` — ${params.section.label}!` : '!';
+        setGo(`Gate ${gateIndex + 1} of ${gateCount}${label} Ring the bell!`); api.snd('alert'); buzz([40, 30, 40]);
+      } else { setGo('Ready…'); api.snd('ready'); }
     }
     function beginPlay(now) {
       phase = 'play'; root.dataset.phase = 'play'; go.hidden = true; started = true;
@@ -1322,13 +1460,13 @@ export function runMinigame(type, opts = {}) {
       lastTickAt = now; lastTickVal = r;
       try { opts.onTick(r); } catch { /* ignore */ }
     }
-    function finish() {
+    function finish(extra = {}) {
       if (finished) return;
       finished = true; phase = 'result'; root.dataset.phase = 'result';
-      let score = game.score();
-      score = (type === 'chase' || type === 'bell') ? round3(score) : clamp(Math.round(Number(score) || 0), 0, info.max);
-      try { if (opts.onDone) opts.onDone(score); } catch (err) { console.error(err); }
-      const r = game.result(score) || { word: 'YAY!', line: '', good: true };
+      let score = extra.failed ? 0 : game.score();
+      score = (type === 'chase' || type === 'bell') ? round3(score) : clamp(Math.round(Number(score) || 0), 0, maxS);
+      try { if (opts.onDone) opts.onDone(score, extra.failed ? { failed: true } : {}); } catch (err) { console.error(err); }
+      const r = extra.result ? { good: false, ...extra.result } : (game.result(score) || { word: 'YAY!', line: '', good: true });
       result.textContent = '';
       const w = el('div', 'sound-word mg-word'); renderWordInto(w, r.word);
       result.append(w, el('p', 'mg-res-line', r.line), el('p', 'mg-res-sub', 'Watch the big screen!'));
@@ -1353,15 +1491,15 @@ export function runMinigame(type, opts = {}) {
     let frozen = false; // test hook (window.__mg.freeze): hold the picture still for screenshots
     function frame(now) {
       raf = requestAnimationFrame(frame);
-      if (frozen) { const d = now - last; last = now; playStart += d; endAt += d; readyStart += d; return; }
+      if (frozen) { const d = now - last; last = now; playStart += d; endAt += d; readyStart += d; draw(); return; }
       const dt = Math.min(0.05, Math.max(0, (now - last) / 1000)); last = now;
       if (phase === 'title') {
         const left = autoAt - now; ringT.set(left / titleTotal, Math.max(0, Math.ceil(left / 1000)));
         if (left <= 0) startReady();
       } else if (phase === 'ready') {
         const e = now - readyStart;
-        if (e > 600 && go.dataset.s !== 'GO!') { setGo('GO!'); api.snd('go'); buzz(30); }
-        if (e >= 1150) beginPlay(now);
+        if (e > goAt && go.dataset.s !== 'GO!') { setGo('GO!'); api.snd('go'); buzz(30); }
+        if (e >= readyMs) beginPlay(now);
       } else if (phase === 'play') {
         t = (now - playStart) / 1000;
         try { game.update(dt, t); } catch (err) { console.error(err); }
@@ -1383,7 +1521,11 @@ export function runMinigame(type, opts = {}) {
       if (opts.signal.aborted) { abort(); return; }
       opts.signal.addEventListener('abort', abort, { once: true });
     }
-    window.__mg = { type, api, game, get phase() { return phase; }, start: startReady, freeze(on) { frozen = !!on; } };
+    // test hooks: freeze the picture; pump(ms) runs frames by hand (for a hidden/background browser pane)
+    window.__mg = {
+      type, api, game, get phase() { return phase; }, start: startReady, freeze(on) { frozen = !!on; },
+      pump(ms = 16) { for (let i = 0; i < Math.ceil(ms / 16); i++) { frame(last + 16); cancelAnimationFrame(raf); } raf = requestAnimationFrame(frame); },
+    };
     raf = requestAnimationFrame(frame);
   });
 }

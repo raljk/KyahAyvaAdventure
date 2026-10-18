@@ -67,7 +67,7 @@ Cobblestone, Bridge and Castle have no mini-game.
 
 ## 5. Pacing and balance targets
 
-`winTarget` 12 (was 6), `grabbleTarget` 7, 8 Launch spaces, Grabble moves 1d4 (2–3 players), 1d3 (4–5) or 1d2 (6) per player turn. Targets for a 4-player game (bot simulation with real durations estimated): 20–30 minutes, ≥6 Catcher launches, Grabble wins 10–20 % of games, every player sees ≥4 mini-games. `tests/sim.mjs` reports these; tune `GRABBLE_TARGET_DEFAULT`, his dice, and loot rules until the targets hold.
+`winTarget` 12 (was 6), `grabbleTarget` 7 (+2 per player above 4), 8 Launch spaces, Grabble moves 1d4 (2–3 players), 1d3 (4–5) or 1d2 (6) per player turn. Targets for a 4-player game (bot simulation with real durations estimated): 20–30 minutes, ≥6 Catcher launches, Grabble wins 10–20 % of games, every player sees ≥4 mini-games. `tests/sim.mjs` reports these; tune `GRABBLE_TARGET_DEFAULT`, his dice, and loot rules until the targets hold.
 
 ## 6. Round-1 grader fixes folded into v2 (all must land)
 
@@ -78,3 +78,10 @@ Cobblestone, Bridge and Castle have no mini-game.
 5. Pawns 30 % bigger, labels readable and depth-tested, labels hidden during launches.
 6. HUD in viewport units; subtitles never cover the front row; lobby chips don't shift; backdrop seam fixed; dice/QR refresh; banner grammar.
 7. Phone: inputs never wait behind narration (turn_roll narrate is fire-and-forget); countdowns on pick/bell/mini-game; phone assets ≤ 2 MB (256 px faces), board textures ≤ 40 MB (512 px icons/words, 1024 heroes).
+
+## 7. Play-test round 1 changes (difficulty by hero, gated Catcher, host controls)
+
+- **Difficulty by hero** (`public/shared/difficulty.js`): Miss Suds and Benny play every mini-game at the hardest tier (Starlight ★★★), Kyah at the middle tier (Bloom ★★), Ayva at the original tuning (Sprout ★), and Charli and Poodle roll a random tier each time. Harder tiers mean: longer flights with bigger ring-height changes; faster flower hunts with Grabble's fake shards that end the game if tapped; a longer Charli catch that speeds up with a narrower catch; more net swoops with feints; a longer cake with mouldy berries; a narrower, drifting vine zone; and a smaller bell zone whose star changes speed. Outcomes scale with each tier's maximum (e.g. two shards for 80 % of the flowers found).
+- **The Catcher, section by section:** grown-ups ring the bell at all four sections of the machine (Pet Wash, Flower Garden, Castle Gate, Village Square), Kyah at 2–3, Ayva once, the dogs a random 1–4. The machine pauses at each section and waits for the launcher's phone; a missed bell makes it FIZZLE and the basket swings wide. Any PERFECT bell earns the launcher +1 shard.
+- **Host controls:** the host phone can End game (back to the lobby, everyone stays) or Close room (everyone leaves; the board opens a fresh room by itself). The big screen also has a New room link. A finished game's room closes by itself after 3 minutes unless the host taps Play again (`AUTO_CLOSE_MINUTES`).
+- **Balance:** Grabble's bag is 7 shards plus 2 for each player above four.

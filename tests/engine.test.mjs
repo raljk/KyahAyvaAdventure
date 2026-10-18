@@ -4,9 +4,11 @@ import { Game } from '../server/game.js';
 import { SPACES, SPACE_COUNT, BRIDGE_INDEX, CASTLE_INDEX, FLIGHT_PAIRS, GRABBLE_START } from '../public/board/layout.js';
 
 function fastGame(n = 3) { const g = new Game({ room: 'TEST', joinUrl: 'http://x' }); g.fastMode = true; for (let i = 0; i < n; i++) g.addBot('B' + i); return g; }
-function humanGame(n = 3) { const g = new Game({ room: 'TEST', joinUrl: 'http://x' }); g.fastMode = true; for (let i = 0; i < n; i++) g.join({ name: 'H' + i }); return g; }
+// player 0 is Ayva (easy tier: one bell per launch) unless heroes are given
+function humanGame(n = 3, heroes = ['ayva', 'kyah', 'misssuds', 'baker', 'poodle', 'pup']) { const g = new Game({ room: 'TEST', joinUrl: 'http://x' }); g.fastMode = true; for (let i = 0; i < n; i++) g.join({ name: 'H' + i, heroId: heroes[i] }); return g; }
 const tick = (ms = 5) => new Promise(r => setTimeout(r, ms));
-async function settle(g, pred, max = 4000) { const t0 = Date.now(); while (!pred() && Date.now() - t0 < max) { await g.queue; await tick(); } }
+// waits for a condition; never blocks on the queue alone, because a launch waits there for the player's next bell
+async function settle(g, pred, max = 4000) { const t0 = Date.now(); while (!pred() && Date.now() - t0 < max) { await Promise.race([g.queue, tick(20)]); await tick(); } }
 async function started(g) { g.start(null, { force: true }); await settle(g, () => g.turnStep === 'roll'); g.clearTimers(); return g.current(); }
 function parkGrabble(g, idx = 20) { g.grabble.space = idx; }
 
@@ -44,8 +46,9 @@ test('landing on a shard space starts the shard mini-game and scores it', async 
   const orig = Math.random; Math.random = () => 0; // roll 1
   try { g.roll(a.id); await settle(g, () => g.turnStep === 'minigame'); } finally { Math.random = orig; }
   assert.equal(g.minigame.type, 'shard'); assert.equal(g.minigame.playerId, a.id);
-  assert.ok(g.miniResult(a.id, g.minigame.id, 5).ok); await settle(g, () => g.turnPlayerId !== a.id);
-  assert.equal(a.shards, 2, 'five twinkles = two shards');
+  assert.equal(g.minigame.params.tier, 'easy'); assert.equal(g.minigame.params.cfg.rounds, 7);
+  assert.ok(g.miniResult(a.id, g.minigame.id, 6).ok); await settle(g, () => g.turnPlayerId !== a.id);
+  assert.equal(a.shards, 2, 'six of seven = two shards at Ayva\'s level');
 });
 
 test('chase: passing Grabble pauses the move; a good vine grab takes loot back', async () => {
@@ -72,14 +75,14 @@ test('launch can target Grabble: catching him takes up to 3 loot and sends him h
   const g = humanGame(2); const a = await started(g); parkGrabble(g, 5); g.grabble.loot = 5; a.shards = 0;
   g.turnStep = 'choose_launch'; assert.ok(g.chooseTarget(a.id, 'grabble').ok);
   await settle(g, () => g.turnStep === 'minigame'); assert.equal(g.minigame.type, 'bell'); assert.equal(g.grabble.space, BRIDGE_INDEX);
-  assert.ok(g.miniResult(a.id, g.minigame.id, 0.5).ok); await settle(g, () => g.turnPlayerId !== a.id, 8000);
+  assert.ok(g.miniResult(a.id, g.minigame.id, 0.4).ok); await settle(g, () => g.turnPlayerId !== a.id, 8000);
   assert.equal(a.shards, 3); assert.ok(g.grabble.loot <= 1, 'bag emptied (he may pocket one on his next scurry)'); assert.equal(g.grabble.lastMove.from, GRABBLE_START, 'Grabble was sent home before his next scurry');
 });
 
 test('launch at a friend: catch moves one shard, miss moves nothing', async () => {
   const g = humanGame(3); const a = await started(g); parkGrabble(g); const [, b, c] = g.players; b.shards = 2; c.shards = 0;
   g.turnStep = 'choose_launch'; assert.ok(g.chooseTarget(a.id, b.id).ok); await settle(g, () => g.turnStep === 'minigame');
-  c.space = BRIDGE_INDEX; assert.ok(g.miniResult(a.id, g.minigame.id, 0.5).ok); await settle(g, () => g.turnPlayerId !== a.id, 8000);
+  c.space = BRIDGE_INDEX; assert.ok(g.miniResult(a.id, g.minigame.id, 0.4).ok); await settle(g, () => g.turnPlayerId !== a.id, 8000);
   assert.equal(a.shards, 1); assert.equal(b.shards, 1); assert.equal(c.shards, 0);
 });
 
@@ -117,4 +120,55 @@ test('Benny is sweet on Miss Suds: greeting at start, compliment when crossing p
   // no pair → no flirting
   const g2 = new Game({ room: 'T', joinUrl: 'u' }); g2.fastMode = true; const seen2 = []; g2.join({ name: 'Ben', heroId: 'baker' }); g2.join({ name: 'K', heroId: 'kyah' }); g2.on('event', e => { if (e.type === 'flirt') seen2.push(e.key); });
   g2.start(null, { force: true }); await settle(g2, () => g2.turnStep === 'roll'); g2.clearTimers(); assert.equal(seen2.length, 0);
+});
+
+test('difficulty by hero: grown-ups hard, Kyah medium, Ayva easy, dogs random', async () => {
+  const { tierFor, MINI } = await import('../public/shared/difficulty.js');
+  assert.equal(tierFor('misssuds'), 'hard'); assert.equal(tierFor('baker'), 'hard'); assert.equal(tierFor('kyah'), 'medium'); assert.equal(tierFor('ayva'), 'easy');
+  const seen = new Set(); for (let i = 0; i < 60; i++) seen.add(tierFor('pup')); assert.equal(seen.size, 3, 'dogs roll every tier');
+  assert.ok(MINI.bell.hard.zone[1] - MINI.bell.hard.zone[0] < MINI.bell.medium.zone[1] - MINI.bell.medium.zone[0]);
+  assert.ok(MINI.flight.hard.rings > MINI.flight.easy.rings && MINI.shard.hard.decoys > 0);
+  const g = humanGame(2, ['baker', 'kyah']); const a = await started(g); parkGrabble(g);
+  await g.resolveSpace(a, SPACES.find(s => s.type === 'shard').index);
+  assert.equal(g.minigame.params.tier, 'hard'); assert.equal(g.minigame.params.cfg.rounds, 10);
+  g.miniResult(a.id, g.minigame.id, 9, { failed: true }); await settle(g, () => g.turnPlayerId !== a.id);
+  assert.equal(a.shards, 0, 'tapping a decoy fails the game');
+});
+
+test('grown-up launch: four bells, one per section; a miss at any section fizzles; a perfect earns +1', async () => {
+  const g = humanGame(2, ['misssuds', 'ayva']); const a = await started(g); parkGrabble(g); const b = g.players[1]; b.shards = 3; a.shards = 0;
+  g.turnStep = 'choose_launch'; assert.ok(g.chooseTarget(a.id, b.id).ok); await settle(g, () => g.turnStep === 'minigame');
+  assert.equal(g.minigame.params.gateCount, 4); assert.equal(g.minigame.params.tier, 'hard');
+  const answer = async (score) => { await settle(g, () => g.turnStep === 'minigame'); const m = g.minigame; assert.ok(g.miniResult(a.id, m.id, score).ok); return m.params.gateIndex; };
+  assert.equal(await answer(0.52), 0);  // perfect bell
+  assert.equal(await answer(0.45), 1); assert.equal(await answer(0.45), 2); assert.equal(await answer(0.45), 3);
+  await settle(g, () => g.turnPlayerId !== a.id, 8000);
+  assert.equal(b.shards, 2, 'caught'); assert.equal(a.shards, 2, 'one from the catch, one for the perfect bell');
+  // next launch: miss the third bell
+  g.turnPlayerId = a.id; g.turnStep = 'choose_launch'; g.clearTimers(); b.space = 5; a.shards = 0; b.shards = 3;
+  assert.ok(g.chooseTarget(a.id, b.id).ok);
+  await answer(0.45); await answer(0.45); assert.equal(await answer(0.9), 2);
+  await settle(g, () => g.turnPlayerId !== a.id, 8000);
+  assert.equal(b.shards, 3, 'the machine fizzled: missed'); assert.equal(a.shards, 0);
+});
+
+test('host can end the game mid-turn without anything leaking into the next game', async () => {
+  const g = humanGame(3); const a = await started(g); parkGrabble(g); const host = g.hostId;
+  g.turnStep = 'choose_launch'; g.chooseTarget(a.id, g.players[1].id); await settle(g, () => g.turnStep === 'minigame');
+  assert.equal(g.endToLobby(g.players[1].id).ok, false, 'only the host');
+  assert.ok(g.endToLobby(host).ok); assert.equal(g.phase, 'lobby'); assert.equal(g.players.length, 3);
+  await settle(g, () => false, 300);
+  assert.equal(g.phase, 'lobby'); assert.equal(g.turnStep, null); assert.ok(g.players.every(p => p.shards === 0));
+  assert.ok(g.start(host).ok); await settle(g, () => g.turnStep === 'roll'); assert.equal(g.phase, 'playing');
+  g.clearTimers();
+});
+
+test('bots and timed-out phones can score every mini-game at every tier (regression: a crash here stopped the server)', async () => {
+  const { MINI, maxScore } = await import('../public/shared/difficulty.js');
+  const g = new Game({ room: 'T', joinUrl: 'u' });
+  for (const skill of [null, 0, 1]) { g.botSkill = skill;
+    for (const [type, tiers] of Object.entries(MINI)) for (const [tier, cfg] of Object.entries(tiers)) for (let i = 0; i < 40; i++) {
+      const v = g.botScore(type, { tier, cfg }); assert.ok(Number.isFinite(v), `${type}/${tier}`);
+      if (type !== 'bell' && type !== 'chase') assert.ok(v >= 0 && v <= maxScore(type, cfg), `${type}/${tier} in range`);
+    } }
 });

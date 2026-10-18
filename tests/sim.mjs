@@ -1,17 +1,18 @@
 // Balance simulator: runs N fast bot games and reports pacing. Usage: node tests/sim.mjs [games] [players] [winTarget] [grabbleTarget] [grabbleDice]
 import { Game } from '../server/game.js';
+import { maxScore } from '../public/shared/difficulty.js';
 const [games = 200, players = 4, winTarget = 10, grabbleTarget = 8, grabbleDice = 4] = process.argv.slice(2).map(Number);
 const KID = process.env.KID === '1'; // score like an average kid (rates measured by the phone agent's model) instead of the 70 % bot
 const r = Math.random;
-const kidScore = (type) => { switch (type) {
-  case 'flight': return r() < 0.89 ? (r() < 0.45 / 0.89 ? 4 + Math.floor(r() * 5) : 1 + Math.floor(r() * 3)) : 0;
-  case 'shard': return r() < 0.68 ? 5 + Math.floor(r() * 2) : 1 + Math.floor(r() * 4);
-  case 'fetch': return r() < 0.97 ? 1 + Math.floor(r() * 3) : 0;
-  case 'swish': return r() < 0.84 ? 3 : Math.floor(r() * 3);
-  case 'cake': return r() < 0.93 ? 5 + Math.floor(r() * 4) : Math.floor(r() * 5);
-  case 'chase': return r() < 0.72 ? 0.45 + r() * 0.35 : r() * 0.4;
-  case 'bell': return r() < 0.77 ? 0.30 + r() * 0.45 : r() * 0.28;
-  default: return 0; } };
+// an average kid (rates measured by the phone agent's model at the easy tier); harder tiers succeed less often
+const KID_HIT = { flight: 0.89, shard: 0.9, fetch: 0.95, swish: 0.84, cake: 0.93, chase: 0.72, bell: 0.77 };
+const TIER_MULT = { easy: 1, medium: 0.85, hard: 0.72 };
+const kidScore = (type, params) => { const cfg = params?.cfg || {}; const tier = params?.tier || 'easy'; const hit = r() < (KID_HIT[type] ?? 0.7) * (TIER_MULT[tier] ?? 1); const max = maxScore(type, cfg); const span = (a, b) => a + Math.floor(r() * (b - a + 1));
+  switch (type) {
+    case 'bell': case 'chase': { const [a, b] = cfg.zone || [0.3, 0.75]; return hit ? a + r() * (b - a) : (r() < 0.5 ? r() * a * 0.95 : b + (1 - b) * (0.05 + r() * 0.95)); }
+    case 'swish': return hit ? max : span(0, max - 1);
+    case 'shard': case 'fetch': case 'flight': case 'cake': return hit ? span(Math.ceil(max * 0.55), max) : span(0, Math.ceil(max * 0.3));
+    default: return 0; } };
 // estimated real-time cost per thing on a visible board (seconds)
 const COST = { turn: 9, minigame: 14, launch: 42, chase: 16, grabbleMove: 3 };
 const tick = (ms = 2) => new Promise(r => setTimeout(r, ms));

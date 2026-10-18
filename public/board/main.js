@@ -8,6 +8,8 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import * as layout from './layout.js';
 import { SPACES, BRIDGE_INDEX, CASTLE_INDEX, CAMERA, CATCHER_STAGES, LANDMARKS, heightAt, GRABBLE_START } from './layout.js';
 import { HERO_BY_ID } from '/shared/heroes.js';
+import { CATCHER_SECTIONS } from '/shared/difficulty.js';
+const SECTION_AT = Object.fromEntries(CATCHER_SECTIONS.map(s => [s.id, s.at]));
 import { AudioManager } from './audio.js';
 import { HUD } from './hud.js';
 import { Pawns } from './pawns.js';
@@ -125,18 +127,35 @@ let state = null; let ready = false; const queue = []; let processing = false;
 // each board owns a room; a reload (or a reconnect) re-attaches to the same room with its key. ?new=1 opens a fresh room.
 const BOARD_KEY = 'kaa-board-room'; let freshAsked = params.get('new') === '1';
 function loadRoom() { try { return JSON.parse(localStorage.getItem(BOARD_KEY) || 'null') || {}; } catch { return {}; } }
+function saveRoom(res) {
+  if (!res?.ok) { hud.toast(res?.error || 'Could not open a game room'); return; }
+  freshAsked = false; try { localStorage.setItem(BOARD_KEY, JSON.stringify({ room: res.room, key: res.key })); } catch {}
+  if (params.get('new') === '1') history.replaceState(null, '', location.pathname);
+}
+// the big-screen "New room" buttons (lobby card and the end-of-game card)
+for (const id of ['newRoomBtn', 'newRoomBtn2']) document.getElementById(id)?.addEventListener('click', () => { if (confirm('Close this room for everyone and open a new one?')) socket.emit('board:closeRoom', {}, () => {}); });
 socket.on('connect', () => {
   const saved = loadRoom();
-  socket.emit('board:hello', { ready, room: saved.room, key: saved.key, fresh: freshAsked }, (res) => {
-    if (!res?.ok) { hud.toast(res?.error || 'Could not open a game room'); return; }
-    freshAsked = false; try { localStorage.setItem(BOARD_KEY, JSON.stringify({ room: res.room, key: res.key })); } catch {}
-    if (params.get('new') === '1') history.replaceState(null, '', location.pathname);
-  });
+  socket.emit('board:hello', { ready, room: saved.room, key: saved.key, fresh: freshAsked }, saveRoom);
   const el = $('#splashStatus'); if (el) el.textContent = 'connected'; if (ready) hud.toast('Connected to the game');
 });
 socket.on('disconnect', () => hud.toast('Connection lost… reconnecting'));
 socket.on('state', s => { const prev = state; state = s; if (!ready) return; hud.update(s); pawns.sync(s.players); pawns.setActive(s.phase === 'playing' ? s.turnPlayerId : null); if (s.phase !== 'lobby') { pawns.ensureGrabble(); pawns.setGrabbleLoot(s.grabble?.loot || 0); } if (s.phase === 'lobby') { pawns.placeAll(s.players); if (prev?.phase !== 'lobby' && pawns.grabble) pawns.place('grabble', GRABBLE_START, s.players); } });
-socket.on('event', ev => { queue.push(ev); pump(); });
+// these never wait in line: gate results arrive while the launch animation is running, resets must cut in
+let gateWaiter = null;
+function hardReset() { queue.length = 0; if (gateWaiter) { const w = gateWaiter; gateWaiter = null; w.resolve({ pass: false, aborted: true }); } followCatcher = false; try { catcher?.reset(); } catch {} audio.stopVoices(); pawns?.setLaunchScale?.(1); pawns?.setLabelsVisible?.(true); }
+socket.on('event', ev => {
+  if (ev.type === 'catcher:gateResult') { if (gateWaiter && gateWaiter.index === ev.index) { const w = gateWaiter; gateWaiter = null; w.resolve(ev); } return; }
+  if (ev.type === 'minigame:progress') { if (ready) hud.miniProgress(ev.progress); return; }
+  if (ev.type === 'game:reset' && ready) hardReset();
+  queue.push(ev); pump();
+});
+socket.on('room:closed', () => {
+  hardReset(); try { localStorage.removeItem(BOARD_KEY); } catch {}
+  hud.toast('Opening a new room…', 3000); $('#winOverlay').classList.add('hidden');
+  socket.emit('board:hello', { ready, fresh: true }, saveRoom);
+  if (ready) { idleDrift = true; camTo(CAMERA.overview, 1.2); audio.playMusic('music_lobby'); }
+});
 socket.on('minigame:frame', ({ id, frame }) => { if (ready && state?.minigame?.id === id && frame) hud.miniFrame(frame); });
 async function pump() {
   if (processing) return; processing = true;
@@ -160,6 +179,13 @@ const STAGE_FX = {
 };
 // Catcher cue → sound (cues the contraption fires between stages)
 const CUE_SFX = { rope_tug: ['rope_tug'], marble_spill: ['marble_roll', { volume: 0.7 }], loop: ['marble_roll', { rate: 1.3, volume: 0.6 }], pop: ['bucket_clank', { rate: 1.2, volume: 0.6 }], vine_arrive: ['vine_grow'], clunk: ['bucket_clank'], apple_pop: ['flower_tap', { rate: 0.8 }], gutter: ['marble_roll', { rate: 0.8 }], jump: ['flight_whoosh', { volume: 0.5 }], woof: ['pup_woof'], dog_splash: ['dog_splash'], duck_slide: ['hop_dodge', { volume: 0.5 }], bonk: ['bucket_bump', { rate: 1.3 }], notes_top: ['twinkle'], latch: ['bucket_clank', { rate: 1.4, volume: 0.7 }], lift: ['vine_grab'] };
+async function askGate(index) {
+  hud.word('RING!', { ms: 900 }); audio.sfx('countdown_beep');
+  const res = await new Promise(resolve => { gateWaiter = { index, resolve }; socket.emit('catcher:gate', { index }); setTimeout(() => { if (gateWaiter?.index === index) { gateWaiter = null; resolve({ pass: true, timeout: true }); } }, 30000); });
+  if (res.aborted) return false;
+  if (res.perfect) { hud.word('PERFECT!', { ms: 1000 }); audio.sfx('bell_ding'); audio.sfx('twinkle'); } else if (res.pass) { hud.word('DING!', { ms: 800 }); audio.sfx('bell_ding'); }
+  return !!res.pass;
+}
 async function endLaunch() { followCatcher = false; catcher.reset(); pawns.setLabelsVisible(true); pawns.setLaunchScale(1); idleDrift = true; audio.playMusic('music_play'); await camTo(CAMERA.overview, 1.8); }
 const MINI_WORDS = { great: 'PERFECT!', good: 'GOT IT!', bad: 'HOP!' };
 
@@ -181,7 +207,7 @@ const handlers = {
   async fetch({ playerId, targetId }) { audio.sfx('pup_woof'); hud.word('WOOF!'); if (targetId === 'grabble') { audio.voice('grabble_tripped', { duck: false, channel: 'character', maxWait: 1500 }); await pawns.shake('grabble'); } else await pawns.jump(targetId, { height: 1 }); await sleep(250); },
   async flight({ playerId, to }) { audio.sfx('flight_whoosh'); hud.word('WHOOSH!'); if (P(playerId)?.heroId === 'ayva') audio.voice('ayva_fly', { duck: false }); await pawns.arc(playerId, to, state.players, { height: 8, duration: 1.7 }); idleDrift = true; await camTo(CAMERA.overview, 1.5); },
   async sendToBridge({ targetId, to }) { hud.word('UH-OH!'); audio.sfx('flight_whoosh', { rate: 0.8 }); if (targetId === 'grabble') audio.voice('grabble_mine', { duck: false }); const first = catcher.cameraPath?.pos?.length ? { pos: catcher.cameraPath.pos[0], target: catcher.cameraPath.target[0] } : CAMERA.catcher; await Promise.all([pawns.arc(targetId, to, state.players, { height: 5, duration: 1.4 }), camTo(CAMERA.catcher, 1.4)]); idleDrift = false; },
-  async launch({ byPlayerId, targets, grabble, caught, perfect }) {
+  async launch({ byPlayerId, targets, grabble, caught, perfect, gates = [], live = false }) {
     idleDrift = false; audio.playMusic(audioManifest.music?.music_catcher_long ? 'music_catcher_long' : 'music_catcher', { fade: 0.4, loop: !audioManifest.music?.music_catcher_long, then: 'music_play' }); pawns.setLabelsVisible(false); pawns.setLaunchScale(0.6);
     const onStage = (id) => { const fx = STAGE_FX[id]; if (!fx) return; fx.sfx && audio.sfx(fx.sfx); fx.voice && audio.voice(fx.voice, { duck: false, channel: 'character', maxWait: 1200 }); fx.word && hud.word(fx.word, { ms: 900 });
       if (id === 'caught') { if (grabble) audio.voice('grabble_pride', { duck: false, channel: 'character', maxWait: 1500 }); if (perfect) setTimeout(() => hud.word('PERFECT!', { ms: 1000 }), 950); }
@@ -189,8 +215,18 @@ const handlers = {
       if (id === 'missed') { [...targets, ...(grabble ? ['grabble'] : [])].forEach((t, i) => setTimeout(() => pawns.jump(t, { height: 1.8 }), 120 + i * 90)); } };
     const duration = catcher.duration || catcher.cameraPath?.duration || 30;
     if (catcher.cameraPath?.sample) { camTween && camTween.kill(); followCatcher = true; } else camFollowPath(catcher.cameraPath, duration);
-    const onCue = (name) => { const m = CUE_SFX[name]; if (m) audio.sfx(m[0], m[1] || {}); else if (/^step_\d+$/.test(name)) audio.sfx('pawn_hop', { rate: 1.2 + Math.random() * 0.2, volume: 0.45 }); if (name === 'dog_splash') hud.word('SPLASH!', { ms: 800 }); };
-    try { await catcher.play({ caught, perfect, onStage, onCue }); } finally { followCatcher = false; }
+    let failed = false;
+    const onCue = (name) => { if (failed && name === 'lift') return; const m = CUE_SFX[name]; if (m) audio.sfx(m[0], m[1] || {}); else if (/^step_\d+$/.test(name)) audio.sfx('pawn_hop', { rate: 1.2 + Math.random() * 0.2, volume: 0.45 }); if (name === 'dog_splash') hud.word('SPLASH!', { ms: 800 }); };
+    const onStage2 = (id) => onStage(failed && id === 'caught' ? 'missed' : id);
+    const fizzle = () => { failed = true; hud.word('FIZZLE!', { ms: 1400 }); audio.sfx('tumble'); audio.sfx('missed_hop', { rate: 0.8 });
+      setTimeout(() => { const tl = catcher.timeline; if (!tl) return; const t = catcher.stageTimes.basket - 0.3; audio.sfx('camera_whoosh', { volume: 0.6 }); catcher.seek(t, { caught: false }); tl.play(t); }, 1300); };
+    const playing = catcher.play({ caught, perfect, onStage: onStage2, onCue });
+    // a gated launch: the machine pauses at each chosen section until the launcher rings the bell again on their phone
+    if (live && gates.length > 1 && catcher.timeline && catcher.stageTimes) {
+      gates.slice(1).forEach((sec, k) => { const at = catcher.stageTimes[SECTION_AT[sec]]; if (at == null) return;
+        catcher.timeline.addPause(Math.max(0.1, at - 0.2), () => { askGate(k + 1).then(pass => { if (!catcher.timeline) return; if (pass) catcher.timeline.resume(); else fizzle(); }); }); });
+    }
+    try { await playing; } finally { followCatcher = false; }
   },
   async caught({ grabble, taken, spilled }) { if (grabble) { audio.sfx('loot_spill'); const from = catcher.basketWorldPos ? screenPos(catcher.basketWorldPos) : screenPos(pawns.worldPos('grabble')); for (let i = 0; i < Math.min(spilled, 5); i++) { hud.flyShard(from, { x: from.x + (Math.random() - 0.5) * 500, y: -60 }, { ms: 900 + i * 80 }); await sleep(90); } } await sleep(500); await endLaunch(); },
   async missed() { await sleep(350); await endLaunch(); },

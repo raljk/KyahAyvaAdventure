@@ -289,7 +289,8 @@ function doJoin() {
 function applyState(st, quiet) {
   if (!st || !Array.isArray(st.players)) return;
   S.state = st;
-  if (st.room && !S.room) S.room = st.room;
+  if (st.room && !S.room && !S.roomEditable) S.room = st.room;
+  if (st.room && S.roomEditable && !S.meId && !$('room-input').value) $('room-input').value = st.room; // the new room's code, ready to join
   S.taken = new Set(st.players.map((p) => p.heroId));
   if (!quiet && S.booting && S.session) S.booting = false;
   render();
@@ -371,6 +372,8 @@ function render() {
     $('me-target').textContent = String(winTarget());
   }
   document.body.classList.toggle('has-top', TOP_SCREENS.has(screen));
+  $('host-btn').hidden = !(me && st && st.hostId === me.id && TOP_SCREENS.has(screen));
+  if (S.sheet && !(me && st && st.hostId === me.id)) closeSheet(); // no longer the host
   document.body.classList.toggle('on-mini', screen === 'mini');
   $('me-shards').hidden = screen === 'lobby';
   $('topbar').hidden = !TOP_SCREENS.has(screen);
@@ -678,7 +681,7 @@ function startMini(mg, me) {
     hero: { id: me.heroId, name: nameOf(me), color: colorOf(me), face: S.faces[me.heroId] },
     art: { faces: S.faces, urls: S.art.urls },
     onTick: (p) => sendMiniTick(run, p),
-    onDone: (score) => sendMiniResult(run, score),
+    onDone: (score, extra) => sendMiniResult(run, score, extra),
     onFrame: FRAMES ? (blob) => sendMiniFrame(run, blob) : null,
   }).then(() => { if (S.mini === run && S.screen === 'mini') render(); });
 }
@@ -701,12 +704,12 @@ function sendMiniFrame(run, blob) {
   if (run.legacy || !run.id || run.sent || S.mini !== run || !S.socket || !S.connected) return;
   S.socket.emit('player:miniFrame', { id: run.id, frame: blob });
 }
-function sendMiniResult(run, score) {
+function sendMiniResult(run, score, extra = {}) {
   if (run.sent) return;
   run.sent = true; run.sentAt = Date.now(); run.holdUntil = run.sentAt + MINI_HOLD_MS;
   rememberSent(run.key);
   const ev = run.legacy ? 'player:launchTiming' : 'player:miniResult';
-  const payload = run.legacy ? { score } : { id: run.id, score };
+  const payload = run.legacy ? { score } : { id: run.id, score, ...(extra && extra.failed ? { failed: true } : {}) };
   emitResult(ev, payload);
   setTimeout(() => { if (S.mini === run) render(); }, MINI_HOLD_INPUT_MS + 60);
   setTimeout(() => { if (S.mini === run) render(); }, MINI_HOLD_MS + 60);
@@ -779,6 +782,60 @@ function updateWin(st, me) {
   const host = st.hostId === me.id;
   $('again-btn').hidden = !host; $('again-wait').hidden = host;
   $('again-btn').disabled = isLocked();
+  $('close-btn').hidden = !host;
+  tickClosing();
+}
+// "This room closes in m:ss" (state.closesAt, set when a game ends) — for everyone on the win screen
+function tickClosing() {
+  const st = S.state; const el2 = $('closes-in');
+  const at = st && st.phase === 'ended' && Number(st.closesAt);
+  if (!at || S.screen !== 'win') { el2.hidden = true; clearInterval(S.closeTimer); S.closeTimer = 0; return; }
+  const rem = Math.max(0, Math.ceil((at - Date.now()) / 1000));
+  el2.hidden = false; el2.textContent = `This room closes in ${Math.floor(rem / 60)}:${String(rem % 60).padStart(2, '0')}`;
+  el2.classList.toggle('low', rem <= 30);
+  if (!S.closeTimer) S.closeTimer = setInterval(tickClosing, 500);
+}
+
+// ---------------------------------------------------------------- host controls (menu + friendly confirm sheets)
+function openSheet(kind) {
+  const st = S.state; const me = meOf(st); if (!st || !me || st.hostId !== me.id) return;
+  S.sheet = kind; const wrap = $('sheet'); const btns = $('sheet-btns'); btns.textContent = '';
+  const add = (label, cls, fn) => { const b = el('button', 'btn ' + cls, label); b.type = 'button'; b.addEventListener('click', fn); btns.appendChild(b); return b; };
+  if (kind === 'menu') {
+    $('sheet-icon').textContent = '👑'; $('sheet-title').textContent = 'Host menu'; $('sheet-text').textContent = 'You are the host. What would you like to do?';
+    if (st.phase === 'playing') add('End game', 'btn-sheet', () => openSheet('end'));
+    add('Close room', 'btn-sheet', () => openSheet('close'));
+    add('Back to the game', 'btn-stay', closeSheet);
+  } else if (kind === 'end') {
+    $('sheet-icon').textContent = '🏁'; $('sheet-title').textContent = 'End the game?'; $('sheet-text').textContent = 'Everyone goes back to the lobby. Nobody has to leave.';
+    add('Yes, end the game', 'btn-go', () => hostAction('player:endGame'));
+    add('Keep playing', 'btn-stay', closeSheet);
+  } else if (kind === 'close') {
+    $('sheet-icon').textContent = '🚪'; $('sheet-title').textContent = 'Close the room?'; $('sheet-text').textContent = 'Everyone leaves, and the big screen shows a new code.';
+    add('Yes, close the room', 'btn-danger', () => hostAction('player:closeRoom'));
+    add('Cancel', 'btn-stay', closeSheet);
+  }
+  wrap.hidden = false; sfx.pick(); buzz(20);
+  setTimeout(() => { const f = btns.querySelector('button'); if (f) f.focus(); }, 30);
+}
+function closeSheet() { S.sheet = null; $('sheet').hidden = true; }
+function hostAction(ev) {
+  closeSheet();
+  if (!S.socket || !S.connected) { sfx.error(); showToast('Reconnecting… try again in a moment!'); return; }
+  sfx.tap(); buzz(30);
+  S.socket.emit(ev, {}, (res) => { if (res && res.ok === false) { sfx.error(); showToast(friendlyError(res.error)); } });
+}
+// room:closed (a socket event of its own): forget the session and room, back to Join with the room field open
+function onRoomClosed(p = {}) {
+  if (S.mini.ctrl) S.mini.ctrl.abort();
+  S.mini = { key: null, id: null, type: null, legacy: false, ctrl: null, sent: false, sentAt: 0, holdUntil: 0, lastTick: 0 };
+  closeSheet(); stopConfetti();
+  S.session = null; S.meId = null; store.del(SESSION_KEY);
+  S.room = ''; S.roomEditable = true; S.state = null; S.lock = null; S.booting = false; S.taken = new Set();
+  $('room-input').value = '';
+  S.joinError = p.reason === 'finished' ? 'Thanks for playing! Scan the new code on the big screen to play again.' : 'The room was closed. Scan the new code on the big screen!';
+  sfx.lose(); buzz([80, 40, 80]);
+  render();
 }
 
 // ---------------------------------------------------------------- confetti
@@ -869,6 +926,7 @@ function wireSocket(socket) {
   socket.on('connect_error', () => { S.connected = false; setBanner(true); if (S.booting && !S.session) { S.booting = false; } render(); });
   socket.on('state', (st) => applyState(st));
   socket.on('event', onServerEvent);
+  socket.on('room:closed', onRoomClosed);
 }
 // Server animation events: phones only use the mini-game ones (someone else's live progress bar).
 function onServerEvent(e) {
@@ -912,6 +970,10 @@ async function boot() {
   $('name-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.target.blur(); } });
   $('start-btn').addEventListener('click', () => { if (act('player:start', {}, { kind: 'start' })) sfx.pick(); });
   $('again-btn').addEventListener('click', () => { if (act('player:playAgain', {}, { kind: 'again' })) sfx.pick(); });
+  $('close-btn').addEventListener('click', () => openSheet('close'));
+  $('host-btn').addEventListener('click', () => openSheet('menu'));
+  $('sheet').addEventListener('click', (e) => { if (e.target === $('sheet')) closeSheet(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && S.sheet) closeSheet(); });
   $('roll-btn').addEventListener('click', () => doRoll('tap'));
   $('fly-btn').addEventListener('click', () => { if (act('player:flight', { fly: true }, { kind: 'flight', fly: true })) { sfx.whoosh(); buzz(50); } });
   $('stay-btn').addEventListener('click', () => { if (act('player:flight', { fly: false }, { kind: 'flight', fly: false })) { sfx.tap(); buzz(30); } });
@@ -933,7 +995,7 @@ async function boot() {
   if (MOCK) {
     const { createMockSocket } = await import('/play/mock.js');
     const hold = qs.get('hold') === '1';
-    wireSocket(createMockSocket({ hold, start: Number(qs.get('step') || 0), ms: Number(qs.get('ms') || 4000), joined: qs.get('join') !== '1', players: Number(qs.get('players') || 4), game: qs.get('game') || '' }));
+    wireSocket(createMockSocket({ hold, start: Number(qs.get('step') || 0), ms: Number(qs.get('ms') || 4000), joined: qs.get('join') !== '1', players: Number(qs.get('players') || 4), game: qs.get('game') || '', tier: qs.get('tier') || '' }));
     $('mock-chip').addEventListener('click', () => window.__mock.next());
     document.addEventListener('keydown', (e) => {
       if (e.target && e.target.tagName === 'INPUT') return;

@@ -15,6 +15,7 @@ const PORT = Number(process.env.PORT || 3000);
 const MAX_ROOMS = Number(process.env.MAX_ROOMS || 300);
 const ROOM_IDLE_MS = Number(process.env.ROOM_IDLE_MINUTES || 120) * 60_000;
 const GAME_OPTS = { winTarget: Number(process.env.WIN_TARGET || 12), grabbleTarget: Number(process.env.GRABBLE_TARGET || 7) };
+const AUTO_CLOSE_MS = Number(process.env.AUTO_CLOSE_MINUTES || 3) * 60_000; // a finished game's room closes by itself unless the host plays again
 
 function lanIp() {
   const ifs = os.networkInterfaces(); const prefer = ['en0', 'en1', 'eth0', 'wlan0'];
@@ -49,17 +50,31 @@ function createRoom(base) {
   if (rooms.size >= MAX_ROOMS) return null;
   const code = newCode(); const game = new Game({ room: code, joinUrl: joinUrlFor(base, code), ...GAME_OPTS });
   const r = { code, game, boardKey: crypto.randomBytes(12).toString('hex'), boardSockets: new Set(), lastActive: Date.now() };
-  game.on('state', s => { r.lastActive = Date.now(); io.to(code).emit('state', s); });
+  game.on('state', s => {
+    r.lastActive = Date.now();
+    if (s.phase === 'ended' && !r.closeTimer) { r.closeTimer = setTimeout(() => closeRoom(code, 'finished'), AUTO_CLOSE_MS); r.closeTimer.unref?.(); game.closesAt = Date.now() + AUTO_CLOSE_MS; s = game.toState(); }
+    else if (s.phase !== 'ended' && r.closeTimer) { clearTimeout(r.closeTimer); r.closeTimer = null; game.closesAt = null; s = game.toState(); }
+    io.to(code).emit('state', s);
+  });
   game.on('event', e => io.to(code).emit('event', e));
   rooms.set(code, r); console.log(`  room ${code} opened (${rooms.size} active)`); return r;
 }
 function roomBy(code) { return rooms.get(String(code || '').trim().toUpperCase()); }
+// close a room for everyone: phones go back to the join screen, boards open a fresh room by themselves
+function closeRoom(code, reason = 'host') {
+  const r = rooms.get(code); if (!r) return false;
+  clearTimeout(r.closeTimer); r.game.abortFlows(); r.game.removeAllListeners();
+  io.to(code).emit('room:closed', { room: code, reason });
+  io.in(code).socketsLeave(code);
+  rooms.delete(code); for (const [t, c] of tokens) if (c === code) tokens.delete(t);
+  console.log(`  room ${code} closed (${reason}, ${rooms.size} active)`); return true;
+}
 function socketsIn(code) { return io.sockets.adapter.rooms.get(code)?.size || 0; }
 function gcRooms(aggressive = false) {
   const now = Date.now();
   for (const [code, r] of rooms) {
     const idle = now - r.lastActive; const empty = socketsIn(code) === 0;
-    if (empty && (idle > ROOM_IDLE_MS || (aggressive && idle > 10 * 60_000))) { r.game.clearTimers(); r.game.removeAllListeners(); rooms.delete(code); for (const [t, c] of tokens) if (c === code) tokens.delete(t); console.log(`  room ${code} closed (idle)`); }
+    if (empty && (idle > ROOM_IDLE_MS || (aggressive && idle > 10 * 60_000))) closeRoom(code, 'idle');
   }
 }
 setInterval(gcRooms, 5 * 60_000).unref();
@@ -98,12 +113,13 @@ app.use('/api/dev', (req, res, next) => devAllowed(req) ? next() : res.status(40
 app.use('/api/dev', (req, res, next) => { if (req.path === '/rooms') return next(); req.r = devRoom(req); if (!req.r) return res.status(404).json({ ok: false, error: 'no room yet: open the board first' }); req.game = req.r.game; next(); });
 app.get('/api/state', (req, res) => { if (!devAllowed(req)) return res.status(403).json({ ok: false }); const r = devRoom(req); if (!r) return res.status(404).json({ ok: false }); res.json(r.game.toState()); });
 app.get('/api/dev/rooms', (req, res) => res.json([...rooms.values()].map(r => ({ room: r.code, phase: r.game.phase, players: r.game.players.length, boards: r.boardSockets.size, sockets: socketsIn(r.code), idleSec: Math.round((Date.now() - r.lastActive) / 1000) }))));
-app.post('/api/dev/bots', (req, res) => { const n = Number(req.query.n || 2); const added = []; for (let i = 0; i < n; i++) { const b = req.game.addBot(); if (b) added.push(b.id); } res.json({ ok: true, room: req.r.code, added }); });
+app.post('/api/dev/bots', (req, res) => { const heroes = String(req.query.heroes || '').split(',').filter(Boolean); const n = heroes.length || Number(req.query.n || 2); const added = []; for (let i = 0; i < n; i++) { const b = req.game.addBot(undefined, heroes[i]); if (b) added.push(b.heroId); } res.json({ ok: true, room: req.r.code, added }); });
 app.post('/api/dev/start', (req, res) => res.json(req.game.start(null, { force: true })));
 app.post('/api/dev/reset', (req, res) => { req.game.resetAll(); res.json({ ok: true }); });
 app.post('/api/dev/again', (req, res) => res.json(req.game.playAgain('dev')));
 app.post('/api/dev/fast', (req, res) => { req.game.fastMode = String(req.query.on ?? '1') !== '0'; res.json({ ok: true, fastMode: req.game.fastMode }); });
 app.post('/api/dev/act', (req, res) => { req.game.autoAct(); res.json({ ok: true }); });
+app.post('/api/dev/botskill', (req, res) => { const v = req.query.p; req.game.botSkill = v === undefined || v === '' ? null : Math.max(0, Math.min(1, Number(v))); res.json({ ok: true, botSkill: req.game.botSkill }); });
 app.post('/api/dev/mini', (req, res) => { const game = req.game; const p = game.current(); if (!p || game.turnStep !== 'minigame') return res.json({ ok: false, error: 'no mini-game running' }); const score = req.query.score !== undefined ? Number(req.query.score) : game.botScore(game.minigame.type); res.json({ ...game.miniResult(p.id, game.minigame.id, score), type: game.minigame?.type, score }); });
 app.get('/api/dev/stats', (req, res) => res.json({ ...req.game.stats, grabble: req.game.grabble }));
 // dev: force a Catcher launch by the current player at a chosen target (default: Grabble if his bag has loot, else the richest other player)
@@ -145,6 +161,9 @@ io.on('connection', socket => {
     ack({ ok: true, room: r.code, key: r.boardKey, joinUrl: r.game.joinUrl }); socket.emit('state', r.game.toState());
   });
   socket.on('board:ready', () => { if (socket.data.isBoard) G()?.setBoardReady(true); });
+  socket.on('board:closeRoom', (p, ack = () => {}) => { if (!socket.data.isBoard) return ack({ ok: false }); ack({ ok: closeRoom(socket.data.room, 'host') }); });
+  // the machine reached a gated section: ask the launcher's phone for the next bell
+  socket.on('catcher:gate', ({ index } = {}) => { if (socket.data.isBoard) G()?.onBoardGate(Number(index)).catch(() => {}); });
   socket.on('board:animDone', ({ eventId } = {}) => { if (socket.data.isBoard) G()?.ackEvent(eventId); });
 
   socket.on('player:join', (payload = {}, ack = () => {}) => {
@@ -164,7 +183,9 @@ io.on('connection', socket => {
   socket.on('player:roll', call((g) => g.roll(socket.data.playerId)));
   socket.on('player:chooseTarget', call((g, p) => g.chooseTarget(socket.data.playerId, p.targetId)));
   socket.on('player:launchTiming', call((g, p) => g.launchTiming(socket.data.playerId, p.score)));
-  socket.on('player:miniResult', call((g, p) => g.miniResult(socket.data.playerId, p.id, p.score)));
+  socket.on('player:miniResult', call((g, p) => g.miniResult(socket.data.playerId, p.id, p.score, { failed: !!p.failed })));
+  socket.on('player:endGame', call((g) => g.endToLobby(socket.data.playerId)));
+  socket.on('player:closeRoom', (p, ack = () => {}) => { const g = G(); if (!g) return ack(noRoom); if (socket.data.playerId !== g.hostId) return ack({ ok: false, error: 'Only the host can close the room.' }); ack({ ok: closeRoom(socket.data.room, 'host') }); });
   socket.on('player:flight', call((g, p) => g.flight(socket.data.playerId, !!p.fly)));
   socket.on('player:playAgain', call((g) => g.playAgain(socket.data.playerId)));
   socket.on('player:miniTick', (p) => G()?.miniTick(socket.data.playerId, p?.id, p?.progress));
@@ -182,6 +203,9 @@ io.on('connection', socket => {
   });
 });
 
+// one room's bug must never take every game down: log and keep serving
+process.on('uncaughtException', (e) => console.error('[server] uncaught', e));
+process.on('unhandledRejection', (e) => console.error('[server] unhandled rejection', e));
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n  Kyah & Ayva: Starlight Gem Chase`);
   console.log(`  Board:   http://localhost:${PORT}/board/   (each board opens its own room)`);

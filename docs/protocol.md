@@ -124,3 +124,12 @@ Paths are relative to `/assets/`. Formats: PNG for images, MP3 (44.1 kHz) for au
 <script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/","gsap":"/vendor/gsap/index.js","socket.io-client":"/socket.io/socket.io.esm.min.js"}}</script>
 ```
 `/vendor/three` → `node_modules/three`, `/vendor/gsap` → `node_modules/gsap`. Fonts at `/vendor/fonts/`.
+
+## v3 additions (play-test feedback: difficulty by hero, gated Catcher, host controls)
+- Difficulty table: `public/shared/difficulty.js` (`TIERS`, `tierFor(heroId)`, `MINI[type][tier]`, `maxScore`, `CATCHER_SECTIONS`, `gatesFor`). Grown-ups = hard, Kyah = medium, Ayva = easy, dogs = a random tier rolled per mini-game.
+- Every `state.minigame.params` now carries `{ tier, cfg }` (`cfg` = `MINI[type][tier]`). The phone builds the game from `cfg`; the server scores against it.
+- Bell gates: a launch may need several bells. `params` for a bell also has `{ gateIndex, gateCount, section: { id, label } }`. Gate 0 is the bell before the machine starts; later gates happen while the machine runs (the board pauses at the section and the launcher's phone shows the bell again). Gate mini-games last at most 9 s.
+- `player:miniResult { id, score, failed? }` — `failed: true` (e.g. a decoy shard tapped) scores as 0.
+- Board → server: `catcher:gate { index }` when the machine reaches a gated section. Server → board (an event that the board handles immediately, not queued): `catcher:gateResult { index, pass, perfect, score }`. A failed gate makes the machine fizzle and the launch a miss. Any perfect bell in a launch earns the launcher +1 shard (`shard` event, reason `perfect`).
+- Host controls (host phone only): `player:endGame` → the game ends and the room returns to the lobby with everyone still in it; `player:closeRoom` → the room closes for everyone. Server → all sockets in the room: `room:closed { reason: 'host' | 'finished' | 'idle' }`. Phones then clear their session and show the join screen ("The host closed the room. Scan the new code on the big screen!"); the board opens a fresh room by itself.
+- When a game ends, `state.closesAt` (epoch ms) says when the room will close by itself (3 minutes) unless the host taps Play again; it is cleared when a new game starts.

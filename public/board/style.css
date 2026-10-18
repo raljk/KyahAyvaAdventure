@@ -37,6 +37,9 @@ h1,h2,#logoText,#word,#turnText,#winWord,#miniTitle{font-family:'Fredoka','Baloo
 #miniView{width:100%;height:100%;object-fit:cover;display:block}
 #miniPlaceholder{position:absolute;inset:0;display:grid;place-items:center;font-family:'Fredoka';font-size:calc(20*var(--u));color:#6b5f8a;text-align:center;padding:calc(12*var(--u))}
 .miniBarWrap{height:calc(12*var(--u));border:calc(2*var(--u)) solid var(--ink);border-radius:999px;background:#fff;overflow:hidden}#miniBar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--pink));transition:width .25s}
+#miniTier{display:inline-block;margin-top:calc(2*var(--u));padding:0 calc(8*var(--u));border-radius:999px;background:var(--ink);color:#FFE7A0;font-family:'Fredoka';font-size:calc(12*var(--u));letter-spacing:.03em}
+.linkBtn{pointer-events:auto;font:inherit;font-weight:700;color:var(--peri);background:none;border:none;text-decoration:underline;cursor:pointer;padding:0}
+#winOverlay .paper{pointer-events:auto}
 #miniTimer{font-family:'Fredoka';font-size:calc(28*var(--u));width:calc(40*var(--u));text-align:center;color:#6b5f8a}#miniTimer.urgent{color:#e0457b;animation:tick .5s infinite alternate}
 @keyframes tick{to{transform:scale(1.25)}}
 .heart{position:absolute;color:#F29BC8;-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;animation:heartUp 2.2s ease-out forwards;pointer-events:none}
