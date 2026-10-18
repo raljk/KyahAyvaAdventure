@@ -943,7 +943,7 @@ async function boot() {
     });
   } else {
     const { io } = await import('/socket.io/socket.io.esm.min.js');
-    wireSocket(io({ reconnection: true, reconnectionDelayMax: 3000, timeout: 8000 }));
+    wireSocket(io({ reconnection: true, reconnectionDelayMax: 3000, timeout: 8000, query: { room: S.room || '' } }));
     if (!S.room) {
       fetch('/api/info').then((r) => (r.ok ? r.json() : null)).then((info) => {
         if (info && info.room && !S.room) { S.room = String(info.room).toUpperCase(); if (S.screen === 'join') updateJoin(); }

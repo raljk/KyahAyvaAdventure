@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test --test-timeout=40000 tests/*.test.mjs",
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "share": "node tools/share.mjs"
@@ -25,5 +25,8 @@
     "qrcode": "^1.5.4",
     "socket.io": "^4.8.4",
     "three": "^0.186.1"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

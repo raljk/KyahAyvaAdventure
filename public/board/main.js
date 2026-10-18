@@ -122,7 +122,18 @@ function frame() {
 // ---------- socket + event queue ----------
 const socket = io({ transports: ['websocket', 'polling'] });
 let state = null; let ready = false; const queue = []; let processing = false;
-socket.on('connect', () => { socket.emit('board:hello', { ready }); const el = $('#splashStatus'); if (el) el.textContent = 'connected'; if (ready) hud.toast('Connected to the game'); });
+// each board owns a room; a reload (or a reconnect) re-attaches to the same room with its key. ?new=1 opens a fresh room.
+const BOARD_KEY = 'kaa-board-room'; let freshAsked = params.get('new') === '1';
+function loadRoom() { try { return JSON.parse(localStorage.getItem(BOARD_KEY) || 'null') || {}; } catch { return {}; } }
+socket.on('connect', () => {
+  const saved = loadRoom();
+  socket.emit('board:hello', { ready, room: saved.room, key: saved.key, fresh: freshAsked }, (res) => {
+    if (!res?.ok) { hud.toast(res?.error || 'Could not open a game room'); return; }
+    freshAsked = false; try { localStorage.setItem(BOARD_KEY, JSON.stringify({ room: res.room, key: res.key })); } catch {}
+    if (params.get('new') === '1') history.replaceState(null, '', location.pathname);
+  });
+  const el = $('#splashStatus'); if (el) el.textContent = 'connected'; if (ready) hud.toast('Connected to the game');
+});
 socket.on('disconnect', () => hud.toast('Connection lost… reconnecting'));
 socket.on('state', s => { const prev = state; state = s; if (!ready) return; hud.update(s); pawns.sync(s.players); pawns.setActive(s.phase === 'playing' ? s.turnPlayerId : null); if (s.phase !== 'lobby') { pawns.ensureGrabble(); pawns.setGrabbleLoot(s.grabble?.loot || 0); } if (s.phase === 'lobby') { pawns.placeAll(s.players); if (prev?.phase !== 'lobby' && pawns.grabble) pawns.place('grabble', GRABBLE_START, s.players); } });
 socket.on('event', ev => { queue.push(ev); pump(); });

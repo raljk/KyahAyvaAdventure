@@ -1,0 +1,14 @@
+# One-click deploy on Render: https://render.com/deploy?repo=https://github.com/raljk/KyahAyvaAdventure
+services:
+  - type: web
+    name: kyah-ayva-starlight-gem-chase
+    runtime: docker
+    plan: free
+    region: singapore
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: WIN_TARGET
+        value: "12"
+      - key: GRABBLE_TARGET
+        value: "7"

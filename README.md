@@ -13,7 +13,26 @@ Then open **http://localhost:3000/board/** on the laptop (full-screen it, sound 
 
 Environment (`.env`): `PORT` (default 3000), `WIN_TARGET` (default 10; use 6 for a short game), `GRABBLE_TARGET` (default 10). API keys are only needed to regenerate assets.
 
-## Play over the internet (a link that works anywhere)
+## Host it online (a permanent public link)
+
+The server handles many games at once: every board that opens gets its own 4-letter room, and its QR code points phones at that room. Nothing runs on your laptop; the board is just a browser tab on any computer or TV.
+
+**Render (free, one click):** [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/raljk/KyahAyvaAdventure)
+Sign in with GitHub, confirm, and Render builds the `Dockerfile` and gives you `https://<name>.onrender.com`. Open `/board/` on the big screen. The free plan sleeps after about 15 minutes with no visitors, so the first load after a break takes about a minute.
+
+**Google Cloud Run (or any Docker host):**
+
+```bash
+gcloud run deploy kyah-ayva --source . --region australia-southeast1 --allow-unauthenticated --max-instances 1 --session-affinity --timeout 3600
+```
+
+Keep it at one instance: game state lives in memory. Restarts or redeploys end games in progress.
+
+Settings (environment variables): `WIN_TARGET` (default 12), `GRABBLE_TARGET` (7), `PUBLIC_URL` (only if the site is reached through another domain), `DEV_TOKEN` (enables the `/api/dev/*` test helpers remotely with an `x-dev-token` header; otherwise they only work on the machine itself), `MAX_ROOMS` (300), `ROOM_IDLE_MINUTES` (120).
+
+A board reload keeps its room; add `?new=1` to the board address to start a fresh room.
+
+## Play over the internet from this laptop (temporary link)
 
 ```bash
 npm run share

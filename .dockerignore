@@ -1,0 +1,22 @@
+node_modules
+.git
+.env
+.claude
+tools
+tests
+docs
+research
+*.log
+.DS_Store
+# full-size originals the game never loads (mirrors .gitignore; Docker uses ! for exceptions)
+public/assets/images/icons/*.png
+!public/assets/images/icons/*_md.png
+public/assets/images/words/*.png
+!public/assets/images/words/*_md.png
+public/assets/images/textures/*.png
+!public/assets/images/textures/*_md.png
+public/assets/images/mini/*.png
+!public/assets/images/mini/*_md.png
+public/assets/images/fly/*.png
+!public/assets/images/fly/*_md.png
+public/assets/images/heroes/*_face.png

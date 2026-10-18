@@ -1,0 +1,7 @@
+.git
+node_modules
+.env
+tools/_raw
+docs/grader-reports
+research
+*.log
