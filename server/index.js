@@ -31,10 +31,24 @@ app.get('/', (req, res) => res.redirect('/board/'));
 
 const room = crypto.randomBytes(2).toString('hex').toUpperCase().replace(/[^A-Z0-9]/g, 'A').slice(0, 4);
 const ip = lanIp();
-const joinUrl = `http://${ip}:${PORT}/play/?room=${room}`;
+// PUBLIC_URL (e.g. https://my-tunnel.example.com) makes the QR code point at a public address; otherwise the LAN address is used.
+const lanJoinUrl = `http://${ip}:${PORT}/play/?room=${room}`;
+const publicJoin = (base) => `${String(base).replace(/\/+$/, '')}/play/?room=${room}`;
+let joinUrl = process.env.PUBLIC_URL ? publicJoin(process.env.PUBLIC_URL) : lanJoinUrl;
+// requests that come from this machine directly (not through a tunnel or proxy)
+function isLocalReq(addr, headers = {}) { const a = String(addr || ''); const loop = a === '127.0.0.1' || a === '::1' || a === '::ffff:127.0.0.1'; return loop && !headers['cf-connecting-ip'] && !headers['x-forwarded-for'] && !headers['x-real-ip']; }
 const game = new Game({ room, joinUrl, winTarget: Number(process.env.WIN_TARGET || 12), grabbleTarget: Number(process.env.GRABBLE_TARGET || 7) });
 
-app.get('/api/info', (req, res) => res.json({ room, joinUrl, lanIp: ip, port: PORT }));
+app.get('/api/info', (req, res) => res.json({ room, joinUrl, lanJoinUrl, lanIp: ip, port: PORT }));
+// the share script registers the tunnel's public address here (local requests only)
+app.post('/api/public-url', (req, res) => {
+  if (!isLocalReq(req.socket.remoteAddress, req.headers)) return res.status(403).json({ ok: false });
+  const base = String(req.body?.url || ''); if (base && !/^https?:\/\/[^\s]+$/.test(base)) return res.status(400).json({ ok: false, error: 'bad url' });
+  joinUrl = base ? publicJoin(base) : lanJoinUrl; game.joinUrl = joinUrl; game.pushState();
+  console.log(`  Phones (anywhere):            ${joinUrl}`); res.json({ ok: true, joinUrl });
+});
+// dev helpers are for this machine only, never through the public link
+app.use('/api/dev', (req, res, next) => isLocalReq(req.socket.remoteAddress, req.headers) ? next() : res.status(403).json({ ok: false, error: 'local only' }));
 app.get('/api/state', (req, res) => res.json(game.toState()));
 app.get('/api/qr.svg', async (req, res) => { const url = String(req.query.url || joinUrl); res.type('svg').send(await QRCode.toString(url, { type: 'svg', margin: 1, color: { dark: '#2B2440', light: '#00000000' } })); });
 // dev helpers (used by tests and the grader)
@@ -69,9 +83,11 @@ game.on('event', e => io.emit('event', e));
 let boardSockets = new Set();
 io.on('connection', socket => {
   socket.emit('state', game.toState());
-  socket.on('board:hello', (p = {}) => { boardSockets.add(socket.id); socket.data.isBoard = true; game.setBoardConnected(true, !!p.ready); });
+  // only a board on this machine drives the game (a board opened through the public link just watches)
+  const localSocket = isLocalReq(socket.handshake.address, socket.handshake.headers) || process.env.ALLOW_REMOTE_BOARD === '1';
+  socket.on('board:hello', (p = {}) => { if (!localSocket) return; boardSockets.add(socket.id); socket.data.isBoard = true; game.setBoardConnected(true, !!p.ready); });
   socket.on('board:ready', () => { if (socket.data.isBoard) game.setBoardReady(true); });
-  socket.on('board:animDone', ({ eventId } = {}) => game.ackEvent(eventId));
+  socket.on('board:animDone', ({ eventId } = {}) => { if (socket.data.isBoard) game.ackEvent(eventId); });
   socket.on('player:join', (payload, ack = () => {}) => { const r = game.join({ name: payload?.name, heroId: payload?.heroId, room: payload?.room, socketId: socket.id }); if (r.ok) socket.data.playerId = r.playerId; ack(r); });
   socket.on('player:rejoin', (payload, ack = () => {}) => { const r = game.rejoin({ token: payload?.token, socketId: socket.id }); if (r.ok) socket.data.playerId = r.playerId; ack(r); });
   socket.on('player:leave', (p, ack = () => {}) => { if (socket.data.playerId) game.removePlayer(socket.data.playerId); ack({ ok: true }); });
@@ -98,5 +114,7 @@ io.on('connection', socket => {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n  Kyah & Ayva: Starlight Gem Chase`);
   console.log(`  Board (open on the laptop):  http://localhost:${PORT}/board/`);
-  console.log(`  Phones (same Wi-Fi):         ${joinUrl}\n`);
+  console.log(`  Phones (same Wi-Fi):         ${lanJoinUrl}`);
+  if (process.env.PUBLIC_URL) console.log(`  Phones (anywhere):            ${joinUrl}`);
+  console.log('');
 });

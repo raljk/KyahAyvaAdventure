@@ -13,6 +13,19 @@ Then open **http://localhost:3000/board/** on the laptop (full-screen it, sound 
 
 Environment (`.env`): `PORT` (default 3000), `WIN_TARGET` (default 10; use 6 for a short game), `GRABBLE_TARGET` (default 10). API keys are only needed to regenerate assets.
 
+## Play over the internet (a link that works anywhere)
+
+```bash
+npm run share
+```
+
+This starts the game and a free Cloudflare quick tunnel (no account needed; install once with `brew install cloudflared`). It prints a public `https://….trycloudflare.com/play/?room=XXXX` link and the QR code on the board switches to it, so players can join from any network, including mobile data. Open the board on the laptop at the `localhost` address it prints. Notes:
+
+- The link changes every time you run it; share the new one (or let people scan the board).
+- A brand-new link can take up to a minute before some networks can resolve it.
+- Only the laptop drives the game: dev endpoints and the board role are refused through the public link, and a board opened through it only watches.
+- For a permanent address, run the server anywhere with a fixed URL and set `PUBLIC_URL=https://your.domain npm start` so the QR code uses it.
+
 ## How to play (short)
 
 Roll and scurry along the winding path through the village, collecting **Starlight Shards**. Special spaces start a quick **mini-game on your phone**: flap through flower rings on a Fairy Flight, find the twinkling flower, slide Charli to catch shards, dodge Grabble's net, catch strawberries for the cake. **Grabble** the gem snatcher scurries around after every turn, snatching shards into his loot bag; catch up with him for a Vine Grab, or land on **Launch the Catcher** to send a friend (or Grabble!) to the Bridge, ring the bell, and watch the Starlight Catcher run its chain reaction around the whole village. **Ten shards** make the Gem whole and win. If Grabble fills his bag first, everyone loses. Full rules: `docs/game-design-v2.md` (v1 base in `docs/game-design.md`).
