@@ -5,7 +5,6 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { Timer } from 'three/addons/misc/Timer.js';
 import * as layout from './layout.js';
 import { SPACES, BRIDGE_INDEX, CASTLE_INDEX, CAMERA, CATCHER_STAGES, LANDMARKS, heightAt, GRABBLE_START } from './layout.js';
 import { HERO_BY_ID } from '/shared/heroes.js';
@@ -106,7 +105,7 @@ function camToPawn(id, { dist = 11, height = 7, duration = 1.1 } = {}) { const p
 function screenPos(v3) { const v = v3.clone().project(camera); return { x: (v.x + 1) / 2 * innerWidth, y: (1 - v.y) / 2 * innerHeight }; }
 
 // ---------- render loop ----------
-const timer = new Timer(); let elapsed = 0; let lastTick = -1;
+const timer = new THREE.Timer(); let elapsed = 0; let lastTick = -1;
 function frame() {
   fitRenderer(); timer.update(); const dt = Math.min(0.05, timer.getDelta()); elapsed += dt;
   village?.update?.(dt, elapsed); catcher?.update?.(dt, elapsed); pawns?.update?.(dt);

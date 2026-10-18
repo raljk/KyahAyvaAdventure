@@ -50,7 +50,5 @@
   "fly_misssuds_up": "images/fly/misssuds_up_md.png",
   "fly_misssuds_down": "images/fly/misssuds_down_md.png",
   "fly_baker_up": "images/fly/baker_up_md.png",
-  "fly_baker_down": "images/fly/baker_down_md.png",
-  "fly_test_t3": "images/fly/test_t3_md.png",
-  "fly_test_t4": "images/fly/test_t4_md.png"
+  "fly_baker_down": "images/fly/baker_down_md.png"
 }

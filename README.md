@@ -17,11 +17,19 @@ Environment (`.env`): `PORT` (default 3000), `WIN_TARGET` (default 10; use 6 for
 
 Roll and scurry along the winding path through the village, collecting **Starlight Shards**. Special spaces start a quick **mini-game on your phone**: flap through flower rings on a Fairy Flight, find the twinkling flower, slide Charli to catch shards, dodge Grabble's net, catch strawberries for the cake. **Grabble** the gem snatcher scurries around after every turn, snatching shards into his loot bag; catch up with him for a Vine Grab, or land on **Launch the Catcher** to send a friend (or Grabble!) to the Bridge, ring the bell, and watch the Starlight Catcher run its chain reaction around the whole village. **Ten shards** make the Gem whole and win. If Grabble fills his bag first, everyone loses. Full rules: `docs/game-design-v2.md` (v1 base in `docs/game-design.md`).
 
+## Play-test checklist
+
+1. Laptop and phones on the same Wi-Fi. `npm start`, open the board, full-screen it, tap *Tap to begin* (sound on).
+2. Each player scans the QR code (or types the address), enters a name, picks a hero. Up to 6: Kyah, Ayva, Charli, Poodle, Miss Suds, Benny. The first phone is the host and starts at 2+ players.
+3. Things to watch: the mini-games on the phone and their live window on the big screen; Grabble scurrying after every turn; the Starlight Catcher's tour when someone launches it; Benny and Miss Suds in the same game.
+4. If a phone reloads or drops, it rejoins automatically. If the board is reloaded mid-game, tap *Tap to begin* again and play resumes.
+5. Short game for testing: `WIN_TARGET=6 npm start`.
+
 ## Project map
 
 - `server/` — Express + Socket.IO server and the rules engine (`game.js`).
 - `public/board/` — laptop display: Three.js scene (`village.js`, `contraption.js`), pawns, HUD, audio, `main.js` orchestrator, `layout.js` (space positions, the shared source of truth).
-- `public/play/` — phone controller.
+- `public/play/` — phone controller and the seven mini-games (`minigames.js`).
 - `public/assets/` — generated images and audio plus their manifests.
 - `tools/` — asset generation scripts (OpenAI images, ElevenLabs voice/SFX/music, procedural fallbacks) and a static preview server.
 - `docs/` — design doc, protocol, grader reports.

@@ -18,6 +18,12 @@
 // require a transparent middle (wreath rings); `allowCrop: ["top"]` lets --verify ignore a border side a sprite deliberately enters from. Entries with refs use the
 // /images/edits endpoint (character consistency); the rest use /images/generations. Existing files are skipped,
 // so re-runs only fill gaps. OPENAI_API_KEY is read from .env (never printed).
+//
+// Sprite sheets (the Flappy Flight hero flap frames): an entry with `sheet: { size: "1536x1024", frames: [keyA, keyB], pad: 0.08, flip?: true }`
+// is generated ONCE as a wide canvas holding one drawing per frame side by side; the raw sheet is kept in tools/_raw/orig/<key>_sheet.png,
+// then split into equal columns, and every frame is scaled by the SAME factor and offset (fitted to the union of the frames' opaque boxes,
+// `pad` margin all round, optional horizontal flip) into its own `size` file. The other frame entries just say `sheetOf: <owner key>`.
+//   node tools/gen-images.mjs --refit [--only fly_*]   # re-split / re-fit from the saved raw sheets (no API call, no spend)
 
 import fs from 'node:fs/promises';
 import fssync from 'node:fs';
@@ -45,6 +51,7 @@ const val = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[
 const MODEL = val('model', 'gpt-image-1');
 const CONCURRENCY = Number(val('concurrency', 3));
 const FORCE = has('force');
+const REFIT = has('refit');
 const ONLY = (val('only', '') || '').split(',').map((s) => s.trim()).filter(Boolean);
 const matchesOnly = (key) => !ONLY.length || ONLY.some((p) => (p.endsWith('*') ? key.startsWith(p.slice(0, -1)) : key === p));
 
@@ -157,6 +164,86 @@ async function makeSeamless(buf, band = 0.22) {
   return PNG.sync.write(out);
 }
 
+
+// ---------------------------------------------------------------- sprite sheets
+const rawSheetPath = (owner) => path.join(RAW_DIR, 'orig', `${owner.key}_sheet.png`);
+
+// Split a sheet into equal-width columns and fit each column's drawing into its own outW x outH PNG, with one common
+// scale/offset (union of the frames' opaque boxes, centred, `pad` margin) so the frames stay registered for the flap.
+async function splitSheet(buf, entry) {
+  const PNG = await pngjs();
+  if (!PNG) throw new Error('pngjs not available (needed to split sprite sheets)');
+  const { frames, pad = 0.08, flip = false } = entry.sheet;
+  const [outW, outH] = entry.size.split('x').map(Number);
+  const src = PNG.sync.read(buf);
+  const n = frames.length, cw = Math.floor(src.width / n), ch = src.height;
+  const A = 40; // opaque threshold for the bounding boxes
+  const warns = [];
+  const boxes = frames.map((_, c) => {
+    let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
+    for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) if (src.data[(y * src.width + c * cw + x) * 4 + 3] >= A) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 < 0) throw new Error(`frame ${c + 1} of the sheet is empty`);
+    if (y0 <= 2 || y1 >= ch - 3) warns.push(`frame ${c + 1} touches the top/bottom edge of the sheet`);
+    if (c === 0 && x0 <= 2) warns.push('frame 1 touches the left edge of the sheet');
+    if (c === n - 1 && x1 >= cw - 3) warns.push(`frame ${c + 1} touches the right edge of the sheet`);
+    if (c > 0 && x0 <= 2) warns.push(`frame ${c + 1} crosses the divider on its left`);
+    if (c < n - 1 && x1 >= cw - 3) warns.push(`frame ${c + 1} crosses the divider on its right`);
+    return { x0, y0, x1, y1 };
+  });
+  const ux0 = Math.min(...boxes.map((b) => b.x0)), ux1 = Math.max(...boxes.map((b) => b.x1));
+  const uy0 = Math.min(...boxes.map((b) => b.y0)), uy1 = Math.max(...boxes.map((b) => b.y1));
+  const uw = ux1 - ux0 + 1, uh = uy1 - uy0 + 1;
+  const scale = Math.min((outW * (1 - 2 * pad)) / uw, (outH * (1 - 2 * pad)) / uh);
+  const ox = (outW - uw * scale) / 2, oy = (outH - uh * scale) / 2;
+  const px = (c, x, y) => { // premultiplied RGBA of source pixel (column c), transparent outside the column
+    if (x < 0 || y < 0 || x >= cw || y >= ch) return [0, 0, 0, 0];
+    const i = (y * src.width + c * cw + x) * 4, a = src.data[i + 3] / 255;
+    return [src.data[i] * a, src.data[i + 1] * a, src.data[i + 2] * a, a];
+  };
+  const out = [];
+  for (let c = 0; c < n; c++) {
+    const png = new PNG({ width: outW, height: outH });
+    for (let dy = 0; dy < outH; dy++) {
+      const ys = uy0 + (dy + 0.5 - oy) / scale - 0.5, yi = Math.floor(ys), fy = ys - yi;
+      for (let dx = 0; dx < outW; dx++) {
+        let xs = ux0 + (dx + 0.5 - ox) / scale; // continuous source x of the pixel centre
+        if (flip) xs = ux0 + ux1 + 1 - xs;
+        xs -= 0.5;
+        const xi = Math.floor(xs), fx = xs - xi;
+        const p00 = px(c, xi, yi), p10 = px(c, xi + 1, yi), p01 = px(c, xi, yi + 1), p11 = px(c, xi + 1, yi + 1);
+        const acc = [0, 0, 0, 0];
+        for (let k = 0; k < 4; k++) acc[k] = (p00[k] * (1 - fx) + p10[k] * fx) * (1 - fy) + (p01[k] * (1 - fx) + p11[k] * fx) * fy;
+        const o = (dy * outW + dx) * 4, a = acc[3];
+        if (a > 0.003) { png.data[o] = Math.min(255, Math.round(acc[0] / a)); png.data[o + 1] = Math.min(255, Math.round(acc[1] / a)); png.data[o + 2] = Math.min(255, Math.round(acc[2] / a)); png.data[o + 3] = Math.min(255, Math.round(a * 255)); }
+      }
+    }
+    out.push(PNG.sync.write(png));
+  }
+  return { frames: out, warns, scale: +scale.toFixed(3) };
+}
+
+async function writeSheetFrames(owner, buf) {
+  const { frames: bufs, warns, scale } = await splitSheet(buf, owner);
+  for (let i = 0; i < owner.sheet.frames.length; i++) {
+    const e = ENTRIES.find((x) => x.key === owner.sheet.frames[i]);
+    if (!e) throw new Error(`sheet frame ${owner.sheet.frames[i]} has no entry`);
+    await fs.mkdir(path.dirname(path.join(OUT_DIR, e.file)), { recursive: true });
+    await fs.writeFile(path.join(OUT_DIR, e.file), bufs[i]);
+  }
+  return { warns, scale };
+}
+
+// bounding-box margin (as a fraction of the canvas) of the opaque content, for --verify
+async function contentMargin(buf) {
+  const PNG = await pngjs();
+  if (!PNG) return null;
+  const { width: w, height: h, data } = PNG.sync.read(buf);
+  let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (data[(y * w + x) * 4 + 3] >= 40) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 < 0) return 0;
+  return Math.min(x0 / w, y0 / h, (w - 1 - x1) / w, (h - 1 - y1) / h);
+}
+
 // ---------------------------------------------------------------- API
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
@@ -219,16 +306,24 @@ async function generateOne(entry, outPath) {
   for (let attempt = 0; ; attempt++) {
     try {
       const t0 = Date.now();
-      let { buf, usage } = await requestImage(entry, refPaths);
+      let { buf, usage } = await requestImage(entry.sheet ? { ...entry, size: entry.sheet.size } : entry, refPaths);
       const info = pngInfo(buf);
       if (!info) throw new Error('response was not a PNG');
-      if (entry.seamless) {
+      if (entry.sheet) {
+        await fs.mkdir(path.join(RAW_DIR, 'orig'), { recursive: true });
+        await fs.writeFile(rawSheetPath(entry), buf);
+        const { warns, scale } = await writeSheetFrames(entry, buf);
+        for (const w of warns) log(`  ! ${entry.key}: ${w}`);
+        log(`  split ${entry.sheet.frames.join(' + ')} (scale ${scale})`);
+      } else if (entry.seamless) {
         await fs.mkdir(path.join(RAW_DIR, 'orig'), { recursive: true });
         await fs.writeFile(path.join(RAW_DIR, 'orig', path.basename(entry.file)), buf);
         buf = await makeSeamless(buf);
       }
-      await fs.mkdir(path.dirname(outPath), { recursive: true });
-      await fs.writeFile(outPath, buf);
+      if (!entry.sheet) {
+        await fs.mkdir(path.dirname(outPath), { recursive: true });
+        await fs.writeFile(outPath, buf);
+      }
       const cost = estimateCost(usage);
       await fs.appendFile(LEDGER, JSON.stringify({ t: new Date().toISOString(), key: entry.key, model: MODEL, quality: entry.quality, size: entry.size, refs: refPaths.length, usage, estUSD: +cost.toFixed(4) }) + '\n');
       log(`OK   ${entry.key} -> ${entry.file} (${info.width}x${info.height}, ${((Date.now() - t0) / 1000).toFixed(0)}s, ~$${cost.toFixed(3)})`);
@@ -270,6 +365,7 @@ async function verify() {
         else { const f = await borderTransparency(buf, e.allowCrop || []); if (f !== null && f < 0.9) notes.push(`border only ${(f * 100).toFixed(0)}% transparent`); }
       }
       if (e.holeCenter) { const f = await centerTransparency(buf); if (f !== null && f < 0.9) notes.push(`centre only ${(f * 100).toFixed(0)}% transparent (ring hole is filled)`); }
+      if (e.sheet || e.sheetOf) { const m = await contentMargin(buf); if (m !== null && m < 0.03) notes.push(`drawing comes within ${(m * 100).toFixed(1)}% of the edge`); }
       if (e.key.startsWith('tex_')) { const s = await seamScore(buf); if (s) notes.push(`seam ratio ${s.ratio} (seam ${s.seam}, inner ${s.inner})`); }
       // downscaled variant (_sm / _md) used by the manifests: must exist, have the expected size and keep its alpha channel
       const v = variantFor(e.file, info.width, info.height);
@@ -333,8 +429,27 @@ if (has('verify')) { await verify(); process.exit(0); }
 if (has('sheet')) { await contactSheet(val('sheet', '*').split(','), { cell: Number(val('cell', 320)), cols: Number(val('cols', 4)) }); process.exit(0); }
 if (has('manifest-only')) { await writeManifest(); process.exit(0); }
 
-const wanted = ENTRIES.filter((e) => matchesOnly(e.key));
-const todo = wanted.filter((e) => FORCE || !fssync.existsSync(path.join(OUT_DIR, e.file)));
+// sprite-sheet frames are produced by their owner entry (the one carrying `sheet`)
+const ownerOf = (e) => (e.sheetOf ? ENTRIES.find((o) => o.key === e.sheetOf) : e);
+const wanted = [...new Set(ENTRIES.filter((e) => matchesOnly(e.key)).map(ownerOf))];
+const framesOf = (e) => (e.sheet ? e.sheet.frames.map((k) => ENTRIES.find((x) => x.key === k)) : [e]);
+
+if (REFIT) {
+  let n = 0;
+  for (const o of wanted.filter((e) => e.sheet)) {
+    const rp = rawSheetPath(o);
+    if (!fssync.existsSync(rp)) { log(`refit ${o.key}: no saved raw sheet`); continue; }
+    const { warns, scale } = await writeSheetFrames(o, await fs.readFile(rp));
+    for (const w of warns) log(`  ! ${o.key}: ${w}`);
+    log(`refit ${o.sheet.frames.join(' + ')} (scale ${scale})`);
+    n++;
+  }
+  await writeManifest();
+  log(`refit ${n} sheet(s)`);
+  process.exit(0);
+}
+
+const todo = wanted.filter((e) => FORCE || framesOf(e).some((f) => !fssync.existsSync(path.join(OUT_DIR, f.file))));
 log(`${ENTRIES.length} entries, ${wanted.length} selected, ${todo.length} to generate (model ${MODEL}, concurrency ${CONCURRENCY})`);
 if (has('dry-run')) { for (const e of todo) console.log(`  ${e.key}  ${e.size} ${e.quality} ${e.background} refs=${(e.refs || []).length}`); process.exit(0); }
 
@@ -359,7 +474,7 @@ if (todo.length) {
   };
   await Promise.all(Array.from({ length: Math.max(1, CONCURRENCY) }, worker));
 }
-const skipped = todo.filter((e) => !fssync.existsSync(path.join(OUT_DIR, e.file))).map((e) => e.key).filter((k) => !failed.includes(k));
+const skipped = todo.filter((e) => framesOf(e).some((f) => !fssync.existsSync(path.join(OUT_DIR, f.file)))).map((e) => e.key).filter((k) => !failed.includes(k));
 if (skipped.length) log(`not attempted (run aborted): ${skipped.join(', ')}`);
 await writeManifest();
 log(`done. generated ${todo.length - failed.length - skipped.length}/${todo.length}; estimated spend this run ~$${spent.toFixed(2)}${failed.length ? `; FAILED: ${failed.join(', ')}` : ''}`);
