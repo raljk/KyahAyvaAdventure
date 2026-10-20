@@ -1,0 +1,11 @@
+node_modules/
+.env
+*.log
+# Raw, private exports live here and never get committed (they are your personal LinkedIn data).
+pipeline/input/*
+!pipeline/input/.gitkeep
+pipeline/cache/*
+!pipeline/cache/.gitkeep
+# Grader screenshots are large; keep the round-N.md reports, drop the image folders.
+docs/grader-reports/*/
+docs/grader-reports/_smoke/
