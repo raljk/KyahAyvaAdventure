@@ -117,7 +117,7 @@
     var topicChips = '<button class="chip" data-topic="all" aria-pressed="' + (filterState.topic === "all") + '">All topics</button>' +
       LIB.topics.map(function (t) {
         var on = filterState.topic === t.id;
-        return '<button class="chip" data-topic="' + t.id + '" aria-pressed="' + on + '" style="' + (on ? "background:" + t.color + ";color:#15171f;border-color:transparent" : "") + '">' + esc(t.label) + '</button>';
+        return '<button class="chip" data-topic="' + t.id + '" aria-pressed="' + on + '" style="' + (on ? "background:color-mix(in srgb, " + t.color + " 86%, #fff);color:#15171f;border-color:transparent" : "") + '">' + esc(t.label) + '</button>';
       }).join("");
 
     view.innerHTML = '' +
@@ -347,10 +347,6 @@
           var nb = view.querySelector("[data-next]"); nb.removeAttribute("disabled"); nb.focus();
         });
       });
-      // number-key shortcuts
-      view.querySelector(".quiz").addEventListener("keydown", function (e) {
-        if (/^[1-4]$/.test(e.key) && !answered) { var idx = +e.key - 1; if (optionBtns[idx]) optionBtns[idx].click(); }
-      });
       view.querySelector("[data-next]").addEventListener("click", function () {
         if (!answered) return;
         if (i === a.quiz.length - 1) finish();
@@ -465,7 +461,7 @@
     if (r.seg === "article" && artById[r.id]) label = "Article: " + artById[r.id].title;
     else if (r.seg === "quiz" && artById[r.id]) label = "Quiz: " + artById[r.id].title;
     else if (r.seg === "flashcards" && r.id && artById[r.id]) label = "Flashcards: " + artById[r.id].title;
-    rs.textContent = (label || "Page") + " loaded";
+    rs.textContent = label ? (label + " loaded") : "Page not found";
   }
 
   // ---------------------------------------------------------------- global wiring
@@ -541,6 +537,16 @@
       if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches("[data-go][role=link]")) {
         e.preventDefault(); location.hash = e.target.getAttribute("data-go");
       }
+    });
+    // number keys 1–4 pick a quiz answer, regardless of which element has focus
+    document.addEventListener("keydown", function (e) {
+      if (!/^[1-4]$/.test(e.key)) return;
+      var t = e.target;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
+      var opts = view.querySelectorAll(".option:not([disabled])");
+      if (!opts.length) return;
+      var idx = +e.key - 1;
+      if (opts[idx]) { e.preventDefault(); opts[idx].click(); }
     });
 
     window.addEventListener("hashchange", route);
