@@ -1,0 +1,21 @@
+{
+  "name": "linkedin-learn",
+  "version": "1.0.0",
+  "description": "Turn your LinkedIn saved articles into an interactive learning platform with summaries, flashcards and quizzes.",
+  "type": "module",
+  "scripts": {
+    "serve": "node pipeline/serve.mjs",
+    "ingest": "node pipeline/parse-saved-html.mjs",
+    "fetch": "node pipeline/fetch-articles.mjs",
+    "enrich": "node pipeline/enrich.mjs",
+    "build": "node pipeline/build-library.mjs",
+    "check": "node pipeline/check.mjs",
+    "pipeline": "node pipeline/parse-saved-html.mjs && node pipeline/fetch-articles.mjs && node pipeline/enrich.mjs && node pipeline/build-library.mjs && node pipeline/check.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

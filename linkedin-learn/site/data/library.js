@@ -1,0 +1,342 @@
+/*
+ * LinkedIn Learn — library data
+ * ------------------------------------------------------------------
+ * This file assigns window.LIBRARY so the site works when opened directly
+ * from disk (file://) as well as over http. The pipeline regenerates it
+ * (and the matching library.json) from your real LinkedIn saved items.
+ *
+ * meta.source === "starter"  -> the grounded sample library below.
+ * meta.source === "linkedin" -> built from your own saved articles.
+ *
+ * Every article below was fetched from its public source and summarised
+ * from that text. The "source" + "url" on each item point back to the
+ * original, so nothing here is presented as the user's own writing.
+ */
+window.LIBRARY = {
+  "meta": {
+    "generatedAt": "2026-10-20",
+    "source": "starter",
+    "owner": "Raljk",
+    "note": "Starter library of real public articles across your LinkedIn topics. Replaced by your own saved items once you run the pipeline on your export.",
+    "count": 9
+  },
+  "topics": [
+    { "id": "ux-research",        "label": "UX Research",        "color": "#6C8EF5", "blurb": "Finding out what people actually need." },
+    { "id": "service-design",     "label": "Service Design",     "color": "#27B5A8", "blurb": "Designing the whole journey, front and back stage." },
+    { "id": "ai-design",          "label": "AI & Design",        "color": "#8B5CF6", "blurb": "Designing with and for intelligent systems." },
+    { "id": "design-systems",     "label": "Design Systems",     "color": "#F59E0B", "blurb": "Reusable parts that scale a product." },
+    { "id": "product-management", "label": "Product",            "color": "#EF6F6C", "blurb": "Deciding what to build and why." },
+    { "id": "accessibility",      "label": "Accessibility",      "color": "#22A06B", "blurb": "Making it usable by everyone." },
+    { "id": "ux-craft",           "label": "UX Craft",           "color": "#EC4899", "blurb": "The hands-on practice of design." },
+    { "id": "design-leadership",  "label": "Leadership",         "color": "#0EA5E9", "blurb": "Teams, influence and direction." }
+  ],
+  "paths": [
+    { "id": "path-ai",         "title": "Designing with AI",            "icon": "✨", "blurb": "Prompting as a design skill, and how AI reshapes the craft.", "articleIds": ["designing-with-ai", "prompt-engineering-for-designers", "ai-reshaping-ux-2026"] },
+    { "id": "path-service",    "title": "Service Design Foundations",    "icon": "🧭", "blurb": "The whole service, not just the screen.", "articleIds": ["what-is-service-design", "principles-of-service-design-thinking"] },
+    { "id": "path-craft",      "title": "Product & Systems Craft",       "icon": "🧱", "blurb": "How teams and components actually scale.", "articleIds": ["product-vs-feature-teams", "atomic-design"] },
+    { "id": "path-inclusive",  "title": "Research-led & Inclusive",      "icon": "🫶", "blurb": "Evidence from real users, usable by all.", "articleIds": ["usability-testing-101", "intro-web-accessibility"] }
+  ],
+  "articles": [
+    {
+      "id": "designing-with-ai",
+      "title": "Designing With AI, Not Around It: Practical Advanced Techniques For Product Design",
+      "author": "Ilia Kanazin & Marina Chernyshova",
+      "source": "Smashing Magazine",
+      "url": "https://www.smashingmagazine.com/2025/08/designing-with-ai-practical-techniques-product-design/",
+      "publishedAt": "2025-08-11",
+      "readingTimeMin": 16,
+      "difficulty": "core",
+      "topics": ["ai-design", "ux-research"],
+      "provenance": "fetched",
+      "summary": "Prompting is a design skill: how a request is framed strongly shapes what an AI model produces. The article presents six prompting techniques for product-design tasks, from jobs-to-be-done decomposition and competitive audits to opponent-style ideation and cognitive walkthroughs. It closes with guidance on choosing a technique based on whether a task needs precision or perspective, alignment or exploration.",
+      "keyTakeaways": [
+        "Specific prompts with clear context usually produce more useful AI output than broad ones.",
+        "Prompt complexity should scale with task complexity; simple tasks can use short prompts.",
+        "Role, context and instruction structure keeps AI responses focused and consistent.",
+        "Asking the model to interpret source material before critiquing it reduces misreadings.",
+        "Tree-of-thought prompting helps the model compare alternative reasoning paths during audits.",
+        "Multi-role prompts can simulate feedback from several disciplines in one review.",
+        "Opponent-style prompts counter AI's tendency to simply agree with the user."
+      ],
+      "flashcards": [
+        { "front": "What is Reasoning Before Understanding (RBU)?", "back": "Asking the AI to interpret provided materials before critiquing them, so it builds an accurate mental model first." },
+        { "front": "What is meta-prompting?", "back": "Using AI to help write a better prompt, especially when you're unsure how to phrase a request for a concept or prototype tool." },
+        { "front": "What does multi-role prompting do?", "back": "Asks the AI to take on several perspectives (PM, engineer, QA) to produce a more well-rounded design critique." }
+      ],
+      "quiz": [
+        { "q": "Which technique asks the AI to interpret input materials before critiquing them?", "options": ["Reasoning Before Understanding", "Tree of Thought", "Multi-role prompting", "Meta-prompting"], "answer": 0, "explain": "RBU has the model build an understanding of documents or screenshots first, so the later critique rests on an accurate reading." },
+        { "q": "What is the main purpose of meta-prompting?", "options": ["Asking AI to help write a stronger prompt", "Generating final UI screens directly", "Simulating a team design review", "Challenging the user's own assumptions"], "answer": 0, "explain": "Meta-prompting means prompting about prompts, so the model helps refine the request before it is sent to a design generator." },
+        { "q": "When is multi-role prompting most useful?", "options": ["Memorising user preferences over time", "Simulating feedback from several perspectives at once", "Breaking a task into JTBD jobs", "Converting screenshots into text"], "answer": 1, "explain": "Multi-role prompting lets one prompt produce critique from different functional viewpoints such as PM, engineering and QA." },
+        { "q": "What is the goal of opponent-style prompting?", "options": ["Producing faster code suggestions", "Creating visual style guides", "Challenging assumptions and exposing blind spots", "Summarising long research documents"], "answer": 2, "explain": "The opponent mode asks the AI to question the user's logic and offer alternatives rather than simply agreeing." },
+        { "q": "How does the article describe the relationship between prompt and task complexity?", "options": ["Longer prompts always produce better results", "Prompt structure should match task complexity", "Simple prompts are never useful", "Complexity only matters for coding tasks"], "answer": 1, "explain": "Prompting is treated as a scale: simple tasks need lightweight prompts and complex tasks need more structure." }
+      ]
+    },
+    {
+      "id": "product-vs-feature-teams",
+      "title": "Product vs Feature Teams",
+      "author": "Marty Cagan",
+      "source": "Silicon Valley Product Group",
+      "url": "https://www.svpg.com/product-vs-feature-teams/",
+      "publishedAt": "2019-08-29",
+      "readingTimeMin": 9,
+      "difficulty": "core",
+      "topics": ["product-management", "design-leadership"],
+      "provenance": "fetched",
+      "summary": "The article distinguishes delivery teams, empowered product teams and feature teams. Feature teams are handed a prioritised roadmap and judged on output, which changes who owns value and viability compared with empowered teams measured on outcomes. It offers diagnostic questions to work out which model your own team is really operating under.",
+      "keyTakeaways": [
+        "Delivery teams mainly ship output; their product owner acts as a backlog administrator rather than an innovator.",
+        "Empowered product teams are cross-functional, measured by outcomes, and trusted to find the best solution to a problem.",
+        "Feature teams receive prioritised roadmaps, so the requesting stakeholder is implicitly responsible for value and viability.",
+        "In feature teams, product managers often slide into project management.",
+        "Role confusion, time spent on project management and OKR misuse can reveal a feature team.",
+        "The product manager role differs fundamentally between the two team types."
+      ],
+      "flashcards": [
+        { "front": "Core difference between a feature team and an empowered product team?", "back": "A feature team delivers output from a roadmap; an empowered product team is measured by outcomes and collaboratively discovers solutions." },
+        { "front": "Who owns value and viability on a feature team?", "back": "The stakeholder or executive who requested the feature on the roadmap, not the delivery team." },
+        { "front": "What is a 'backlog administrator'?", "back": "A product owner on a delivery team whose work centres on managing the backlog and shipping output rather than driving innovation." }
+      ],
+      "quiz": [
+        { "q": "In a feature team, who is primarily responsible for value and business viability?", "options": ["The engineering lead", "The stakeholder or executive who requested the feature", "The product designer", "The delivery manager"], "answer": 1, "explain": "The requesting stakeholder implicitly owns value and viability for features assigned on the roadmap." },
+        { "q": "What term does Cagan use for a product owner on a delivery team?", "options": ["Product coach", "Backlog administrator", "Roadmap architect", "Feature facilitator"], "answer": 1, "explain": "He describes the product owner on delivery teams as a backlog administrator focused on output." },
+        { "q": "Which is NOT one of the four big product risks?", "options": ["Value risk", "Usability risk", "Feasibility risk", "Scalability risk"], "answer": 3, "explain": "The four risks are value, usability, feasibility and business viability; scalability is not among them." },
+        { "q": "In an empowered product team, who ensures feasibility?", "options": ["The product manager", "The designer", "The tech lead", "The CEO"], "answer": 2, "explain": "Feasibility sits with the tech lead, while the PM covers value and viability and the designer covers usability." },
+        { "q": "Which sign most suggests a team is really a feature team?", "options": ["It is assigned problems to solve with business outcomes", "It is given a prioritised roadmap with dates", "It measures success by outcomes", "It collaborates to discover solutions"], "answer": 1, "explain": "Receiving a prioritised feature roadmap with dates is a key indicator of the feature-team model." }
+      ]
+    },
+    {
+      "id": "atomic-design",
+      "title": "Atomic Design Methodology",
+      "author": "Brad Frost",
+      "source": "Atomic Design (book, chapter 2)",
+      "url": "https://atomicdesign.bradfrost.com/chapter-2/",
+      "publishedAt": "2016",
+      "readingTimeMin": 12,
+      "difficulty": "intro",
+      "topics": ["design-systems", "ux-craft"],
+      "provenance": "fetched",
+      "summary": "Atomic design is a five-stage mental model for building interface design systems, borrowing its hierarchy from chemistry. The stages are atoms, molecules, organisms, templates and pages, meant to be worked on together rather than in strict sequence. The approach applies to all user interfaces, not only web ones, and its shared vocabulary helps teams communicate.",
+      "keyTakeaways": [
+        "Interfaces can be broken into a finite set of basic elements, much as matter is built from atoms.",
+        "Atoms are the smallest functional UI elements, like labels, inputs and buttons.",
+        "Molecules are simple groups of atoms working together, such as a search form.",
+        "Organisms are complex sections built from molecules and atoms, such as a header.",
+        "Templates define layout and content structure; pages test the system with real content."
+      ],
+      "flashcards": [
+        { "front": "What are the five stages of atomic design?", "back": "Atoms, molecules, organisms, templates and pages." },
+        { "front": "Is atomic design a linear process?", "back": "No. It is a mental model where the stages are worked on concurrently, not as sequential steps." },
+        { "front": "What is the purpose of the 'pages' stage?", "back": "To apply real representative content to templates, showing the final UI and testing how well the system holds up." }
+      ],
+      "quiz": [
+        { "q": "How many stages does atomic design include?", "options": ["Three", "Four", "Five", "Six"], "answer": 2, "explain": "The methodology has five stages: atoms, molecules, organisms, templates and pages." },
+        { "q": "Which stage is the most concrete?", "options": ["Atoms", "Templates", "Pages", "Organisms"], "answer": 2, "explain": "Pages are the most concrete stage because they show the interface with real content in place." },
+        { "q": "How should the stages be understood?", "options": ["As strict sequential steps", "As a mental model used concurrently", "As a method only for web developers", "As a method limited to final page testing"], "answer": 1, "explain": "Atomic design is not linear; it is a mental model for building UIs and their systems together." },
+        { "q": "Which of these is an example of a molecule?", "options": ["A button", "A search form", "A header", "A homepage layout"], "answer": 1, "explain": "A search form combines a label, input and button into a simple functioning group, which is a molecule." },
+        { "q": "What do templates primarily focus on?", "options": ["Final page content", "The underlying content structure", "CSS architecture", "User analytics data"], "answer": 1, "explain": "Templates focus on the page's underlying content structure rather than its final content." }
+      ]
+    },
+    {
+      "id": "usability-testing-101",
+      "title": "Usability (User) Testing 101",
+      "author": "Kate Moran",
+      "source": "Nielsen Norman Group",
+      "url": "https://www.nngroup.com/articles/usability-testing-101/",
+      "publishedAt": "2019-12-01",
+      "readingTimeMin": 8,
+      "difficulty": "intro",
+      "topics": ["ux-research"],
+      "provenance": "fetched",
+      "summary": "Usability testing is a UX research method in which a facilitator asks participants to complete tasks with an interface while observing their behaviour. The article explains the core elements of a session (facilitator, tasks, participant), qualitative versus quantitative approaches, and remote moderated and unmoderated formats. It also outlines what drives the cost of simple versus advanced studies.",
+      "keyTakeaways": [
+        "Usability testing reveals design problems, improvement opportunities and real user behaviour.",
+        "A facilitator guides participants through realistic tasks while observing and listening.",
+        "Task wording matters: small phrasing differences change how participants understand a task.",
+        "Participants are often asked to think aloud, narrating their actions and thoughts.",
+        "Qualitative testing finds problems; quantitative testing collects metrics like success rate and time on task.",
+        "Remote unmoderated tests use a platform to deliver tasks; remote moderated tests keep a live facilitator.",
+        "Simple discount studies can be cheap; complexity like eyetracking or international work raises cost."
+      ],
+      "flashcards": [
+        { "front": "What is the facilitator's role in a usability test?", "back": "To guide the participant, give instructions, answer questions and ask follow-ups without influencing behaviour." },
+        { "front": "What is the think-aloud method?", "back": "Participants narrate their actions and thoughts while performing tasks, revealing behaviours, goals and motivations." },
+        { "front": "How many participants are recommended for a typical qualitative study of one user group?", "back": "Five, which can uncover the majority of the most common problems." }
+      ],
+      "quiz": [
+        { "q": "Who typically guides the participant through a usability test?", "options": ["The participant", "The facilitator", "The product developer", "The stakeholder who funds the study"], "answer": 1, "explain": "The facilitator gives instructions, answers questions and asks follow-ups while observing the participant." },
+        { "q": "How many participants are recommended for a typical qualitative study of a single user group?", "options": ["Two", "Five", "Twelve", "Thirty"], "answer": 1, "explain": "Five participants can uncover most common problems in a typical qualitative study." },
+        { "q": "Which two metrics are most common in quantitative usability testing?", "options": ["Task success and time on task", "Facial expressions and eye movement", "Comments and page views", "Survey satisfaction and NPS"], "answer": 0, "explain": "Task success and time on task are the two metrics named as most common in quantitative testing." },
+        { "q": "In remote unmoderated testing, what takes on the facilitator's role?", "options": ["A live moderator on a video call", "The participant's manager", "The testing platform", "The recruiting agency"], "answer": 2, "explain": "The platform administers tasks and follow-up questions, so no live facilitator interacts with the participant." },
+        { "q": "Why is task wording important?", "options": ["It sets the participant's payment", "Small phrasing errors can cause misunderstanding or influence performance", "It replaces recruitment", "It sets the number of tasks"], "answer": 1, "explain": "Small errors in phrasing can mislead or prime participants, affecting how they perform the task." }
+      ]
+    },
+    {
+      "id": "ai-reshaping-ux-2026",
+      "title": "How AI Is Reshaping UI/UX Design in 2026",
+      "author": "Ken Olewiler",
+      "source": "Punchcut",
+      "url": "https://punchcut.com/perspectives/how-ai-is-reshaping-ui-ux-design-in-2026/",
+      "publishedAt": "2026-09-29",
+      "readingTimeMin": 7,
+      "difficulty": "core",
+      "topics": ["ai-design", "design-leadership", "product-management"],
+      "provenance": "fetched",
+      "summary": "AI is structurally changing design work, shifting designers toward strategic direction and evaluation of AI-generated output. The article covers faster research synthesis, the need for design systems that encode principles, and trust as a core design problem. It argues teams should pair AI speed with human-centred judgment and outcome-based metrics.",
+      "keyTakeaways": [
+        "AI changes where design work begins by generating layouts, copy and behaviour insights early.",
+        "Designers are moving upstream into strategy and judgment about AI-powered features.",
+        "AI can speed research synthesis, but designers must still interpret why users behave as they do.",
+        "Design systems should encode logic and principles to support adaptive, AI-driven interfaces.",
+        "User trust should be treated as a measurable outcome, including error recovery and correction paths.",
+        "Measure user outcomes like task completion and friction reduction, not activity counts.",
+        "Designers need skills in evaluating AI output, prompting and communicating with engineers and leaders."
+      ],
+      "flashcards": [
+        { "front": "How does AI change the starting point of design?", "back": "It can generate layout variations, draft copy and surface behaviour patterns before a designer sketches, shifting effort toward context-driven decisions." },
+        { "front": "What qualitative role stays essential in research?", "back": "Interpreting why users behave as they do (e.g. why they abandoned a checkout), which data alone can't explain." },
+        { "front": "How should teams approach user trust in AI products?", "back": "Treat trust as a measurable outcome: track error-recovery times, monitor responses to misses, and build correction mechanisms." }
+      ],
+      "quiz": [
+        { "q": "What is the designer's role becoming, per the article?", "options": ["Focused mainly on pixel-level execution", "Replaced by AI agents for most tasks", "More strategic, closer to a creative director evaluating AI output", "Limited to usability testing only"], "answer": 2, "explain": "Designers are pulled upstream into strategy and must evaluate AI-generated output and make judgment calls." },
+        { "q": "What does the article recommend AI do in user research?", "options": ["Handle synthesis and pattern detection", "Fully replace qualitative interviews", "Eliminate usability testing", "Decide which features to ship"], "answer": 0, "explain": "AI should handle synthesis and pattern detection so designers can focus on interpretive work." },
+        { "q": "What kind of design system is needed for AI-powered products?", "options": ["Static visual component libraries", "Documentation-only style guides", "Systems that encode logic and principles", "Systems with no brand constraints"], "answer": 2, "explain": "Living systems that encode logic and principles can flex with adaptive interfaces while preserving brand identity." },
+        { "q": "Which metric does the article suggest for measuring trust?", "options": ["Number of AI features shipped", "Total tokens processed", "Error-recovery times", "Count of API calls"], "answer": 2, "explain": "Tracking error-recovery times is given as a way to treat trust as a measurable outcome." },
+        { "q": "Which metrics matter most for AI product success?", "options": ["Features shipped and API calls", "Tokens processed and demo performance", "Task completion rates and reduced cognitive load", "Number of design tools adopted"], "answer": 2, "explain": "The article emphasises outcomes like task completion, trust, cognitive-load reduction and retention." }
+      ]
+    },
+    {
+      "id": "prompt-engineering-for-designers",
+      "title": "Prompt Engineering for Designers: Mastering AI Workflows",
+      "author": "Robin Dhanwani",
+      "source": "Parallel",
+      "url": "https://www.parallelhq.com/blog/prompt-engineering-designers",
+      "publishedAt": "2026-02-18",
+      "readingTimeMin": 10,
+      "difficulty": "intro",
+      "topics": ["ai-design", "ux-craft"],
+      "provenance": "fetched",
+      "summary": "Prompt engineering is the practice of writing and refining instructions so generative AI tools produce useful design outputs. The article covers core principles such as clarity, structure, iteration, model awareness, user-centric thinking and ethics, and where prompting fits in the design workflow. It ends with practical templates, examples, limitations and a rollout roadmap for teams.",
+      "keyTakeaways": [
+        "Prompt engineering is an interface-design task that shapes how AI understands what designers need.",
+        "Specific prompts naming the user, task, medium and tone beat vague requests.",
+        "A role / context / instruction structure makes briefs read like those given to human collaborators.",
+        "Iterate prompts by changing one variable at a time and track them as versioned assets.",
+        "AI outputs need human review for accuracy, bias, accessibility and brand fit.",
+        "Prompting can speed up concepting, micro-copy, research summaries and cross-functional alignment.",
+        "Pilot prompting on one workflow, then build shared templates and governance."
+      ],
+      "flashcards": [
+        { "front": "What is prompt engineering for designers?", "back": "Designing and refining inputs to a generative model so its outputs are specific and usable for design work." },
+        { "front": "Why use a role / context / instruction structure?", "back": "It mirrors how designers brief collaborators, reducing ambiguity and improving consistency of output." },
+        { "front": "Main risk of relying on AI output without review?", "back": "Models can hallucinate features, produce biased content, or suggest patterns that break accessibility or brand guidelines." }
+      ],
+      "quiz": [
+        { "q": "Per Google's cited guidance, what should prompts define?", "options": ["Role, context and instruction", "Tone, colour and font", "Input, output and cost", "Persona, budget and timeline"], "answer": 0, "explain": "The article attributes this three-part structure to Google's prompt-engineering guidance." },
+        { "q": "Which technique has a model reason step by step?", "options": ["Zero-shot prompting", "Chain-of-thought prompting", "Temperature tuning", "Text-to-image generation"], "answer": 1, "explain": "Chain-of-thought prompts ask the model to break a task down for more structured output on complex problems." },
+        { "q": "What does lowering the temperature setting generally do?", "options": ["Increases creative risk", "Removes token limits", "Yields more deterministic results", "Adds image support"], "answer": 2, "explain": "Lower temperature produces more deterministic output; higher temperature invites more creative but riskier suggestions." },
+        { "q": "In the cited McKinsey 2025 survey, what share redesigned workflows for AI?", "options": ["9%", "21%", "27%", "65%"], "answer": 1, "explain": "The article reports 21% had redesigned workflows, while 27% checked all gen-AI content before publishing." },
+        { "q": "Which framework lists Context, Objective, Style, Tone, Audience and Response?", "options": ["SCAMPER", "COSTAR", "RICE", "HEART"], "answer": 1, "explain": "COSTAR is described as a framework giving teams a shared vocabulary for prompts." }
+      ]
+    },
+    {
+      "id": "intro-web-accessibility",
+      "title": "Introduction to Web Accessibility",
+      "author": "W3C Web Accessibility Initiative",
+      "source": "W3C WAI",
+      "url": "https://www.w3.org/WAI/fundamentals/accessibility-intro/",
+      "publishedAt": "2005",
+      "readingTimeMin": 6,
+      "difficulty": "intro",
+      "topics": ["accessibility"],
+      "provenance": "fetched",
+      "summary": "Well-designed sites and tools can be used by people with disabilities, but many current sites contain barriers that make them hard or impossible to use. Accessible design benefits individuals, businesses and society, and international standards define what accessibility requires. It should be considered from the start of a project and checked throughout, since automated tools alone cannot confirm full compliance.",
+      "keyTakeaways": [
+        "Web accessibility means people with disabilities can perceive, understand, navigate, interact with and contribute to the web.",
+        "It also helps people without disabilities: mobile users, older adults and people on slow connections.",
+        "Accessibility supports social inclusion and is linked to business benefits and, often, legal requirements.",
+        "W3C WAI standards, including WCAG, describe how to make the web accessible.",
+        "Alt text lets screen-reader users and search engines understand images.",
+        "Offer full keyboard functionality, and provide text transcripts for audio.",
+        "Build accessibility in early; human expert evaluation is still needed alongside tools."
+      ],
+      "flashcards": [
+        { "front": "What is web accessibility?", "back": "Designing sites and tools so people with disabilities can perceive, understand, navigate, interact with and contribute to the web." },
+        { "front": "Why build accessibility in from the start?", "back": "Addressing it early avoids redoing work later and makes problems easier and cheaper to fix." },
+        { "front": "Why does audio content need transcripts?", "back": "Transcripts make audio accessible to deaf and hard-of-hearing people, and to search engines and tools that can't hear." }
+      ],
+      "quiz": [
+        { "q": "What does web accessibility mean here?", "options": ["Sites and tools designed so people with disabilities can use them", "Sites that only load quickly on slow connections", "Sites designed exclusively for mobile", "Sites that avoid using any images"], "answer": 0, "explain": "Accessibility is designing sites and tools so people with disabilities can perceive, understand, navigate and interact with the web." },
+        { "q": "Which is NOT a disability type covered?", "options": ["Auditory", "Visual", "Culinary", "Speech"], "answer": 2, "explain": "The article lists auditory, cognitive, neurological, physical, speech and visual; culinary is not among them." },
+        { "q": "What is the main purpose of alt text?", "options": ["Changing the image's visual style", "Making image information available to screen-reader users and search engines", "Replacing the page title", "Reducing the image file size"], "answer": 1, "explain": "Alt text conveys image information to people who can't see it, including screen-reader users, and to technologies like search engines." },
+        { "q": "Can automated tools alone determine if a site is accessible?", "options": ["Yes, always a complete answer", "No, knowledgeable human evaluation is required", "Only for image issues", "Only for keyboard issues"], "answer": 1, "explain": "No tool alone can determine if a site meets the guidelines, so human evaluation is needed." },
+        { "q": "Why incorporate accessibility from the beginning?", "options": ["To avoid going back and redoing work", "Because it's only required after launch", "So testing is no longer necessary", "Because it only matters for large sites"], "answer": 0, "explain": "Building it in from the start is more efficient and avoids having to redo work later." }
+      ]
+    },
+    {
+      "id": "what-is-service-design",
+      "title": "What is Service Design?",
+      "author": "Interaction Design Foundation",
+      "source": "Interaction Design Foundation",
+      "url": "https://www.interaction-design.org/literature/topics/service-design",
+      "publishedAt": "2016",
+      "readingTimeMin": 10,
+      "difficulty": "intro",
+      "topics": ["service-design", "ux-research"],
+      "provenance": "fetched",
+      "summary": "Service design is a process for creating sustainable, optimal experiences for both customers and service providers across the full service ecosystem. The article presents five guiding principles, common tools such as journey maps, personas and service blueprints, and a short history of the discipline. It also explains how service design differs from UX and CX design in scope.",
+      "keyTakeaways": [
+        "Service design balances customer experience with the needs and sustainability of providers.",
+        "Five principles: user-centred, co-creative, sequencing, evidencing and holistic.",
+        "Key service elements are actors, location, props, associates and processes.",
+        "Journey maps, personas and service blueprints reveal touchpoints and barriers.",
+        "Service blueprints extend journey maps to show the full range of brand interactions.",
+        "Service design has the broadest scope of UX, CX and service design."
+      ],
+      "flashcards": [
+        { "front": "What is the core aim of service design?", "back": "To create sustainable, optimal experiences for customers and the service providers involved." },
+        { "front": "What is a service blueprint?", "back": "An elevated customer journey map that reveals the full range of situations where customers interact with a brand." },
+        { "front": "What does the 'sequencing' principle involve?", "back": "Breaking a complex service into separate processes and user-journey sections." }
+      ],
+      "quiz": [
+        { "q": "What is the primary goal of service design?", "options": ["Creating visually appealing service interfaces", "Financial growth for providers only", "Optimising experiences for both customers and providers", "Replacing physical products with digital tools"], "answer": 2, "explain": "Service design aims to optimise experiences for customers and the providers involved." },
+        { "q": "Which principle breaks a complex service into separate processes?", "options": ["Co-creative", "Evidencing", "Sequencing", "Holistic"], "answer": 2, "explain": "Sequencing divides a complex service into separate processes and journey sections." },
+        { "q": "Which tool is an elevated form of a journey map?", "options": ["Personas", "Service blueprints", "User scenarios", "Storyboards"], "answer": 1, "explain": "Service blueprints are elevated journey maps that reveal the full spectrum of brand interactions." },
+        { "q": "Which is NOT one of the five key parts of a service encounter?", "options": ["Actors", "Props", "Associates", "Budgets"], "answer": 3, "explain": "The key parts are actors, location, props, associates and processes; budgets are not included." },
+        { "q": "Which discipline has the broadest scope?", "options": ["UX design", "CX design", "Service design", "Visual design"], "answer": 2, "explain": "Service design has the highest scope, integrating business processes and back-end elements beyond UX and CX." }
+      ]
+    },
+    {
+      "id": "principles-of-service-design-thinking",
+      "title": "The Principles of Service Design Thinking — Building Better Services",
+      "author": "Interaction Design Foundation",
+      "source": "Interaction Design Foundation",
+      "url": "https://www.interaction-design.org/literature/article/the-principles-of-service-design-thinking-building-better-services",
+      "publishedAt": "2016",
+      "readingTimeMin": 9,
+      "difficulty": "intro",
+      "topics": ["service-design"],
+      "provenance": "fetched",
+      "summary": "The article introduces general, process, organisational, information and technology principles that guide service design. It presents these as widely accepted in the commercial sector and recommends them for improving existing services or creating new ones. It notes that many of these principles overlap with existing UX practice.",
+      "keyTakeaways": [
+        "Design services around customer needs, not internal business needs.",
+        "Build a minimum viable service, deploy it, then iterate using feedback.",
+        "Structure work around processes rather than functions, geography or products.",
+        "Eliminate or minimise activities that add no value for the customer.",
+        "Normalise and reuse data across the organisation and its partners.",
+        "Let technology enable the service rather than drive its design."
+      ],
+      "flashcards": [
+        { "front": "What is the core focus of service design?", "back": "Making a service meet the needs of its users and customers, whether improving an existing service or creating a new one." },
+        { "front": "What is a minimum viable service (MVS)?", "back": "A basic version of a service, deployed first and then improved through user and customer feedback." },
+        { "front": "How should technology be used in service design?", "back": "It should be pulled in to support the service, staying flexible and agile enough to change quickly, not drive the design." }
+      ],
+      "quiz": [
+        { "q": "What should services be designed around?", "options": ["Internal business needs", "Customer needs", "Competitor features", "Available budget"], "answer": 1, "explain": "Services should be based on customer needs rather than the business's internal needs." },
+        { "q": "What is the recommended approach to launching a new service?", "options": ["Build the complete service before deployment", "Skip prototyping and go straight to full development", "Develop a minimum viable service, deploy, then iterate", "Wait until all stakeholders fully agree"], "answer": 2, "explain": "Develop a minimum viable service, deploy it, then improve it based on feedback." },
+        { "q": "Which structure should work follow?", "options": ["Functions", "Geography", "Products", "Processes"], "answer": 3, "explain": "Work should be organised around processes rather than functions, geography or products." },
+        { "q": "How is technology's role described?", "options": ["It should drive the service design", "It should enable the service, not drive it", "It should be fixed early and rarely changed", "It should replace human workers"], "answer": 1, "explain": "Technology should enable the service and not be the driver of it." },
+        { "q": "What do the information principles recommend for data?", "options": ["Keep data siloed in each department", "Increase manual data entry", "Normalise data and make it reusable across the organisation and partners", "Store data only on paper"], "answer": 2, "explain": "Data should be normalised between the organisation, its customers and its partners, and easy to reuse." }
+      ]
+    }
+  ]
+};
