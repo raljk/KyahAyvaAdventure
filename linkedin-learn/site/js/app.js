@@ -24,7 +24,7 @@
   }
   function tagHtml(topics) {
     return (topics || []).map(function (tid) {
-      return '<span class="tag" style="background:' + topicColor(tid) + '">' + esc(topicLabel(tid)) + "</span>";
+      return '<span class="tag" style="background:color-mix(in srgb, ' + topicColor(tid) + ' 86%, #fff)">' + esc(topicLabel(tid)) + "</span>";
     }).join("");
   }
   function cardHtml(a) {
@@ -452,9 +452,20 @@
       case "about": renderAbout(); break;
       default: renderNotFound();
     }
+    announceRoute(r);
     closeMenu();
     view.focus();
     window.scrollTo(0, 0);
+  }
+  function announceRoute(r) {
+    var rs = document.getElementById("routeStatus");
+    if (!rs) return;
+    var names = { "": "Dashboard", library: "Library", paths: "Learning paths", flashcards: "Flashcards", about: "About" };
+    var label = names[r.seg];
+    if (r.seg === "article" && artById[r.id]) label = "Article: " + artById[r.id].title;
+    else if (r.seg === "quiz" && artById[r.id]) label = "Quiz: " + artById[r.id].title;
+    else if (r.seg === "flashcards" && r.id && artById[r.id]) label = "Flashcards: " + artById[r.id].title;
+    rs.textContent = (label || "Page") + " loaded";
   }
 
   // ---------------------------------------------------------------- global wiring

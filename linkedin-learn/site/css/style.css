@@ -17,6 +17,10 @@
   --brand-2:   #8b5cf6;
   --brand-ink: #ffffff;
   --accent:    #27b5a8;
+  --brand-solid: #6d5bf5;
+  --status-done: #157f3c;
+  --status-reading: #b45309;
+  --badge-ink: #0b6e62;
   --good:      #16a34a;
   --good-bg:   #dcfce7;
   --bad:       #dc2626;
@@ -38,6 +42,7 @@
     --border:#272a3b; --border-2:#333751; --text:#eef0f8; --text-2:#aab0c6;
     --text-3:#7c8299; --brand:#8b7bff; --brand-2:#a78bfa; --ring-track:#2a2d40;
     --good-bg:#10331f; --bad-bg:#3a1618;
+    --status-done:#4ade80; --status-reading:#fbbf24; --badge-ink:#5eead4;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
     --shadow-lg:0 14px 44px rgba(0,0,0,.5);
   }
@@ -47,6 +52,7 @@
   --border:#272a3b; --border-2:#333751; --text:#eef0f8; --text-2:#aab0c6;
   --text-3:#7c8299; --brand:#8b7bff; --brand-2:#a78bfa; --ring-track:#2a2d40;
   --good-bg:#10331f; --bad-bg:#3a1618;
+  --status-done:#4ade80; --status-reading:#fbbf24; --badge-ink:#5eead4;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
   --shadow-lg:0 14px 44px rgba(0,0,0,.5);
 }
@@ -139,9 +145,9 @@ img { max-width: 100%; display: block; }
 .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 .badge {
   font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
-  padding: 4px 9px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent);
+  padding: 4px 9px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 18%, var(--surface)); color: var(--badge-ink);
 }
-.badge.linkedin { background: color-mix(in srgb, var(--brand) 16%, transparent); color: var(--brand); }
+.badge.linkedin { background: color-mix(in srgb, var(--brand) 18%, var(--surface)); color: var(--brand); }
 .icon-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; width: 40px; height: 40px; font-size: 18px; cursor: pointer; color: var(--text); }
 
 .view { grid-area: main; padding: var(--gutter); max-width: var(--maxw); width: 100%; min-width: 0; margin: 0 auto; }
@@ -203,7 +209,7 @@ img { max-width: 100%; display: block; }
 .topic-bar { display: grid; grid-template-columns: 150px 1fr 54px; gap: 12px; align-items: center; }
 .topic-bar .name { font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
 .topic-bar .track { height: 10px; background: var(--ring-track); border-radius: 999px; overflow: hidden; }
-.topic-bar .meter { height: 100%; border-radius: 999px; width: 0; transition: width .9s cubic-bezier(.22,1,.36,1); }
+.topic-bar .meter { display: block; height: 100%; border-radius: 999px; width: 0; transition: width .9s cubic-bezier(.22,1,.36,1); }
 .topic-bar .pct { font-size: 12.5px; color: var(--text-2); text-align: right; font-variant-numeric: tabular-nums; }
 
 /* ---------- Cards / library ---------- */
@@ -214,7 +220,7 @@ img { max-width: 100%; display: block; }
   padding: 7px 13px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
 }
 .chip:hover { border-color: var(--border-2); color: var(--text); }
-.chip[aria-pressed="true"] { background: var(--brand); color: #fff; border-color: transparent; }
+.chip[aria-pressed="true"] { background: var(--brand-solid); color: #fff; border-color: transparent; }
 .spacer { flex: 1; }
 select.control {
   border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 10px;
@@ -243,8 +249,8 @@ select.control {
 .card .summary { color: var(--text-2); font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .card-foot { margin-top: auto; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--text-3); padding-top: 4px; }
 .card-foot .status { margin-left: auto; font-weight: 700; }
-.status.done { color: var(--good); }
-.status.reading { color: var(--warn); }
+.status.done { color: var(--status-done); }
+.status.reading { color: var(--status-reading); }
 .status.quiz { color: var(--brand); }
 .difficulty { text-transform: capitalize; }
 
