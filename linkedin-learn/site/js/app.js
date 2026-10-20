@@ -51,9 +51,8 @@
     var C = 2 * Math.PI * 52;
     var off = C * (1 - s.pctComplete / 100);
 
-    var continueCards = LIB.articles.filter(function (a) { return Store.articleState(a.id).status === "reading"; });
-    if (!continueCards.length) continueCards = LIB.articles.filter(function (a) { return Store.articleState(a.id).status === "unread"; });
-    continueCards = continueCards.slice(0, 3);
+    var inProgress = LIB.articles.filter(function (a) { return Store.articleState(a.id).status === "reading"; });
+    var continueCards = (inProgress.length ? inProgress : LIB.articles.filter(function (a) { return Store.articleState(a.id).status === "unread"; })).slice(0, 3);
 
     var topicBars = LIB.topics.map(function (t) {
       var bt = s.byTopic[t.id] || { total: 0, done: 0 };
@@ -70,7 +69,7 @@
           '<p>Your saved reading, turned into a course. ' + s.total + ' articles, ' + totalQuizzes() + ' quiz questions, and flashcards to make it stick.</p>' +
           '<div class="hero-cta">' +
             '<a class="btn btn-primary" href="#/library">Browse the library</a>' +
-            (continueCards[0] ? '<a class="btn btn-ghost" href="#/article/' + continueCards[0].id + '">Continue where you left off</a>' : '') +
+            (inProgress[0] ? '<a class="btn btn-ghost" href="#/article/' + inProgress[0].id + '">Continue where you left off</a>' : '') +
           '</div>' +
         '</div>' +
         '<div class="ring-wrap">' +
@@ -118,7 +117,7 @@
     var topicChips = '<button class="chip" data-topic="all" aria-pressed="' + (filterState.topic === "all") + '">All topics</button>' +
       LIB.topics.map(function (t) {
         var on = filterState.topic === t.id;
-        return '<button class="chip" data-topic="' + t.id + '" aria-pressed="' + on + '" style="' + (on ? "background:" + t.color : "") + '">' + esc(t.label) + '</button>';
+        return '<button class="chip" data-topic="' + t.id + '" aria-pressed="' + on + '" style="' + (on ? "background:" + t.color + ";color:#15171f;border-color:transparent" : "") + '">' + esc(t.label) + '</button>';
       }).join("");
 
     view.innerHTML = '' +
@@ -313,6 +312,7 @@
       view.innerHTML = '' +
         '<div class="quiz">' +
           '<button class="back-link" data-go="#/article/' + a.id + '">← ' + esc(a.title) + '</button>' +
+          '<h1 class="sr-only">Quiz: ' + esc(a.title) + '</h1>' +
           '<div class="quiz-progress"><span style="width:' + pct + '%"></span></div>' +
           '<div class="q-counter">Question ' + (i + 1) + ' of ' + a.quiz.length + '</div>' +
           '<div class="q-text">' + esc(q.q) + '</div>' +
@@ -322,7 +322,7 @@
             }).join("") +
           '</div>' +
           '<div id="explainSlot"></div>' +
-          '<div class="quiz-foot"><span class="muted" style="font-size:13px">Score: ' + correct + '/' + i + '</span><button class="btn btn-primary" id="nextБtn" data-next disabled>' + (i === a.quiz.length - 1 ? "See results" : "Next question") + '</button></div>' +
+          '<div class="quiz-foot"><span class="muted" id="scoreline" style="font-size:13px">' + (i > 0 ? "Score: " + correct + "/" + i : "") + '</span><button class="btn btn-primary" id="nextBtn" data-next disabled>' + (i === a.quiz.length - 1 ? "See results" : "Next question") + '</button></div>' +
         '</div>';
 
       var optionBtns = view.querySelectorAll(".option");
@@ -340,6 +340,7 @@
             if (k2 === k && k !== right) b2.classList.add("wrong");
           });
           if (k === right) correct++;
+          var sl = document.getElementById("scoreline"); if (sl) sl.textContent = "Score: " + correct + "/" + (i + 1);
           var ok = k === right;
           document.getElementById("explainSlot").innerHTML =
             '<div class="explain ' + (ok ? "ok" : "no") + '">' + (ok ? "✅ Correct. " : "❌ Not quite. ") + esc(q.explain) + '</div>';
@@ -363,6 +364,7 @@
       var pass = pct >= 70;
       view.innerHTML = '' +
         '<div class="score-card">' +
+          '<h1 class="sr-only">Quiz results</h1>' +
           '<div class="score-num ' + (pass ? "pass" : "fail") + '">' + pct + '%</div>' +
           '<div class="score-sub">' + correct + ' of ' + a.quiz.length + ' correct' + (pass ? " — nicely done." : " — worth another read.") + '</div>' +
           '<div style="font-size:42px;margin-bottom:14px">' + (pass ? "🎉" : "📖") + '</div>' +
@@ -423,7 +425,7 @@
   }
 
   function renderNotFound() {
-    view.innerHTML = '<div class="empty"><div class="big">🧭</div><h2>Nothing here</h2><p>That page doesn\'t exist. <a href="#/">Go to the dashboard</a>.</p></div>';
+    view.innerHTML = '<div class="empty"><div class="big">🧭</div><h1>Nothing here</h1><p>That page doesn\'t exist. <a href="#/">Go to the dashboard</a>.</p></div>';
   }
 
   // ---------------------------------------------------------------- router

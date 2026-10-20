@@ -26,6 +26,8 @@
       var eff = t || "auto";
       if (ico) ico.textContent = eff === "dark" ? "☀" : eff === "light" ? "☾" : "◐";
       if (lab) lab.textContent = eff === "auto" ? "Auto theme" : eff === "dark" ? "Dark" : "Light";
+      var nextName = eff === "auto" ? "light" : eff === "light" ? "dark" : "auto";
+      btn.setAttribute("aria-label", "Colour theme: " + (eff === "auto" ? "auto" : eff) + ". Activate to switch to " + nextName + ".");
     }
   };
   UI.cycleTheme = function () {
